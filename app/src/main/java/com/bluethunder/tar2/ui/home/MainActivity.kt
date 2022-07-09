@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewPager() {
-        val mutableFragmentList = mutableListOf<Fragment>()
+        val mutableFragmentList : MutableList<Fragment> = ArrayList()
         mutableFragmentList.add(HomeMapFragment())
         mutableFragmentList.add(CategorizedEmergencyCaseListFragment())
         binding.homeTabViewPager.adapter =

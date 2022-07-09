@@ -47,18 +47,9 @@ class CategorizedEmergencyCaseListFragment : Fragment() {
         return binding.root
     }
 
-    var counter = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Timer().schedule(object : TimerTask() {
-            override fun run() {
-                activity?.runOnUiThread {
-                    counter += 1
-                    binding.timerText.text = counter.toString()
-                }
-            }
-        }, 1000, 1000)
     }
 
 

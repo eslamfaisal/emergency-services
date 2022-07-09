@@ -22,8 +22,8 @@
             android:layout_height="0dp"
             android:layout_below="@+id/title_view"
             android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            app:userInputEnabled="@{false}" />
+            android:layout_weight="1" />
 
+<!--        app:userInputEnabled="@{false}"-->
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -14,7 +14,7 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
     public ViewPagerFragmentAdapter(@NonNull FragmentActivity fragmentActivity, List<Fragment> acquireTabModels) {
         super(fragmentActivity);
-        fragments.addAll(acquireTabModels);
+        fragments = acquireTabModels;
     }
 
     @NonNull
