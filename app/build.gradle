@@ -36,6 +36,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -61,10 +62,9 @@ dependencies {
     //huawei agconnect libs
     implementation 'com.huawei.agconnect:agconnect-core:1.7.0.300'
     implementation "com.huawei.agconnect:agconnect-auth:1.7.0.300"
-    implementation 'com.huawei.agconnect:agconnect-cloud-database:1.7.0.300'
+    implementation 'com.huawei.agconnect:agconnect-cloud-database:1.5.3.300'
     implementation 'com.huawei.agconnect:agconnect-crash:1.7.0.300'
     implementation 'com.huawei.agconnect:agconnect-appmessaging:1.7.0.300'
-    implementation 'com.huawei.hms:push:4.0.3.301'
 
     //third party
     implementation 'com.github.ibrahimsn98:PhoneNumberKit:2.0.6'

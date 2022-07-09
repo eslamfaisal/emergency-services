@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_main.xml" value="0.35555555555555557" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_categorized_emergency_case_list.xml" value="0.3902564102564103" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_home_map.xml" value="0.3902564102564103" />
       </map>
     </option>
   </component>

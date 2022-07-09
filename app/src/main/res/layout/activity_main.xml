@@ -11,19 +11,19 @@
             type="com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        tools:context=".ui.home.MainActivity">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/home_tab_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/title_view"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            app:userInputEnabled="@{false}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
