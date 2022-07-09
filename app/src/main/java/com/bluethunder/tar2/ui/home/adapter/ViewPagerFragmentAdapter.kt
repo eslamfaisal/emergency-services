@@ -1,31 +1,17 @@
-package com.bluethunder.tar2.ui.home.adapter;
+package com.bluethunder.tar2.ui.home.adapter
 
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
+class ViewPagerFragmentAdapter(fragmentActivity: FragmentActivity, var fragments: List<Fragment>) :
+    FragmentStateAdapter(fragmentActivity) {
 
-import java.util.List;
-
-public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
-
-    List<Fragment> fragments;
-
-    public ViewPagerFragmentAdapter(@NonNull FragmentActivity fragmentActivity, List<Fragment> acquireTabModels) {
-        super(fragmentActivity);
-        fragments = acquireTabModels;
+    override fun createFragment(position: Int): Fragment {
+        return fragments[position]
     }
 
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        return fragments.get(position);
+    override fun getItemCount(): Int {
+        return fragments.size
     }
-
-    @Override
-    public int getItemCount() {
-        return fragments.size();
-    }
-
 }

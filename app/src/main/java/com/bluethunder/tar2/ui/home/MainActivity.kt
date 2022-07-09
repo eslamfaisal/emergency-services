@@ -15,6 +15,7 @@ import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<HomeViewModel> { getViewModelFactory() }
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
