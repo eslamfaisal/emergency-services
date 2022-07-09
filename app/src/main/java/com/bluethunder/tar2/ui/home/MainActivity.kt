@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initViewPager()
-
+        binding.homeTabViewPager.currentItem = 2
     }
 
     private fun initViewPager() {
