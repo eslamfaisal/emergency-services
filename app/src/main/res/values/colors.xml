@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#28DF99</color>
+    <color name="colorPrimaryDark">#43A680</color>
+    <color name="colorFaceBookBtn">#005792</color>
+    <color name="colorAccent">#99F3BD</color>
+    <color name="colorAccentLight">#92E3A9</color>
+    <color name="colorGreyDark">#858585</color>
+    <color name="colorGreyLight">#F7F7F7</color>
+    <color name="colorGreyMedium">#CCCCCC</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorOrange">#FFBC3B</color>
+    <color name="colorBlue">#4FB6F5</color>
+    <color name="overlay_dark_10">#1A000000</color>
+    <color name="overlay_dark_20">#33000000</color>
 </resources>
