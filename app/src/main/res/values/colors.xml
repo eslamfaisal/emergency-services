@@ -14,4 +14,6 @@
     <color name="colorBlue">#4FB6F5</color>
     <color name="overlay_dark_10">#1A000000</color>
     <color name="overlay_dark_20">#33000000</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
+
 </resources>
