@@ -65,6 +65,7 @@ dependencies {
     implementation 'com.huawei.agconnect:agconnect-cloud-database:1.5.3.300'
     implementation 'com.huawei.agconnect:agconnect-crash:1.7.0.300'
     implementation 'com.huawei.agconnect:agconnect-appmessaging:1.7.0.300'
+    implementation 'com.huawei.hms:maps:5.3.0.300'
 
     //third party
     implementation 'com.github.ibrahimsn98:PhoneNumberKit:2.0.6'

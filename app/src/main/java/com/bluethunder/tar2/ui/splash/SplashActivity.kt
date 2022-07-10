@@ -1,6 +1,5 @@
 package com.bluethunder.tar2.ui.splash
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
 
         binding.root.postDelayed({
             openHomeActivity()
-        }, 2000)
+        }, 1000)
 
     }
 
@@ -26,7 +25,7 @@ class SplashActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
     }
 }
