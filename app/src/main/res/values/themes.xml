@@ -7,21 +7,19 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetDialogTheme">@style/DialogStyle</item>
-        <item name="android:windowBackground">#FDFDFD</item>
+        <item name="android:windowBackground">#FFFFFF</item>
         <item name="android:statusBarColor">@color/colorWhite</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorWhite</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
-        <item name="android:windowLightNavigationBar">true</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorAccent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:navigationBarColor" >@color/color_transparent</item>
     </style>
-
 
     <style name="AppBottomSheetDialogTheme"
         parent="Theme.Design.Light.BottomSheetDialog">

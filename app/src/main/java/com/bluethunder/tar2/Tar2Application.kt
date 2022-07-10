@@ -25,11 +25,4 @@ class Tar2Application : Application() {
         AGConnectCloudDB.initialize(this)
     }
 
-    companion object {
-        var regionRoutePolicy : AGCRoutePolicy = AGCRoutePolicy.SINGAPORE
-            get() = field
-            set(value) {
-                field = value
-            }
-    }
 }
