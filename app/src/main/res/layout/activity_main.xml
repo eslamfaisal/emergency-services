@@ -3,24 +3,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="androidx.core.content.ContextCompat" />
+
         <variable
             name="viewmodel"
             type="com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/home_tab_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_below="@+id/title_view"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             app:userInputEnabled="@{false}" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="#ffffff"
+            app:fabCradleMargin="14dp"
+            app:fabCradleRoundedCornerRadius="16dp"
+            app:fabCradleVerticalOffset="10dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="-8dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_on_map"
+                    android:tint="@{viewmodel.onMapSelected? @color/colorPrimary :  @color/colorGreyLight}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_case_list"
+                    android:tint="@{viewmodel.caseListSelected? @color/colorPrimary :  @color/colorGreyLight}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:src="@drawable/ic_on_map"
+                    android:visibility="invisible" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_on_map"
+                    android:tint="@{viewmodel.onMapSelected? @color/colorPrimary :  @color/colorGreyLight}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="-8dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_on_map"
+                    android:tint="@{viewmodel.onMapSelected? @color/colorPrimary :  @color/colorGreyLight}" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/home_floating_button2"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="25dp"
+            android:scaleType="centerCrop"
+            android:tintMode="src_in"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:fabSize="auto"
+            app:layout_anchor="@id/bottom_app_bar"
+            app:maxImageSize="36dp"
+            app:srcCompat="@drawable/ic_create_case"
+            app:tint="@android:color/white" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 </layout>

@@ -16,6 +16,12 @@ class HomeViewModel : ViewModel() {
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
 
+    private val _onMapSelected = MutableLiveData(true)
+    val onMapSelected: LiveData<Boolean> = _onMapSelected
+
+    private val _caseListSelected = MutableLiveData(false)
+    val caseListSelected: LiveData<Boolean> = _caseListSelected
+
     fun refresh() {
 
         _dataLoading.value = true
