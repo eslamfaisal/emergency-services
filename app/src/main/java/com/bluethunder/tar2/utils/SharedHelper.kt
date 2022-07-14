@@ -3,6 +3,10 @@ package com.bluethunder.tar2.utils
 import android.content.Context
 import android.content.SharedPreferences
 
+object SharedHelperKeys {
+    const val IS_LOGGED_IN = "isLoggedIn"
+}
+
 object SharedHelper {
 
     private const val KEY = "shared_prefs_key"
