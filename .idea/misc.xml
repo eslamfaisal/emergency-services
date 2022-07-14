@@ -8,13 +8,15 @@
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_add.xml" value="0.174" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1575" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/main_btn_bg.xml" value="0.17" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/sec_btn_bg.xml" value="0.17" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/splash_screen_background.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_auth.xml" value="0.3076923076923077" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_splash.xml" value="0.3902564102564103" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_categorized_emergency_case_list.xml" value="0.3902564102564103" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_home_map.xml" value="0.3902564102564103" />
-        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_login.xml" value="0.31296296296296294" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_login.xml" value="0.264" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_notification_center.xml" value="0.31296296296296294" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_register.xml" value="0.31296296296296294" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/menu/bottom_nav_menu.xml" value="0.39947916666666666" />

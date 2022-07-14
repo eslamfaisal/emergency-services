@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bluethunder.tar2.databinding.ActivitySplashBinding
+import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.home.MainActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys.IS_LOGGED_IN
@@ -20,7 +21,6 @@ class SplashActivity : AppCompatActivity() {
         binding.root.postDelayed({
             checkLogin()
         }, 1000)
-
     }
 
     private fun checkLogin() {
@@ -41,7 +41,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun openSplashActivity() {
-        val intent = Intent(this, SplashActivity::class.java)
+        val intent = Intent(this, AuthActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

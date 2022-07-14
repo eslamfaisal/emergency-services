@@ -3,7 +3,7 @@
     <color name="colorPrimaryDark">#FF8800</color>
     <color name="colorPrimary">#FFB636</color>
     <color name="colorFaceBookBtn">#005792</color>
-    <color name="colorAccent">#99F3BD</color>
+    <color name="colorAccent">#FF8800</color>
     <color name="colorAccentLight">#92E3A9</color>
     <color name="colorGreyDark">#858585</color>
     <color name="colorGreyLight">#BFBFBF</color>
@@ -15,4 +15,5 @@
     <color name="overlay_dark_10">#1A000000</color>
     <color name="overlay_dark_20">#33000000</color>
     <color name="color_transparent">#00000000</color>
+    <color name="dark_red">#CC0000</color>
 </resources>

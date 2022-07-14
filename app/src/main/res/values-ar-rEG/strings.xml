@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">طارئ</string>
+    <string name="hello_blank_fragment">خريطة</string>
     <string name="map">خريطة</string>
+    <string name="register_a_new_user">Register a New User</string>
+    <string name="welcome_to_tar2">Welcome to Tar2</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="login">Login</string>
+    <string name="register_new_user">Register New User</string>
+    <string name="sign_in">Sign In</string>
+    <string name="or">Or</string>
+    <string name="sign_in_with_huawei">Sign In using Huawei</string>
 </resources>

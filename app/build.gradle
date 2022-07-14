@@ -69,4 +69,7 @@ dependencies {
 
     //third party
     implementation 'com.github.ibrahimsn98:PhoneNumberKit:2.0.6'
+    implementation 'io.github.inflationx:calligraphy3:3.1.1'
+    implementation 'io.github.inflationx:viewpump:2.0.3'
+    implementation 'com.balysv:material-ripple:1.0.2'
 }
