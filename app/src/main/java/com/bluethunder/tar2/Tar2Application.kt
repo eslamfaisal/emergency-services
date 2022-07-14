@@ -16,31 +16,20 @@
 package com.bluethunder.tar2
 
 import android.app.Application
+import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.cloud.database.AGConnectCloudDB
-import io.github.inflationx.calligraphy3.CalligraphyConfig
-import io.github.inflationx.calligraphy3.CalligraphyInterceptor
-import io.github.inflationx.viewpump.ViewPump
 
 class Tar2Application : Application() {
     override fun onCreate() {
         super.onCreate()
-        AGConnectCloudDB.initialize(this)
-        initFonts()
+        initHMS()
     }
 
-    private fun initFonts() {
-        ViewPump.init(
-            ViewPump.builder()
-                .addInterceptor(
-                    CalligraphyInterceptor(
-                        CalligraphyConfig.Builder()
-                            .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
-                            .build()
-                    )
-                )
-                .build()
-        )
-
+    private fun initHMS() {
+        if (AGConnectInstance.getInstance() == null) {
+            AGConnectInstance.initialize(this)
+        }
+        AGConnectCloudDB.initialize(this)
     }
 
 }

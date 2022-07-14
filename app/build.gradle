@@ -58,6 +58,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.0"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2'
 
     //huawei agconnect libs
     implementation 'com.huawei.agconnect:agconnect-core:1.7.0.300'

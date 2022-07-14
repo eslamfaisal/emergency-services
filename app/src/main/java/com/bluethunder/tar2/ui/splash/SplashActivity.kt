@@ -3,6 +3,7 @@ package com.bluethunder.tar2.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.bluethunder.tar2.cloud_db.CloudDBWrapper
 import com.bluethunder.tar2.databinding.ActivitySplashBinding
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.home.MainActivity
@@ -19,8 +20,18 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.root.postDelayed({
-            checkLogin()
+            runOnUiThread {
+                openCloudDBZones()
+            }
         }, 1000)
+    }
+
+    private fun openCloudDBZones() {
+        CloudDBWrapper.openUsersCloudDBZoneV2 {
+            if (it) {
+                checkLogin()
+            }
+        }
     }
 
     private fun checkLogin() {

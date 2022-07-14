@@ -11,7 +11,7 @@ fun Fragment.getViewModelFactory(): ViewModelFactory {
     return ViewModelFactory(requireActivity(), this)
 }
 
-fun Context.showLoadingDialog() {
+fun Context.showLoadingDialog(): Dialog {
     val dialog = Dialog(this)
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
     dialog.setContentView(R.layout.loading_layout)
@@ -21,6 +21,6 @@ fun Context.showLoadingDialog() {
     lp.width = WindowManager.LayoutParams.WRAP_CONTENT
     lp.height = WindowManager.LayoutParams.WRAP_CONTENT
 //        dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent);
-    dialog.show()
     dialog.window!!.attributes = lp
+    return dialog
 }
