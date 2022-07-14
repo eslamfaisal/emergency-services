@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/ic_back" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -98,6 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="@string/password"
+                    app:passwordToggleEnabled="true"
                     app:boxStrokeColor="@color/color_transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -165,9 +167,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="16sp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="16sp"
                     android:fontFamily="@font/poppins_regular"
                     android:text="@string/sign_in_with_huawei"
                     android:textColor="@color/colorBlack"

@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentLoginBinding
 import com.bluethunder.tar2.ui.auth.AuthActivity
-import com.bluethunder.tar2.ui.getViewModelFactory
+import com.bluethunder.tar2.ui.showLoadingDialog
 
 class LoginFragment : Fragment() {
 
@@ -34,6 +34,13 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
+        initView()
+    }
+
+    private fun initView() {
+        viewDataBinding.btnNext.setOnClickListener {
+            requireActivity().showLoadingDialog()
+        }
     }
 
     private fun initViewModel() {
@@ -45,5 +52,6 @@ class LoginFragment : Fragment() {
             Log.d(TAG, "initViewModel: $it")
         }
     }
+
 
 }
