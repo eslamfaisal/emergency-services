@@ -19,7 +19,6 @@ class AuthViewModel : ViewModel() {
     private val _userData = MutableLiveData<UserModel>()
     val userData: LiveData<UserModel> = _userData
 
-
     fun getUserDetails(userID: String = "esraa") {
         viewModelScope.launch {
             val query =
