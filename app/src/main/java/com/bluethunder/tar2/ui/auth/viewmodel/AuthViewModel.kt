@@ -31,10 +31,10 @@ class AuthViewModel : ViewModel() {
                     CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        _userData.value = it.result.snapshotObjects.next()
+                        _userData.value = it.result.snapshotObjects.get(0) as UserModel
                     }
                 }
-            }else{
+            } else {
                 Log.d(TAG, "getUserDetails: mUsersCloudDBZone is null")
             }
         }
