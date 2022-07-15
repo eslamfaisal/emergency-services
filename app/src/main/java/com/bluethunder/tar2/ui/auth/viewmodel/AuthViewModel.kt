@@ -33,14 +33,19 @@ class AuthViewModel : ViewModel() {
 
         AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener {
             val query =
-                CloudDBZoneQuery.where(UserModel::class.java).equalTo("id", it.user.uid)
+                CloudDBZoneQuery.where(UserModel::class.java).equalTo("id", "esraa").limit(1)
 
             mUsersCloudDBZone!!.executeQuery(
                 query,
                 CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
             ).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    setUserData(Resource.success(it.result!!.snapshotObjects.get(0)))
+                    if (it.result.snapshotObjects.size() > 0) {
+                        val user = it.result.snapshotObjects.get(0) as UserModel
+                        setUserData(Resource.success(user))
+                    } else {
+                        setUserData(Resource.error("User not found"))
+                    }
                 } else {
                     setUserData(Resource.error(it.exception?.message))
                 }

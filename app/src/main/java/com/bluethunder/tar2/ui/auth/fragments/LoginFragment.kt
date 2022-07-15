@@ -12,6 +12,7 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentLoginBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.auth.AuthActivity
+import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.showLoadingDialog
 import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.EmailAuthProvider
@@ -25,6 +26,7 @@ class LoginFragment : Fragment() {
     }
 
     private lateinit var viewDataBinding: FragmentLoginBinding
+    lateinit var viewModel: AuthViewModel
     lateinit var progressDialog: Dialog
 
     override fun onCreateView(
@@ -42,13 +44,14 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         initView()
+        AGConnectAuth.getInstance().signOut()
     }
 
     private fun initView() {
         progressDialog = requireActivity().showLoadingDialog()
         viewDataBinding.btnNext.setOnClickListener {
             progressDialog.show()
-            viewDataBinding.viewmodel.loginWithEmailAndPassword(
+            viewModel.loginWithEmailAndPassword(
                 viewDataBinding.emailInput.text.toString(),
                 viewDataBinding.passwordInput.text.toString()
             )
@@ -56,7 +59,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val viewModel = (requireActivity() as AuthActivity).viewModel
+        viewModel = (requireActivity() as AuthActivity).viewModel
         viewDataBinding.viewmodel = viewModel
 
         viewModel.userData.observe(viewLifecycleOwner) { resource ->
@@ -69,25 +72,10 @@ class LoginFragment : Fragment() {
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
+                    Log.d(TAG, "initViewModel: ${resource.errorBody}")
                     progressDialog.dismiss()
                 }
             }
-
-        }
-
-        val settings = VerifyCodeSettings.newBuilder()
-            .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
-            .sendInterval(30)
-            .build()
-        val task =
-            AGConnectAuth.getInstance().requestVerifyCode("eslam.faisal.ef@gmail.com", settings)
-        task.addOnSuccessListener {
-
-            Log.d(TAG, "initViewModel:addOnSuccessListener ${it.validityPeriod}")
-        }.addOnFailureListener {
-            // onFail
-
-            Log.d(TAG, "initViewModel:addOnFailureListener ${it.message}")
         }
     }
 
