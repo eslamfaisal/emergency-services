@@ -50,12 +50,16 @@ class LoginFragment : Fragment() {
     private fun initView() {
         progressDialog = requireActivity().showLoadingDialog()
         viewDataBinding.btnNext.setOnClickListener {
-            progressDialog.show()
-            viewModel.loginWithEmailAndPassword(
-                viewDataBinding.emailInput.text.toString(),
-                viewDataBinding.passwordInput.text.toString()
-            )
+            validateAndTryLogin()
         }
+    }
+
+    private fun validateAndTryLogin() {
+        progressDialog.show()
+        viewModel.loginWithEmailAndPassword(
+            viewDataBinding.emailInput.text.toString(),
+            viewDataBinding.passwordInput.text.toString()
+        )
     }
 
     private fun initViewModel() {
