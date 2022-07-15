@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -32,7 +33,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 android:padding="8dp"
                 app:srcCompat="@drawable/ic_logo_btm_name" />
@@ -99,8 +100,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="@string/password"
-                    app:passwordToggleEnabled="true"
-                    app:boxStrokeColor="@color/color_transparent">
+                    app:boxStrokeColor="@color/color_transparent"
+                    app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password_input"
@@ -151,6 +152,7 @@
                     android:layout_marginTop="16sp">
 
                     <TextView
+                        android:id="@+id/register_new_user_btn"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/sec_btn_bg"
@@ -180,6 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="-22dp"
                     app:srcCompat="@drawable/ic_huawie_logo" />
 

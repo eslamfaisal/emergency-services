@@ -8,7 +8,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.ActivityMainBinding
-import com.bluethunder.tar2.ui.getViewModelFactory
+import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.ViewPagerFragmentAdapter
 import com.bluethunder.tar2.ui.home.fragments.CategorizedEmergencyCaseListFragment
 import com.bluethunder.tar2.ui.home.fragments.HomeMapFragment

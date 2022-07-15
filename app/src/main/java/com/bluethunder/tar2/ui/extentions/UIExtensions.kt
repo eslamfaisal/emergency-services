@@ -1,15 +1,11 @@
-package com.bluethunder.tar2.ui
+package com.bluethunder.tar2.ui.extentions
 
 import android.app.Dialog
 import android.content.Context
 import android.view.Window
 import android.view.WindowManager
-import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
 
-fun Fragment.getViewModelFactory(): ViewModelFactory {
-    return ViewModelFactory(requireActivity(), this)
-}
 
 fun Context.showLoadingDialog(): Dialog {
     val dialog = Dialog(this)

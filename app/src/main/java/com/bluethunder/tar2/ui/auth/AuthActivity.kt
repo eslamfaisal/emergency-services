@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.ui.BaseActivity
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
-import com.bluethunder.tar2.ui.getViewModelFactory
+import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 
 class AuthActivity : BaseActivity() {
 

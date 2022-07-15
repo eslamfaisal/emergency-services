@@ -8,16 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentLoginBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
-import com.bluethunder.tar2.ui.showLoadingDialog
+import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.huawei.agconnect.auth.AGConnectAuth
-import com.huawei.agconnect.auth.EmailAuthProvider
-import com.huawei.agconnect.auth.EmailUser
-import com.huawei.agconnect.auth.VerifyCodeSettings
 
 class LoginFragment : Fragment() {
 
@@ -25,7 +23,7 @@ class LoginFragment : Fragment() {
         private const val TAG = "LoginFragment"
     }
 
-    private lateinit var viewDataBinding: FragmentLoginBinding
+    private lateinit var binding: FragmentLoginBinding
     lateinit var viewModel: AuthViewModel
     lateinit var progressDialog: Dialog
 
@@ -33,11 +31,11 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewDataBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_login, container,
             false
         )
-        return viewDataBinding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,22 +47,26 @@ class LoginFragment : Fragment() {
 
     private fun initView() {
         progressDialog = requireActivity().showLoadingDialog()
-        viewDataBinding.btnNext.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             validateAndTryLogin()
+        }
+
+        binding.registerNewUserBtn.setOnClickListener {
+            findNavController(this).navigate(R.id.action_loginFragment_to_registerFragment)
         }
     }
 
     private fun validateAndTryLogin() {
         progressDialog.show()
         viewModel.loginWithEmailAndPassword(
-            viewDataBinding.emailInput.text.toString(),
-            viewDataBinding.passwordInput.text.toString()
+            binding.emailInput.text.toString(),
+            binding.passwordInput.text.toString()
         )
     }
 
     private fun initViewModel() {
         viewModel = (requireActivity() as AuthActivity).viewModel
-        viewDataBinding.viewmodel = viewModel
+        binding.viewmodel = viewModel
 
         viewModel.userData.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {

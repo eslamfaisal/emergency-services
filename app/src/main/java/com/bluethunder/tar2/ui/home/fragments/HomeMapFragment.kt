@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentHomeMapBinding
-import com.bluethunder.tar2.ui.getViewModelFactory
+import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
 
 

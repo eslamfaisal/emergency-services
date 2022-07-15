@@ -12,7 +12,10 @@
     <string name="register_new_user">Register New User</string>
     <string name="sign_in">Sign In</string>
     <string name="or">Or</string>
-    <string name="sign_in_with_huawei">Sign In using Huawei</string>
+    <string name="sign_in_with_huawei">Sign In using Huawei ID</string>
     <string name="loading">Loading...</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="full_name">Full name</string>
+    <string name="phone_number">Phone Number</string>
 
 </resources>

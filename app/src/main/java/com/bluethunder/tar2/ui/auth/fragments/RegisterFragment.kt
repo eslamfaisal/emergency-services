@@ -20,7 +20,7 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewDataBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_register, container,
             false
@@ -31,6 +31,13 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
+        initViews()
+    }
+
+    private fun initViews() {
+        viewDataBinding.backBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     private fun initViewModel() {
