@@ -18,4 +18,11 @@
     <string name="sign_up">Sign Up</string>
     <string name="full_name">Full name</string>
     <string name="phone_number">Phone Number</string>
+    <string name="register">Register</string>
+    <string name="create_account">Create Account</string>
+    <string name="enter_name_err_msg">Please enter your name</string>
+    <string name="ok">Ok</string>
+    <string name="enter_phone_err_msg">Enter your phone number correctly</string>
+    <string name="enter_password_err_msg">Password must be more than 6 chars</string>
+    <string name="enter_email_err_msg">Enter a correct email address</string>
 </resources>

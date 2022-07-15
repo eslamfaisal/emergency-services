@@ -15,26 +15,17 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorWhite"
         android:orientation="vertical"
         android:padding="16dp">
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16sp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_back" />
-
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_marginTop="-16dp"
-            android:layout_gravity="center"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:padding="8dp"
-            app:srcCompat="@drawable/ic_logo_btm_name" />
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_back" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -45,6 +36,13 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    app:srcCompat="@drawable/ic_logo_btm_name" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -117,6 +115,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/phone_number_input_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -151,13 +150,13 @@
                     android:layout_marginTop="16sp">
 
                     <TextView
-                        android:id="@+id/btn_next"
+                        android:id="@+id/btn_register"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/main_btn_bg"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center"
-                        android:text="@string/login"
+                        android:text="@string/create_account"
                         android:textAllCaps="false"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:textColor="@android:color/white"

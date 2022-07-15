@@ -52,7 +52,9 @@ class LoginFragment : Fragment() {
         }
 
         binding.registerNewUserBtn.setOnClickListener {
-            findNavController(this).navigate(R.id.action_loginFragment_to_registerFragment)
+            try {
+                findNavController(this).navigate(R.id.action_loginFragment_to_registerFragment)
+            } catch (e: Exception) {}
         }
     }
 
