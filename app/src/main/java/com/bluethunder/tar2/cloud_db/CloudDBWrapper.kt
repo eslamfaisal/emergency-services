@@ -39,7 +39,6 @@ object CloudDBWrapper {
             CloudDBZoneConfig.CloudDBZoneSyncProperty.CLOUDDBZONE_CLOUD_CACHE,
             CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC
         )
-        mUsersConfig.persistenceEnabled = true
         val usersTask = mCloudDB.openCloudDBZone2(mUsersConfig, true)
         usersTask.addOnCompleteListener {
             if (it.isSuccessful) {

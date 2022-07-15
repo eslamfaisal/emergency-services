@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.auth.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,8 +33,9 @@ class AuthViewModel : ViewModel() {
         val credential = EmailAuthProvider.credentialWithPassword(email, password)
 
         AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener {
+            Log.d(TAG, "loginWithEmailAndPassword: email: ${it.user.email}")
             val query =
-                CloudDBZoneQuery.where(UserModel::class.java).equalTo("id", "esraa").limit(1)
+                CloudDBZoneQuery.where(UserModel::class.java).equalTo("id", it.user.uid).limit(1)
 
             mUsersCloudDBZone!!.executeQuery(
                 query,
