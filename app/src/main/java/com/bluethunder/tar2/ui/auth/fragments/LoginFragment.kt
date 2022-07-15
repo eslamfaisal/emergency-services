@@ -10,10 +10,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentLoginBinding
+import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.showLoadingDialog
 import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.EmailAuthProvider
+import com.huawei.agconnect.auth.EmailUser
+import com.huawei.agconnect.auth.VerifyCodeSettings
 
 class LoginFragment : Fragment() {
 
@@ -45,17 +48,10 @@ class LoginFragment : Fragment() {
         progressDialog = requireActivity().showLoadingDialog()
         viewDataBinding.btnNext.setOnClickListener {
             progressDialog.show()
-            val credential = EmailAuthProvider.credentialWithPassword("eslam.faisal.ef@gmail.com", "password")
-            AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener {
-                // Obtain sign-in information.
-                Log.d(TAG, "initView: ${it.user.displayName}")
-                progressDialog.dismiss()
-            }.addOnFailureListener {
-                // onFail
-                Log.d(TAG, "initView: ${it.message}")
-                progressDialog.dismiss()
-            }
-
+            viewDataBinding.viewmodel.loginWithEmailAndPassword(
+                viewDataBinding.emailInput.text.toString(),
+                viewDataBinding.passwordInput.text.toString()
+            )
         }
     }
 
@@ -63,9 +59,35 @@ class LoginFragment : Fragment() {
         val viewModel = (requireActivity() as AuthActivity).viewModel
         viewDataBinding.viewmodel = viewModel
 
-        viewModel.getUserDetails()
-        viewModel.userData.observe(viewLifecycleOwner) {
-            Log.d(TAG, "initViewModel: $it")
+        viewModel.userData.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    Log.d(TAG, "initViewModel: ${resource.data}")
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    progressDialog.dismiss()
+                }
+            }
+
+        }
+
+        val settings = VerifyCodeSettings.newBuilder()
+            .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
+            .sendInterval(30)
+            .build()
+        val task =
+            AGConnectAuth.getInstance().requestVerifyCode("eslam.faisal.ef@gmail.com", settings)
+        task.addOnSuccessListener {
+
+            Log.d(TAG, "initViewModel:addOnSuccessListener ${it.validityPeriod}")
+        }.addOnFailureListener {
+            // onFail
+
+            Log.d(TAG, "initViewModel:addOnFailureListener ${it.message}")
         }
     }
 
