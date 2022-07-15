@@ -1,6 +1,5 @@
 package com.bluethunder.tar2.ui.auth.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,10 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bluethunder.tar2.cloud_db.CloudDBWrapper.mUsersCloudDBZone
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.auth.model.UserModel
-import com.huawei.agconnect.auth.AGConnectAuth
-import com.huawei.agconnect.auth.EmailAuthProvider
-import com.huawei.agconnect.auth.EmailUser
-import com.huawei.agconnect.auth.VerifyCodeSettings
+import com.huawei.agconnect.auth.*
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
 import kotlinx.coroutines.launch
 
@@ -29,34 +25,32 @@ class AuthViewModel : ViewModel() {
 
     fun loginWithEmailAndPassword(email: String, password: String) {
         setUserData(Resource.loading())
-
         val credential = EmailAuthProvider.credentialWithPassword(email, password)
-
-        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener {
-            Log.d(TAG, "loginWithEmailAndPassword: email: ${it.user.email}")
-            val query =
-                CloudDBZoneQuery.where(UserModel::class.java).equalTo("id", it.user.uid).limit(1)
-
-            mUsersCloudDBZone!!.executeQuery(
-                query,
-                CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
-            ).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    if (it.result.snapshotObjects.size() > 0) {
-                        val user = it.result.snapshotObjects.get(0) as UserModel
-                        setUserData(Resource.success(user))
-                    } else {
-                        setUserData(Resource.error("User not found"))
-                    }
-                } else {
-                    setUserData(Resource.error(it.exception?.message))
-                }
-            }
-
+        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener { user ->
+            getUserDetails(user)
         }.addOnFailureListener {
             setUserData(Resource.error(it?.message))
         }
+    }
 
+    private fun getUserDetails(it: SignInResult) {
+        val query = CloudDBZoneQuery.where(UserModel::class.java)
+            .equalTo("id", it.user.uid).limit(1)
+        mUsersCloudDBZone!!.executeQuery(
+            query,
+            CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
+        ).addOnCompleteListener {
+            if (it.isSuccessful) {
+                if (it.result.snapshotObjects.size() > 0) {
+                    val user = it.result.snapshotObjects.get(0) as UserModel
+                    setUserData(Resource.success(user))
+                } else {
+                    setUserData(Resource.error("User not found"))
+                }
+            } else {
+                setUserData(Resource.error(it.exception?.message))
+            }
+        }
     }
 
     fun sendVerificationEmail(email: String) {
