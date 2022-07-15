@@ -16,6 +16,7 @@
 package com.bluethunder.tar2
 
 import android.app.Application
+import com.huawei.agconnect.AGCRoutePolicy
 import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.cloud.database.AGConnectCloudDB
 
@@ -30,6 +31,14 @@ class Tar2Application : Application() {
             AGConnectInstance.initialize(this)
         }
         AGConnectCloudDB.initialize(this)
+    }
+
+    companion object {
+        var regionRoutePolicy : AGCRoutePolicy = AGCRoutePolicy.SINGAPORE
+            get() = field
+            set(value) {
+                field = value
+            }
     }
 
 }

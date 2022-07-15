@@ -27,6 +27,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun openCloudDBZones() {
+        CloudDBWrapper.setStorageLocation(this)
+        CloudDBWrapper.createObjectType()
         CloudDBWrapper.openUsersCloudDBZoneV2 {
             if (it) {
                 checkLogin()

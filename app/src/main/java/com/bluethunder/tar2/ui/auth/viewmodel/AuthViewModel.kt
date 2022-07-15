@@ -20,10 +20,10 @@ class AuthViewModel : ViewModel() {
     val userData: LiveData<UserModel> = _userData
 
 
-    fun getUserDetails(userID: String = "123456") {
+    fun getUserDetails(userID: String = "esraa") {
         viewModelScope.launch {
             val query =
-                CloudDBZoneQuery.where(UserModel::class.java).equalTo(UserModel.ID, userID)
+                CloudDBZoneQuery.where(UserModel::class.java).equalTo("id", userID)
 
             if (mUsersCloudDBZone != null) {
                 mUsersCloudDBZone!!.executeQuery(
