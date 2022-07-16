@@ -30,5 +30,11 @@
     <string name="create_account_with_huawei_id">Create account with huawei ID</string>
     <string name="show_terms">Show terms and conditions</string>
     <string name="complete_register">Complete Register your account</string>
+    <string name="code">Code</string>
+    <string name="next">Next</string>
+    <string name="resend_code_msg">If you can\'t get the code you can</string>
+    <string name="resend">Re-Send</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="enter_otp_phone_msg">An identification code has been sent to  the mobile number</string>
 
 </resources>

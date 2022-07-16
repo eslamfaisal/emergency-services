@@ -13,6 +13,7 @@ import com.huawei.agconnect.auth.*
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
 import kotlinx.coroutines.launch
 import java.io.File
+import java.util.*
 
 class AuthViewModel : ViewModel() {
 
@@ -33,6 +34,12 @@ class AuthViewModel : ViewModel() {
 
     private val _signInWithHuaweiId = MutableLiveData<Resource<SignInResult>>()
     val signInWithHuaweiId: LiveData<Resource<SignInResult>> = _signInWithHuaweiId
+
+    private val _newAccountWithPhoneResult = MutableLiveData<Resource<String>>()
+    val newAccountWithPhoneResult: LiveData<Resource<String>> = _newAccountWithPhoneResult
+
+    private val _phoneCodeResult = MutableLiveData<Resource<VerifyCodeResult>>()
+    val phoneCodeResult: LiveData<Resource<VerifyCodeResult>> = _phoneCodeResult
 
     fun loginWithEmailAndPassword(email: String, password: String) {
         setUserData(Resource.loading())
@@ -79,7 +86,7 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    fun verifyCode(email: String, password: String, code: String) {
+    fun verifyEmailCode(email: String, password: String, code: String) {
         viewModelScope.launch {
             val emailUser = EmailUser.Builder()
                 .setEmail(email)
@@ -93,6 +100,69 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
+
+    fun verifyPhoneNumber(countryCodeStr: String, phoneNumberStr: String) {
+        setPhoneCodeResult(Resource.loading())
+        val settings = VerifyCodeSettings.newBuilder()
+            .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
+            .sendInterval(30)
+            .locale(Locale.ENGLISH)
+            .build()
+        val task =
+            AGConnectAuth.getInstance().requestVerifyCode(countryCodeStr, phoneNumberStr, settings)
+        task.addOnSuccessListener {
+            // onSuccess
+            setPhoneCodeResult(Resource.success(it))
+        }.addOnFailureListener {
+            // onFail
+            setPhoneCodeResult(Resource.error(it.message))
+        }
+    }
+
+
+    fun createAccountWithPHoneNumber(
+        countryCode: String,
+        phoneNumber: String,
+        password: String?,
+        otp: String
+    ) {
+
+        setNewAccountWithPhoneResult(Resource.loading())
+        val credential =
+            PhoneAuthProvider.credentialWithVerifyCode(countryCode, phoneNumber, password, otp)
+        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener {
+            // Obtain sign-in information.
+            setNewAccountWithPhoneResult(Resource.success("created"))
+        }.addOnFailureListener {
+            // onFail
+            setNewAccountWithPhoneResult(Resource.error(it.message))
+        }
+    }
+
+    fun linkPhoneToHuaweiIDAccount(
+        countryCode: String,
+        phoneNumber: String,
+        otp: String
+    ) {
+        setNewAccountWithPhoneResult(Resource.loading())
+        AGConnectAuth.getInstance().currentUser.updatePhone(countryCode, phoneNumber, otp)
+            .addOnSuccessListener {
+                // onSuccess
+                setNewAccountWithPhoneResult(Resource.success("updated"))
+            }.addOnFailureListener {
+                // onFail
+                setNewAccountWithPhoneResult(Resource.error(it.message))
+            }
+    }
+
+    fun setNewAccountWithPhoneResult(result: Resource<String>) {
+        _newAccountWithPhoneResult.value = result
+    }
+
+    fun setPhoneCodeResult(result: Resource<VerifyCodeResult>) {
+        _phoneCodeResult.value = result
+    }
+
 
     fun signInWithHuaweiId(activity: Activity) {
         setSignInWithHuaweiIdResponse(Resource.loading())
@@ -165,7 +235,9 @@ class AuthViewModel : ViewModel() {
         signOut()
         setUserData(Resource.empty())
         setDataLoading(Resource.empty())
+        setPhoneCodeResult(Resource.empty())
         setSignInWithHuaweiIdResponse(Resource.empty())
     }
+
 
 }

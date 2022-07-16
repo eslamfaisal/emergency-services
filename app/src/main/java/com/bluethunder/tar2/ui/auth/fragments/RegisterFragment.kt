@@ -38,8 +38,11 @@ class RegisterFragment : BaseFragment() {
 
     companion object {
         private const val TAG = "RegisterFragment"
-        private const val COMPLETE_REGISTER_KEY = "complete_register_key"
-        private const val USER_MODEL_KEY = "user_model_key"
+        const val COMPLETE_REGISTER_KEY = "complete_register_key"
+        const val USER_MODEL_KEY = "user_model_key"
+        const val REGISTER_TYPE_HUAWEI_ID = "register_type_huawei_id"
+        const val COUNTRY_CODE_KEY = "country_code_key"
+        const val PHONE_NUMBER_KEY = "phone_number_key"
     }
 
     private lateinit var binding: FragmentRegisterBinding
@@ -279,6 +282,29 @@ class RegisterFragment : BaseFragment() {
     private fun verifyUserEmailAndPhone() {
         val userModel = getUserModelFromFields()
 
+        val phone = phoneNumberKit.parsePhoneNumber(
+            binding.phoneNumberInputLayout.editText?.text.toString(),
+            "eg"
+        )
+        phone?.let { phone ->
+            try {
+                NavHostFragment.findNavController(this)
+                    .navigate(
+                        R.id.action_registerFragment_to_verifyPhoneFragment,
+                        bundleOf(
+                            USER_MODEL_KEY to userModel,
+                            REGISTER_TYPE_HUAWEI_ID to isCompleteRegister,
+                            PHONE_NUMBER_KEY to phone.nationalNumber.toString(),
+                            COUNTRY_CODE_KEY to phone.countryCode.toString()
+                        )
+
+                    )
+            } catch (e: Exception) {
+                Log.d(TAG, "completeCreateAccount:Exception $e")
+            }
+        } ?: run {
+            binding.createAccountBtn.showSnakeBarError(getString(R.string.enter_phone_err_msg))
+        }
 
     }
 
@@ -313,7 +339,7 @@ class RegisterFragment : BaseFragment() {
         val userModel = UserModel()
         userModel.name = binding.nameInput.text.toString()
         userModel.email = binding.emailInput.text.toString()
-        userModel.phone = binding.phoneNumberInput.text.toString()
+        userModel.phone = binding.phoneNumberInput.text.toString().replace(" ", "").trim()
         userModel.password = binding.passwordInput.text.toString()
         return userModel
     }
