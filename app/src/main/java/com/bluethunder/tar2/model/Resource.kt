@@ -33,6 +33,13 @@ data class Resource<ResultType>(
         fun <ResultType> error(message: Any?): Resource<ResultType> =
             Resource(Status.ERROR, errorBody = message)
 
+        /**
+         * Creates [Resource] object with `ERROR` status and [message].
+         * Returning object of Resource(Status.ERROR, errorMessage = message)
+         */
+        fun <ResultType> empty(): Resource<ResultType> =
+            Resource(Status.EMPTY)
+
     }
 
     override fun toString(): String {

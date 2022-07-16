@@ -30,6 +30,7 @@ import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.huawei.agconnect.auth.SignInResult
 import me.ibrahimsn.lib.PhoneNumberKit
 
 
@@ -87,20 +88,39 @@ class RegisterFragment : BaseFragment() {
     }
 
     private fun observeToViewModel() {
+        viewModel.resetRegisterFields()
         viewModel.uploadingImage.observe(viewLifecycleOwner) { resource ->
-
             when (resource.status) {
                 Status.LOADING -> {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-                    completeCreateAccount()
+
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
                     binding.profilePictureView.showSnakeBarError(resource.errorBody.toString())
                     progressDialog.dismiss()
                 }
+                else -> {}
+            }
+        }
+
+        viewModel.signInWithHuaweiId.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    progressDialog.dismiss()
+                    registerFromHuaweiID = true
+                    completeCreateAccount(resource.data!!)
+                }
+                Status.ERROR -> {
+                    progressDialog.dismiss()
+                    binding.createWithHuaweiIdBtn.showSnakeBarError(resource.errorBody.toString())
+                }
+                else -> {}
             }
         }
     }
@@ -126,8 +146,13 @@ class RegisterFragment : BaseFragment() {
         }
 
         binding.createWithHuaweiIdBtn.setOnClickListener {
-            completeCreateAccount()
+            crateAccountWithHuaweiID()
         }
+    }
+
+    private fun crateAccountWithHuaweiID() {
+        viewModel.signInWithHuaweiId(requireActivity())
+//        completeCreateAccount()
     }
 
     private val startForProfileImageResult =
@@ -245,8 +270,11 @@ class RegisterFragment : BaseFragment() {
 
     }
 
-    private fun completeCreateAccount() {
-        val userModel = getUserModelFromFields()
+    private fun completeCreateAccount(signInResult: SignInResult) {
+
+        val userModel = getUserModelFromHuaweiID(signInResult)
+        Log.d(TAG, "completeCreateAccount: $userModel")
+
         try {
             NavHostFragment.findNavController(this)
                 .navigate(
@@ -256,6 +284,16 @@ class RegisterFragment : BaseFragment() {
         } catch (e: Exception) {
         }
 
+    }
+
+    private fun getUserModelFromHuaweiID(signInResult: SignInResult): UserModel {
+        val userModel = UserModel()
+        userModel.name = signInResult.user.displayName
+        userModel.email = signInResult.user.email
+        userModel.phone = signInResult.user.phone
+        userModel.password = signInResult.user.uid
+        userModel.imageUrl = signInResult.user.photoUrl
+        return userModel
     }
 
     private fun getUserModelFromFields(): UserModel {
@@ -303,5 +341,6 @@ class RegisterFragment : BaseFragment() {
     private fun removeObservers() {
         Log.d(TAG, "removeObservers: ")
         viewModel.uploadingImage.removeObservers(viewLifecycleOwner)
+        viewModel.signInWithHuaweiId.removeObservers(viewLifecycleOwner)
     }
 }

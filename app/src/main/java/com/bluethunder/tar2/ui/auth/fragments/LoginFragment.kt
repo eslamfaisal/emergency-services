@@ -83,6 +83,7 @@ class LoginFragment : Fragment() {
                     Log.d(TAG, "initViewModel: ${resource.errorBody}")
                     progressDialog.dismiss()
                 }
+                else -> {}
             }
         }
     }

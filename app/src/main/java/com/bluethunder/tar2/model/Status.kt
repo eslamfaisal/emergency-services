@@ -9,7 +9,8 @@ package com.bluethunder.tar2.model
 enum class Status {
     SUCCESS,
     ERROR,
-    LOADING;
+    LOADING,
+    EMPTY;
 
     /**
      * Returns `true` if the [Status] is success else `false`.
@@ -25,4 +26,6 @@ enum class Status {
      * Returns `true` if the [Status] is in error else `false`.
      */
     fun isError() = this == ERROR
+
+    fun isEmpty() = this == EMPTY
 }

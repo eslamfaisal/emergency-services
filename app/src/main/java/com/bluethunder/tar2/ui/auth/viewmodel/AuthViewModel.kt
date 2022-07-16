@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.auth.viewmodel
 
+import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,6 +30,9 @@ class AuthViewModel : ViewModel() {
 
     private val _userData = MutableLiveData<Resource<UserModel>>()
     val userData: LiveData<Resource<UserModel>> = _userData
+
+    private val _signInWithHuaweiId = MutableLiveData<Resource<SignInResult>>()
+    val signInWithHuaweiId: LiveData<Resource<SignInResult>> = _signInWithHuaweiId
 
     fun loginWithEmailAndPassword(email: String, password: String) {
         setUserData(Resource.loading())
@@ -90,6 +94,24 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    fun signInWithHuaweiId(activity: Activity) {
+        setSignInWithHuaweiIdResponse(Resource.loading())
+        AGConnectAuth.getInstance().signIn(activity, AGConnectAuthCredential.HMS_Provider)
+            .addOnSuccessListener {
+                setSignInWithHuaweiIdResponse(Resource.success(it))
+            }.addOnFailureListener {
+                setSignInWithHuaweiIdResponse(Resource.error(it.message))
+            }
+    }
+
+    private fun setSignInWithHuaweiIdResponse(success: Resource<SignInResult>) {
+        _signInWithHuaweiId.value = success
+    }
+
+    fun signOut() {
+        AGConnectAuth.getInstance().signOut()
+    }
+
     private fun setUserData(result: Resource<UserModel>) {
         _userData.value = result
     }
@@ -137,6 +159,13 @@ class AuthViewModel : ViewModel() {
 
     fun isImageSelected(): Boolean {
         return imageSelected
+    }
+
+    fun resetRegisterFields() {
+        signOut()
+        setUserData(Resource.empty())
+        setDataLoading(Resource.empty())
+        setSignInWithHuaweiIdResponse(Resource.empty())
     }
 
 }
