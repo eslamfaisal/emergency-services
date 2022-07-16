@@ -1,6 +1,7 @@
 package com.bluethunder.tar2.ui.auth.fragments
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
+import com.bluethunder.tar2.ui.home.MainActivity
 
 
 class VerifyPhoneFragment : BaseFragment() {
@@ -145,6 +147,8 @@ class VerifyPhoneFragment : BaseFragment() {
 
     private fun goToHome(data: UserModel) {
         Log.d(TAG, "goToHome: ${data.toString()}")
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        requireActivity().startActivity(intent)
     }
 
     private fun onPhoneVerified(msg: String) {
@@ -162,11 +166,14 @@ class VerifyPhoneFragment : BaseFragment() {
         if(toString.contains("203818038")) {
             binding.phoneTv.showSnakeBarError(getString(R.string.phone_regestered_before_mss))
         }
+        else {
+            binding.phoneTv.showSnakeBarError(
+                toString.replace("code", "")
+                    .replace("\\d".toRegex(), "")
+            )
+        }
 
-        binding.phoneTv.showSnakeBarError(
-            toString.replace("code", "")
-                .replace("\\d".toRegex(), "")
-        )
+
     }
 
     private fun createAccountWithPhone() {

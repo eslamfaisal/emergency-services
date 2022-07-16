@@ -2,6 +2,7 @@ package com.bluethunder.tar2.ui.auth.fragments
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -18,6 +19,7 @@ import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
+import com.bluethunder.tar2.ui.home.MainActivity
 import com.huawei.agconnect.auth.AGConnectAuth
 import me.ibrahimsn.lib.PhoneNumberKit
 
@@ -169,7 +171,7 @@ class LoginFragment : Fragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-                    Log.d(TAG, "user logged in success: ${resource.data}")
+                    goToHome()
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
@@ -180,6 +182,11 @@ class LoginFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun goToHome() {
+        var intent = Intent(requireActivity(), MainActivity::class.java)
+        requireActivity().startActivity(intent)
     }
 
 }

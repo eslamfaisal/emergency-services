@@ -362,7 +362,7 @@ class RegisterFragment : BaseFragment() {
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle(getString(R.string.terms_and_conditions))
             .setMessage(getString(R.string.by_registering_you_agree_to_our) + " " + getString(R.string.terms_and_conditions))
-            .setNegativeButton(getString(R.string.ok)) { dialog, which ->
+            .setNegativeButton(getString(R.string.agree)) { dialog, which ->
                 dialog.dismiss()
             }
             .setPositiveButton(getString(R.string.show_terms)) { dialog, which ->
