@@ -18,12 +18,13 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentRegisterBinding
 import com.bluethunder.tar2.model.Status
+import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.auth.AuthActivity
+import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
@@ -32,44 +33,68 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.ibrahimsn.lib.PhoneNumberKit
 
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseFragment() {
 
+    companion object {
+        private const val TAG = "RegisterFragment"
+        private const val COMPLETE_REGISTER_KEY = "complete_register_key"
+        private const val USER_MODEL_KEY = "user_model_key"
+    }
 
     private lateinit var binding: FragmentRegisterBinding
     private lateinit var viewModel: AuthViewModel
-    lateinit var phoneNumberKit: PhoneNumberKit
-    lateinit var progressDialog: Dialog
+    private lateinit var phoneNumberKit: PhoneNumberKit
+    private lateinit var progressDialog: Dialog
+
+    private var isCompleteRegister = false
+    private var registerFromHuaweiID = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_register, container,
-            false
-        )
-        return binding.root
+        return if (hasInitializedRootView) {
+            binding.root
+        } else {
+            binding =
+                DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+            binding.root
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("onViewCreated", "onViewCreated: ${savedInstanceState}")
+        if (hasInitializedRootView) {
+            observeToViewModel()
+            return
+        }
+        hasInitializedRootView = true
+        isCompleteRegister = arguments?.getBoolean(COMPLETE_REGISTER_KEY) ?: false
+
         initViewModel()
         initViews()
-        requestReadContactsPermission()
+        if (!isCompleteRegister)
+            requestReadContactsPermission()
+
     }
 
     private fun initViewModel() {
         viewModel = (requireActivity() as AuthActivity).viewModel
         binding.viewmodel = viewModel
-        viewModel.dataLoading.observe(viewLifecycleOwner) { resource ->
+        observeToViewModel()
+    }
+
+    private fun observeToViewModel() {
+        viewModel.uploadingImage.observe(viewLifecycleOwner) { resource ->
 
             when (resource.status) {
                 Status.LOADING -> {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
+                    completeCreateAccount()
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
@@ -77,8 +102,6 @@ class RegisterFragment : Fragment() {
                     progressDialog.dismiss()
                 }
             }
-
-
         }
     }
 
@@ -103,11 +126,7 @@ class RegisterFragment : Fragment() {
         }
 
         binding.createWithHuaweiIdBtn.setOnClickListener {
-            try {
-                NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_complete_registerFragment, bundleOf("isHuawei" to true))
-            } catch (e: Exception) {
-            }
+            completeCreateAccount()
         }
     }
 
@@ -120,8 +139,7 @@ class RegisterFragment : Fragment() {
                 Activity.RESULT_OK -> {
                     //Image Uri will not be null for RESULT_OK
                     val fileUri = data?.data!!
-                    uploadImage(fileUri)
-                    binding.profilePictureView.setImageURI(fileUri)
+                    imageSelected(fileUri)
                 }
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(
@@ -139,15 +157,16 @@ class RegisterFragment : Fragment() {
     private fun clearImage() {
         binding.profilePictureView.setImageResource(R.drawable.ic_place_holder)
         binding.clearProfilePic.visibility = View.GONE
-        viewModel.setProfileImage("")
+        viewModel.removeImage()
     }
 
-    private fun uploadImage(fileUri: Uri) {
+    private fun imageSelected(fileUri: Uri) {
         binding.clearProfilePic.visibility = View.VISIBLE
-        viewModel.setProfileImage(fileUri.path!!)
+        binding.profilePictureView.setImageURI(fileUri)
+        viewModel.setProfileImageLocalPath(fileUri.path!!)
     }
 
-    fun pickImage() {
+    private fun pickImage() {
         ImagePicker.with(this)
             .crop(1f, 1f)
             .compress(512)
@@ -160,7 +179,7 @@ class RegisterFragment : Fragment() {
             }
     }
 
-    fun setUpPhoneNumberTextField() {
+    private fun setUpPhoneNumberTextField() {
         phoneNumberKit =
             PhoneNumberKit.Builder((requireActivity() as AuthActivity)).setIconEnabled(true).build()
         try {
@@ -182,6 +201,8 @@ class RegisterFragment : Fragment() {
     }
 
     private fun validateAndRegister() {
+        registerFromHuaweiID = false
+
         if (binding.nameInput.text.toString().isEmpty()) {
             binding.nameInput.error = getString(R.string.enter_name_err_msg)
             binding.nameInput.showSnakeBarError(getString(R.string.enter_name_err_msg))
@@ -210,13 +231,48 @@ class RegisterFragment : Fragment() {
             return
         }
 
+        if (!viewModel.isImageSelected() || viewModel.imageUploaded) {
+            verifyUserEmailAndPhone()
+        } else if (viewModel.isImageSelected()) {
+            viewModel.uploadProfileImage()
+        }
+
     }
 
-    fun isValidEmail(target: CharSequence?): Boolean {
+    private fun verifyUserEmailAndPhone() {
+        val userModel = getUserModelFromFields()
+
+
+    }
+
+    private fun completeCreateAccount() {
+        val userModel = getUserModelFromFields()
+        try {
+            NavHostFragment.findNavController(this)
+                .navigate(
+                    R.id.action_complete_registerFragment,
+                    bundleOf(COMPLETE_REGISTER_KEY to true, USER_MODEL_KEY to userModel)
+                )
+        } catch (e: Exception) {
+        }
+
+    }
+
+    private fun getUserModelFromFields(): UserModel {
+        val userModel = UserModel()
+        userModel.name = binding.nameInput.text.toString()
+        userModel.email = binding.emailInput.text.toString()
+        userModel.phone = binding.phoneNumberInput.text.toString()
+        userModel.password = binding.passwordInput.text.toString()
+        return userModel
+    }
+
+    private fun isValidEmail(target: CharSequence?): Boolean {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
     private fun requestReadContactsPermission() {
+
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle(getString(R.string.terms_and_conditions))
             .setMessage(getString(R.string.by_registering_you_agree_to_our) + " " + getString(R.string.terms_and_conditions))
@@ -235,10 +291,17 @@ class RegisterFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
 
+        Log.d(TAG, "onDestroy: ")
     }
 
     override fun onDestroyView() {
+        removeObservers()
         super.onDestroyView()
 
+    }
+
+    private fun removeObservers() {
+        Log.d(TAG, "removeObservers: ")
+        viewModel.uploadingImage.removeObservers(viewLifecycleOwner)
     }
 }

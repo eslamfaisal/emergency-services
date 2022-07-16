@@ -4,13 +4,16 @@
  */
 package com.bluethunder.tar2.ui.auth.model
 
+import androidx.annotation.Keep
 import com.huawei.agconnect.cloud.database.CloudDBZoneObject
 import com.huawei.agconnect.cloud.database.annotations.Indexes
 import com.huawei.agconnect.cloud.database.annotations.PrimaryKeys
+import java.io.Serializable
 
+@Keep
 @PrimaryKeys("id")
 @Indexes("id:id", "email:email")
-class UserModel : CloudDBZoneObject(UserModel::class.java) {
+class UserModel : CloudDBZoneObject(UserModel::class.java), Serializable {
     var id: String? = null
     var email: String? = null
     var pushToken: String? = null

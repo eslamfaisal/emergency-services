@@ -19,10 +19,13 @@ class AuthViewModel : ViewModel() {
         private val TAG = AuthViewModel::class.java.simpleName
     }
 
-    var profileImageUrl: String = ""
+    private var profileImageLocalPath: String = ""
+    private var profileImageUrl: String = ""
+    private var imageSelected = false
+    var imageUploaded = false
 
-    private val _dataLoading = MutableLiveData<Resource<Boolean>>()
-    val dataLoading: LiveData<Resource<Boolean>> = _dataLoading
+    private val _uploadingImage = MutableLiveData<Resource<Boolean>>()
+    val uploadingImage: LiveData<Resource<Boolean>> = _uploadingImage
 
     private val _userData = MutableLiveData<Resource<UserModel>>()
     val userData: LiveData<Resource<UserModel>> = _userData
@@ -91,26 +94,21 @@ class AuthViewModel : ViewModel() {
         _userData.value = result
     }
 
-    fun setProfileImage(url: String) {
-        if (url.isNotEmpty()) {
-            profileImageUrl = url
-            uploadProfileImage()
-        } else {
-            profileImageUrl = ""
-        }
-
+    fun setProfileImageLocalPath(path: String) {
+        profileImageLocalPath = path
     }
 
-    private fun uploadProfileImage() {
+    fun uploadProfileImage() {
         setDataLoading(Resource.loading())
 
         val reference =
             storageManagement.getStorageReference("profile_image/${System.currentTimeMillis()}.jpg")
-        val uploadTask = reference.putFile(File(profileImageUrl))
+        val uploadTask = reference.putFile(File(profileImageLocalPath))
         uploadTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 task.result.storage.downloadUrl.addOnSuccessListener {
                     profileImageUrl = it.toString()
+                    imageUploaded = true
                     setDataLoading(Resource.success(true))
                 }.addOnFailureListener {
                     setDataLoading(Resource.error(it.message))
@@ -123,6 +121,22 @@ class AuthViewModel : ViewModel() {
 
 
     private fun setDataLoading(loading: Resource<Boolean>) {
-        _dataLoading.value = loading
+        _uploadingImage.value = loading
     }
+
+    fun setImageSelected(selected: Boolean) {
+        imageSelected = selected
+        if (!imageSelected) {
+            imageUploaded = false
+        }
+    }
+
+    fun removeImage() {
+        setImageSelected(false)
+    }
+
+    fun isImageSelected(): Boolean {
+        return imageSelected
+    }
+
 }
