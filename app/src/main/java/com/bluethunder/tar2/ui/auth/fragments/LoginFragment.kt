@@ -1,7 +1,9 @@
 package com.bluethunder.tar2.ui.auth.fragments
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.huawei.agconnect.auth.AGConnectAuth
+import me.ibrahimsn.lib.PhoneNumberKit
 
 class LoginFragment : Fragment() {
 
@@ -26,6 +29,8 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     lateinit var viewModel: AuthViewModel
+    private lateinit var phoneNumberKit: PhoneNumberKit
+
     lateinit var progressDialog: Dialog
 
     override fun onCreateView(
@@ -48,6 +53,8 @@ class LoginFragment : Fragment() {
 
     private fun initView() {
         progressDialog = requireActivity().showLoadingDialog()
+        setUpPhoneNumberTextField()
+
         binding.btnNext.setOnClickListener {
             validateAndTryLogin()
         }
@@ -55,7 +62,8 @@ class LoginFragment : Fragment() {
         binding.registerNewUserBtn.setOnClickListener {
             try {
                 findNavController(this).navigate(R.id.action_loginFragment_to_registerFragment)
-            } catch (e: Exception) {}
+            } catch (e: Exception) {
+            }
         }
 
         binding.huaweiIdSignInBtn.setOnClickListener {
@@ -64,30 +72,72 @@ class LoginFragment : Fragment() {
 
     }
 
+    private fun setUpPhoneNumberTextField() {
+        phoneNumberKit =
+            PhoneNumberKit.Builder((requireActivity() as AuthActivity)).setIconEnabled(true).build()
+        try {
+            val tm =
+                requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            phoneNumberKit.attachToInput(
+                binding.phoneNumberInputLayout,
+                if (tm.networkCountryIso.isNullOrEmpty()) "eg" else tm.networkCountryIso
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            phoneNumberKit.attachToInput(binding.phoneNumberInputLayout, "eg")
+        }
+
+        phoneNumberKit.setupCountryPicker(
+            activity = (requireActivity() as AuthActivity),
+            searchEnabled = true
+        )
+    }
+
     private fun validateAndTryLogin() {
         AGConnectAuth.getInstance().signOut()
-        progressDialog.show()
+
+        if (binding.phoneNumberInputLayout.editText?.text.toString()
+                .isEmpty() || !phoneNumberKit.isValid
+        ) {
+            binding.phoneNumberInputLayout.error = getString(R.string.enter_phone_err_msg)
+            binding.phoneNumberInputLayout.showSnakeBarError(getString(R.string.enter_phone_err_msg))
+            return
+        }
+
+        if (binding.passwordInput.text.toString().isEmpty()) {
+            binding.passwordInput.error = getString(R.string.enter_password_err_msg)
+            binding.passwordInput.showSnakeBarError(getString(R.string.enter_password_err_msg))
+            return
+        }
+
+        val phone = phoneNumberKit.parsePhoneNumber(
+            binding.phoneNumberInputLayout.editText?.text.toString(),
+            "eg"
+        )
         viewModel.loginWithEmailAndPassword(
-            binding.emailInput.text.toString(),
+            phone!!.countryCode.toString(),
+            phone.nationalNumber.toString(),
             binding.passwordInput.text.toString()
         )
+
     }
 
     private fun initViewModel() {
         viewModel = (requireActivity() as AuthActivity).viewModel
         binding.viewmodel = viewModel
 
-        viewModel.userData.observe(viewLifecycleOwner) { resource ->
+        viewModel.signInWithHPhone.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.LOADING -> {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-                    Log.d(TAG, "initViewModel: ${resource.data}")
+                    viewModel.getUserDetails(resource.data!!)
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
                     Log.d(TAG, "initViewModel: ${resource.errorBody}")
+                    binding.btnNext.showSnakeBarError(resource.errorBody.toString())
                     progressDialog.dismiss()
                 }
                 else -> {}
@@ -111,7 +161,24 @@ class LoginFragment : Fragment() {
                 else -> {}
             }
         }
-    }
 
+        viewModel.getUserData.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    Log.d(TAG, "initViewModel: ${resource.data}")
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    Log.d(TAG, "initViewModel: ${resource.errorBody}")
+                    progressDialog.dismiss()
+                }
+                else -> {}
+            }
+        }
+
+    }
 
 }

@@ -79,15 +79,16 @@
                     android:textSize="@dimen/header2_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/phone_number_input_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16sp"
-                    android:hint="@string/email"
+                    android:layout_marginTop="24dp"
+                    android:hint="@string/phone_number"
                     app:boxStrokeColor="@color/color_transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/email_input"
+                        android:id="@+id/phone_number_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"

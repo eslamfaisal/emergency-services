@@ -111,7 +111,7 @@ class VerifyPhoneFragment : BaseFragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-                    onPHoneVerified(resource.data!!)
+                    onPhoneVerified(resource.data!!)
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
@@ -124,8 +124,14 @@ class VerifyPhoneFragment : BaseFragment() {
         }
     }
 
-    private fun onPHoneVerified(msg: String) {
+    private fun onPhoneVerified(msg: String) {
         binding.phoneTv.showSnakeBarError(msg)
+
+        createUserToDatabase()
+    }
+
+    private fun createUserToDatabase() {
+        viewModel.createUserToDatabase(userModel)
     }
 
     private fun parseErrorCodeBody(toString: String) {

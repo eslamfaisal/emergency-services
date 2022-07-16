@@ -30,11 +30,17 @@ class AuthViewModel : ViewModel() {
     private val _uploadingImage = MutableLiveData<Resource<Boolean>>()
     val uploadingImage: LiveData<Resource<Boolean>> = _uploadingImage
 
+    private val _createUserData = MutableLiveData<Resource<UserModel>>()
+    val createUserData: LiveData<Resource<UserModel>> = _createUserData
+
     private val _userData = MutableLiveData<Resource<UserModel>>()
-    val userData: LiveData<Resource<UserModel>> = _userData
+    val getUserData: LiveData<Resource<UserModel>> = _userData
 
     private val _signInWithHuaweiId = MutableLiveData<Resource<SignInResult>>()
     val signInWithHuaweiId: LiveData<Resource<SignInResult>> = _signInWithHuaweiId
+
+    private val _signInWithHPhone = MutableLiveData<Resource<SignInResult>>()
+    val signInWithHPhone: LiveData<Resource<SignInResult>> = _signInWithHPhone
 
     private val _newAccountWithPhoneResult = MutableLiveData<Resource<String>>()
     val newAccountWithPhoneResult: LiveData<Resource<String>> = _newAccountWithPhoneResult
@@ -42,17 +48,30 @@ class AuthViewModel : ViewModel() {
     private val _phoneCodeResult = MutableLiveData<Resource<VerifyCodeResult>>()
     val phoneCodeResult: LiveData<Resource<VerifyCodeResult>> = _phoneCodeResult
 
-    fun loginWithEmailAndPassword(email: String, password: String) {
-        setUserData(Resource.loading())
-        val credential = EmailAuthProvider.credentialWithPassword(email, password)
-        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener { user ->
-            getUserDetails(user)
+    fun loginWithEmailAndPassword(
+        countryCode: String,
+        phoneNumber: String,
+        password: String?
+    ) {
+        AGConnectAuth.getInstance().signOut()
+        setSignInWithPhoneResult(Resource.loading())
+        val credential =
+            PhoneAuthProvider.credentialWithPassword(countryCode, phoneNumber, password)
+        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener {
+            // Obtain sign-in information.
+            setSignInWithPhoneResult(Resource.success(it))
         }.addOnFailureListener {
-            setUserData(Resource.error(it?.message))
+            // onFail
+            setSignInWithPhoneResult(Resource.error(it.message))
         }
     }
 
-    private fun getUserDetails(it: SignInResult) {
+    private fun setSignInWithPhoneResult(result: Resource<SignInResult>) {
+        _signInWithHPhone.value = result
+    }
+
+
+    fun getUserDetails(it: SignInResult) {
         val query = CloudDBZoneQuery.where(UserModel::class.java)
             .equalTo("id", it.user.uid).limit(1)
         mUsersCloudDBZone!!.executeQuery(
@@ -70,6 +89,21 @@ class AuthViewModel : ViewModel() {
                 setUserData(Resource.error(it.exception?.message))
             }
         }
+    }
+
+
+    fun createUserToDatabase(userModel: UserModel) {
+        mUsersCloudDBZone!!.executeUpsert(userModel).addOnCompleteListener {
+            if (it.isSuccessful) {
+                setCreateUserData(Resource.success(userModel))
+            } else {
+                setCreateUserData(Resource.error(it.exception?.message))
+            }
+        }
+    }
+
+    private fun setCreateUserData(error: Resource<UserModel>) {
+        _createUserData.value = error
     }
 
     fun sendVerificationEmail(email: String) {
@@ -240,6 +274,7 @@ class AuthViewModel : ViewModel() {
         setNewAccountWithPhoneResult(Resource.empty())
         setSignInWithHuaweiIdResponse(Resource.empty())
     }
+
 
 
 }
