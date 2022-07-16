@@ -327,6 +327,7 @@ class RegisterFragment : BaseFragment() {
 
     private fun getUserModelFromHuaweiID(signInResult: SignInResult): UserModel {
         val userModel = UserModel()
+        userModel.id = signInResult.user.uid
         userModel.name = signInResult.user.displayName
         userModel.email = signInResult.user.email
         userModel.phone = signInResult.user.phone

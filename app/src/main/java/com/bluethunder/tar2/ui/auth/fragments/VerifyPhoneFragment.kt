@@ -98,6 +98,7 @@ class VerifyPhoneFragment : BaseFragment() {
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
+                    Log.d(TAG, "phoneCodeResult: ${resource.errorBody.toString()}")
                     binding.phoneTv.showSnakeBarError(resource.errorBody.toString())
                     progressDialog.dismiss()
                 }
@@ -115,13 +116,35 @@ class VerifyPhoneFragment : BaseFragment() {
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
-                    Log.d(TAG, "observeToViewModel: ${resource.errorBody.toString()}")
+                    Log.d(TAG, "newAccountWithPhoneResult: ${resource.errorBody.toString()}")
                     parseErrorCodeBody(resource.errorBody.toString())
                     progressDialog.dismiss()
                 }
                 else -> {}
             }
         }
+
+        viewModel.createUserData.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    goToHome(resource.data!!)
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    Log.d(TAG, "createUserData: ${resource.errorBody.toString()}")
+                    parseErrorCodeBody(resource.errorBody.toString())
+                    progressDialog.dismiss()
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun goToHome(data: UserModel) {
+        Log.d(TAG, "goToHome: ${data.toString()}")
     }
 
     private fun onPhoneVerified(msg: String) {

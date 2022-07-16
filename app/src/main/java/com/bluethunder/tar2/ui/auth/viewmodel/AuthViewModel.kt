@@ -91,8 +91,8 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-
     fun createUserToDatabase(userModel: UserModel) {
+        userModel.id = AGConnectAuth.getInstance().currentUser?.uid
         mUsersCloudDBZone!!.executeUpsert(userModel).addOnCompleteListener {
             if (it.isSuccessful) {
                 setCreateUserData(Resource.success(userModel))
@@ -182,7 +182,10 @@ class AuthViewModel : ViewModel() {
         setNewAccountWithPhoneResult(Resource.loading())
         val credential =
             PhoneAuthProvider.credentialWithVerifyCode(countryCode, phoneNumber, password, otp)
-        Log.d(TAG, "linkPhoneToHuaweiIDAccount: credential: ${AGConnectAuth.getInstance().currentUser.uid}")
+        Log.d(
+            TAG,
+            "linkPhoneToHuaweiIDAccount: credential: ${AGConnectAuth.getInstance().currentUser.uid}"
+        )
         Log.d(TAG, "linkPhoneToHuaweiIDAccount: credential: ${password}")
         AGConnectAuth.getInstance().currentUser.link(credential)
             .addOnSuccessListener {
@@ -270,11 +273,11 @@ class AuthViewModel : ViewModel() {
     fun resetRegisterFields() {
         setUserData(Resource.empty())
         setDataLoading(Resource.empty())
+        setCreateUserData(Resource.empty())
         setPhoneCodeResult(Resource.empty())
         setNewAccountWithPhoneResult(Resource.empty())
         setSignInWithHuaweiIdResponse(Resource.empty())
     }
-
 
 
 }

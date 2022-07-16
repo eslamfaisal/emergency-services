@@ -168,7 +168,7 @@ class LoginFragment : Fragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-                    Log.d(TAG, "initViewModel: ${resource.data}")
+                    Log.d(TAG, "user logged in success: ${resource.data}")
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
