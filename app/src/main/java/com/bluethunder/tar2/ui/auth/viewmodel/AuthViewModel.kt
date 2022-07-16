@@ -23,7 +23,7 @@ class AuthViewModel : ViewModel() {
     }
 
     private var profileImageLocalPath: String = ""
-    private var profileImageUrl: String = ""
+    var profileImageUrl: String = ""
     private var imageSelected = false
     var imageUploaded = false
 
@@ -227,6 +227,7 @@ class AuthViewModel : ViewModel() {
 
     fun setProfileImageLocalPath(path: String) {
         profileImageLocalPath = path
+        setImageSelected(true)
     }
 
     fun uploadProfileImage() {
@@ -240,6 +241,8 @@ class AuthViewModel : ViewModel() {
                 task.result.storage.downloadUrl.addOnSuccessListener {
                     profileImageUrl = it.toString()
                     imageUploaded = true
+
+                    Log.d(TAG, "uploadProfileImage: ${profileImageUrl}}")
                     setDataLoading(Resource.success(true))
                 }.addOnFailureListener {
                     setDataLoading(Resource.error(it.message))
@@ -258,6 +261,7 @@ class AuthViewModel : ViewModel() {
     fun setImageSelected(selected: Boolean) {
         imageSelected = selected
         if (!imageSelected) {
+            profileImageUrl = ""
             imageUploaded = false
         }
     }

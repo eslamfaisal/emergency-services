@@ -98,7 +98,7 @@ class RegisterFragment : BaseFragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-
+                    verifyUserEmailAndPhone()
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
@@ -249,13 +249,13 @@ class RegisterFragment : BaseFragment() {
             return
         }
 
-        if (binding.emailInput.text.toString()
-                .isEmpty() || !isValidEmail(binding.emailInput.text.toString())
-        ) {
-            binding.emailInput.error = getString(R.string.enter_email_err_msg)
-            binding.emailInput.showSnakeBarError(getString(R.string.enter_email_err_msg))
-            return
-        }
+//        if (binding.emailInput.text.toString()
+//                .isEmpty() || !isValidEmail(binding.emailInput.text.toString())
+//        ) {
+//            binding.emailInput.error = getString(R.string.enter_email_err_msg)
+//            binding.emailInput.showSnakeBarError(getString(R.string.enter_email_err_msg))
+//            return
+//        }
 
         if (binding.phoneNumberInputLayout.editText?.text.toString()
                 .isEmpty() || !phoneNumberKit.isValid
@@ -271,10 +271,14 @@ class RegisterFragment : BaseFragment() {
             return
         }
 
-        if (!viewModel.isImageSelected() || viewModel.imageUploaded) {
+        if (viewModel.isImageSelected()) {
+            if (viewModel.imageUploaded) {
+                verifyUserEmailAndPhone()
+            } else {
+                viewModel.uploadProfileImage()
+            }
+        } else {
             verifyUserEmailAndPhone()
-        } else if (viewModel.isImageSelected()) {
-            viewModel.uploadProfileImage()
         }
 
     }
@@ -329,7 +333,7 @@ class RegisterFragment : BaseFragment() {
         val userModel = UserModel()
         userModel.id = signInResult.user.uid
         userModel.name = signInResult.user.displayName
-        userModel.email = signInResult.user.email
+//        userModel.email = signInResult.user.email
         userModel.phone = signInResult.user.phone
         userModel.password = signInResult.user.uid
         userModel.imageUrl = signInResult.user.photoUrl
@@ -342,6 +346,10 @@ class RegisterFragment : BaseFragment() {
         userModel.email = binding.emailInput.text.toString()
         userModel.phone = binding.phoneNumberInput.text.toString().replace(" ", "").trim()
         userModel.password = binding.passwordInput.text.toString()
+
+        if (viewModel.profileImageUrl.isNotEmpty()) {
+            userModel.imageUrl = viewModel.profileImageUrl
+        }
         return userModel
     }
 

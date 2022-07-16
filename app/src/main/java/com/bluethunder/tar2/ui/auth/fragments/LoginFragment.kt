@@ -151,6 +151,7 @@ class LoginFragment : Fragment() {
                 }
                 Status.SUCCESS -> {
                     Log.d(TAG, "initViewModel: ${resource.data!!.user.phone}")
+                    viewModel.getUserDetails(resource.data!!)
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {

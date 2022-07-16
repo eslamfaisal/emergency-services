@@ -158,6 +158,11 @@ class VerifyPhoneFragment : BaseFragment() {
     }
 
     private fun parseErrorCodeBody(toString: String) {
+
+        if(toString.contains("203818038")) {
+            binding.phoneTv.showSnakeBarError(getString(R.string.phone_regestered_before_mss))
+        }
+
         binding.phoneTv.showSnakeBarError(
             toString.replace("code", "")
                 .replace("\\d".toRegex(), "")

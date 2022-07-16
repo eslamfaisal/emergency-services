@@ -37,4 +37,5 @@
     <string name="resend"><u>Re-Send</u></string>
     <string name="enter_otp">Enter OTP</string>
     <string name="enter_otp_phone_msg">An identification code has been sent to  the mobile number</string>
+    <string name="phone_regestered_before_mss">Phone number is already registered to another account</string>
 </resources>
