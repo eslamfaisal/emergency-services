@@ -3,10 +3,12 @@ package com.bluethunder.tar2.ui.auth.fragments
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +16,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentRegisterBinding
 import com.bluethunder.tar2.model.Status
@@ -24,6 +28,7 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.ibrahimsn.lib.PhoneNumberKit
 
 
@@ -48,8 +53,11 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d("onViewCreated", "onViewCreated: ${savedInstanceState}")
         initViewModel()
         initViews()
+        requestReadContactsPermission()
     }
 
     private fun initViewModel() {
@@ -89,6 +97,17 @@ class RegisterFragment : Fragment() {
         }
         binding.clearProfilePic.setOnClickListener {
             clearImage()
+        }
+        binding.termsAndConditionsContainer.setOnClickListener {
+            showTermsAndConditions()
+        }
+
+        binding.createWithHuaweiIdBtn.setOnClickListener {
+            try {
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_complete_registerFragment, bundleOf("isHuawei" to true))
+            } catch (e: Exception) {
+            }
         }
     }
 
@@ -130,12 +149,12 @@ class RegisterFragment : Fragment() {
 
     fun pickImage() {
         ImagePicker.with(this)
-            .crop()                    //Crop image(Optional), Check Customization for more option
-            .compress(512)            //Final image size will be less than 1 MB(Optional)
+            .crop(1f, 1f)
+            .compress(512)
             .maxResultSize(
                 540,
                 540
-            )    //Final image resolution will be less than 1080 x 1080(Optional)
+            )
             .createIntent { intent ->
                 startForProfileImageResult.launch(intent)
             }
@@ -191,11 +210,35 @@ class RegisterFragment : Fragment() {
             return
         }
 
-
     }
 
     fun isValidEmail(target: CharSequence?): Boolean {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
+    private fun requestReadContactsPermission() {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(getString(R.string.terms_and_conditions))
+            .setMessage(getString(R.string.by_registering_you_agree_to_our) + " " + getString(R.string.terms_and_conditions))
+            .setNegativeButton(getString(R.string.ok)) { dialog, which ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(getString(R.string.show_terms)) { dialog, which ->
+                showTermsAndConditions()
+            }.show()
+    }
+
+    private fun showTermsAndConditions() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+    }
 }
