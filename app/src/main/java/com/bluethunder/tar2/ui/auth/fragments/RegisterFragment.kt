@@ -112,6 +112,7 @@ class RegisterFragment : BaseFragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
+                    Log.d(TAG, "observeToViewModel:isCompleteRegister= ${isCompleteRegister}")
                     progressDialog.dismiss()
                     registerFromHuaweiID = true
                     completeCreateAccount(resource.data!!)
@@ -147,6 +148,17 @@ class RegisterFragment : BaseFragment() {
 
         binding.createWithHuaweiIdBtn.setOnClickListener {
             crateAccountWithHuaweiID()
+        }
+
+        checkRegisterType()
+    }
+
+    private fun checkRegisterType() {
+        if (isCompleteRegister) {
+            binding.headerTv.text = getString(R.string.complete_register)
+            binding.logoImg.visibility = View.GONE
+            binding.subHeaderTv.visibility = View.GONE
+            binding.loginWithHuaweiContainer.visibility = View.GONE
         }
     }
 
@@ -282,6 +294,7 @@ class RegisterFragment : BaseFragment() {
                     bundleOf(COMPLETE_REGISTER_KEY to true, USER_MODEL_KEY to userModel)
                 )
         } catch (e: Exception) {
+            Log.d(TAG, "completeCreateAccount:Exception $e")
         }
 
     }

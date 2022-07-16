@@ -38,6 +38,7 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/logo_img"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
@@ -45,6 +46,7 @@
                     app:srcCompat="@drawable/ic_logo_btm_name" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/header_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -55,6 +57,7 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sub_header_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -231,25 +234,32 @@
 
                 </com.balysv.materialripple.MaterialRippleLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/login_with_huawei_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="16sp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/create_account_with_huawei_id"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/header2_text_size"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/create_account_with_huawei_id"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/header2_text_size"
+                        android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/create_with_huawei_id_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="-22dp"
-                    app:srcCompat="@drawable/ic_huawie_logo" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/create_with_huawei_id_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="-22dp"
+                        app:srcCompat="@drawable/ic_huawie_logo" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
