@@ -1,6 +1,7 @@
 package com.bluethunder.tar2.ui.auth.viewmodel
 
 import android.app.Activity
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -119,14 +120,13 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-
     fun createAccountWithPHoneNumber(
         countryCode: String,
         phoneNumber: String,
         password: String?,
         otp: String
     ) {
-
+        AGConnectAuth.getInstance().signOut()
         setNewAccountWithPhoneResult(Resource.loading())
         val credential =
             PhoneAuthProvider.credentialWithVerifyCode(countryCode, phoneNumber, password, otp)
@@ -142,15 +142,21 @@ class AuthViewModel : ViewModel() {
     fun linkPhoneToHuaweiIDAccount(
         countryCode: String,
         phoneNumber: String,
+        password: String?,
         otp: String
     ) {
         setNewAccountWithPhoneResult(Resource.loading())
-        AGConnectAuth.getInstance().currentUser.updatePhone(countryCode, phoneNumber, otp)
+        val credential =
+            PhoneAuthProvider.credentialWithVerifyCode(countryCode, phoneNumber, password, otp)
+        Log.d(TAG, "linkPhoneToHuaweiIDAccount: credential: ${AGConnectAuth.getInstance().currentUser.uid}")
+        Log.d(TAG, "linkPhoneToHuaweiIDAccount: credential: ${password}")
+        AGConnectAuth.getInstance().currentUser.link(credential)
             .addOnSuccessListener {
                 // onSuccess
                 setNewAccountWithPhoneResult(Resource.success("updated"))
             }.addOnFailureListener {
                 // onFail
+                Log.d(TAG, "linkPhoneToHuaweiIDAccount: onFail: ${it.message}")
                 setNewAccountWithPhoneResult(Resource.error(it.message))
             }
     }
@@ -176,10 +182,6 @@ class AuthViewModel : ViewModel() {
 
     private fun setSignInWithHuaweiIdResponse(success: Resource<SignInResult>) {
         _signInWithHuaweiId.value = success
-    }
-
-    fun signOut() {
-        AGConnectAuth.getInstance().signOut()
     }
 
     private fun setUserData(result: Resource<UserModel>) {
@@ -232,10 +234,10 @@ class AuthViewModel : ViewModel() {
     }
 
     fun resetRegisterFields() {
-        signOut()
         setUserData(Resource.empty())
         setDataLoading(Resource.empty())
         setPhoneCodeResult(Resource.empty())
+        setNewAccountWithPhoneResult(Resource.empty())
         setSignInWithHuaweiIdResponse(Resource.empty())
     }
 

@@ -15,6 +15,7 @@ import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
+import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.huawei.agconnect.auth.AGConnectAuth
 
 class LoginFragment : Fragment() {
@@ -56,9 +57,15 @@ class LoginFragment : Fragment() {
                 findNavController(this).navigate(R.id.action_loginFragment_to_registerFragment)
             } catch (e: Exception) {}
         }
+
+        binding.huaweiIdSignInBtn.setOnClickListener {
+            viewModel.signInWithHuaweiId(requireActivity())
+        }
+
     }
 
     private fun validateAndTryLogin() {
+        AGConnectAuth.getInstance().signOut()
         progressDialog.show()
         viewModel.loginWithEmailAndPassword(
             binding.emailInput.text.toString(),
@@ -81,6 +88,24 @@ class LoginFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     Log.d(TAG, "initViewModel: ${resource.errorBody}")
+                    progressDialog.dismiss()
+                }
+                else -> {}
+            }
+        }
+
+        viewModel.signInWithHuaweiId.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    Log.d(TAG, "initViewModel: ${resource.data!!.user.phone}")
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    Log.d(TAG, "initViewModel: ${resource.errorBody}")
+                    binding.btnNext.showSnakeBarError(resource.errorBody.toString())
                     progressDialog.dismiss()
                 }
                 else -> {}

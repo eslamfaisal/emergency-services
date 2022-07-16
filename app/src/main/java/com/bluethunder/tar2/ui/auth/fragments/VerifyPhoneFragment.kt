@@ -141,9 +141,11 @@ class VerifyPhoneFragment : BaseFragment() {
             viewModel.linkPhoneToHuaweiIDAccount(
                 countryCode,
                 phoneNumber,
+                userModel.password,
                 binding.otpInput.text.toString()
             )
         } else {
+
             viewModel.createAccountWithPHoneNumber(
                 countryCode,
                 phoneNumber,
