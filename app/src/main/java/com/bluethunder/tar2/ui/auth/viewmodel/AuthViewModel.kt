@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bluethunder.tar2.cloud_db.CloudDBWrapper.mUsersCloudDBZone
+import com.bluethunder.tar2.cloud_db.CloudStorageWrapper.storageManagement
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.huawei.agconnect.auth.*
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
 import kotlinx.coroutines.launch
+import java.io.File
 
 class AuthViewModel : ViewModel() {
 
@@ -17,8 +19,10 @@ class AuthViewModel : ViewModel() {
         private val TAG = AuthViewModel::class.java.simpleName
     }
 
-    private val _dataLoading = MutableLiveData(true)
-    val dataLoading: LiveData<Boolean> = _dataLoading
+    var profileImageUrl: String = ""
+
+    private val _dataLoading = MutableLiveData<Resource<Boolean>>()
+    val dataLoading: LiveData<Resource<Boolean>> = _dataLoading
 
     private val _userData = MutableLiveData<Resource<UserModel>>()
     val userData: LiveData<Resource<UserModel>> = _userData
@@ -87,4 +91,38 @@ class AuthViewModel : ViewModel() {
         _userData.value = result
     }
 
+    fun setProfileImage(url: String) {
+        if (url.isNotEmpty()) {
+            profileImageUrl = url
+            uploadProfileImage()
+        } else {
+            profileImageUrl = ""
+        }
+
+    }
+
+    private fun uploadProfileImage() {
+        setDataLoading(Resource.loading())
+
+        val reference =
+            storageManagement.getStorageReference("profile_image/${System.currentTimeMillis()}.jpg")
+        val uploadTask = reference.putFile(File(profileImageUrl))
+        uploadTask.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                task.result.storage.downloadUrl.addOnSuccessListener {
+                    profileImageUrl = it.toString()
+                    setDataLoading(Resource.success(true))
+                }.addOnFailureListener {
+                    setDataLoading(Resource.error(it.message))
+                }
+            } else {
+                setDataLoading(Resource.error(task.exception?.message))
+            }
+        }
+    }
+
+
+    private fun setDataLoading(loading: Resource<Boolean>) {
+        _dataLoading.value = loading
+    }
 }

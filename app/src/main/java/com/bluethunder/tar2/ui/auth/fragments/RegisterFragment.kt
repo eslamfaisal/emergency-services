@@ -1,6 +1,9 @@
 package com.bluethunder.tar2.ui.auth.fragments
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.text.TextUtils
@@ -8,13 +11,19 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentRegisterBinding
+import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
+import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
+import com.github.dhaval2404.imagepicker.ImagePicker
 import me.ibrahimsn.lib.PhoneNumberKit
 
 
@@ -24,6 +33,7 @@ class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private lateinit var viewModel: AuthViewModel
     lateinit var phoneNumberKit: PhoneNumberKit
+    lateinit var progressDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,24 +55,95 @@ class RegisterFragment : Fragment() {
     private fun initViewModel() {
         viewModel = (requireActivity() as AuthActivity).viewModel
         binding.viewmodel = viewModel
+        viewModel.dataLoading.observe(viewLifecycleOwner) { resource ->
+
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    binding.profilePictureView.showSnakeBarError(resource.errorBody.toString())
+                    progressDialog.dismiss()
+                }
+            }
+
+
+        }
     }
 
     private fun initViews() {
+        progressDialog = requireActivity().showLoadingDialog()
         binding.backBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
         setUpPhoneNumberTextField()
-        binding.btnRegister.setOnClickListener {
+        binding.createAccountBtn.setOnClickListener {
             validateAndRegister()
+        }
+
+        binding.imageViewContainer.setOnClickListener {
+            pickImage()
+        }
+        binding.clearProfilePic.setOnClickListener {
+            clearImage()
         }
     }
 
+    private val startForProfileImageResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val resultCode = result.resultCode
+            val data = result.data
+
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    //Image Uri will not be null for RESULT_OK
+                    val fileUri = data?.data!!
+                    uploadImage(fileUri)
+                    binding.profilePictureView.setImageURI(fileUri)
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(
+                        requireActivity(),
+                        ImagePicker.getError(data),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> {
+                    Toast.makeText(requireActivity(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+    private fun clearImage() {
+        binding.profilePictureView.setImageResource(R.drawable.ic_place_holder)
+        binding.clearProfilePic.visibility = View.GONE
+        viewModel.setProfileImage("")
+    }
+
+    private fun uploadImage(fileUri: Uri) {
+        binding.clearProfilePic.visibility = View.VISIBLE
+        viewModel.setProfileImage(fileUri.path!!)
+    }
+
+    fun pickImage() {
+        ImagePicker.with(this)
+            .crop()                    //Crop image(Optional), Check Customization for more option
+            .compress(512)            //Final image size will be less than 1 MB(Optional)
+            .maxResultSize(
+                540,
+                540
+            )    //Final image resolution will be less than 1080 x 1080(Optional)
+            .createIntent { intent ->
+                startForProfileImageResult.launch(intent)
+            }
+    }
+
     fun setUpPhoneNumberTextField() {
-        phoneNumberKit = PhoneNumberKit.Builder(requireActivity()).setIconEnabled(true).build()
-        phoneNumberKit.setupCountryPicker(
-            activity = (requireActivity() as AuthActivity),
-            searchEnabled = true
-        )
+        phoneNumberKit =
+            PhoneNumberKit.Builder((requireActivity() as AuthActivity)).setIconEnabled(true).build()
         try {
             val tm =
                 requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -75,6 +156,10 @@ class RegisterFragment : Fragment() {
             phoneNumberKit.attachToInput(binding.phoneNumberInputLayout, "eg")
         }
 
+        phoneNumberKit.setupCountryPicker(
+            activity = (requireActivity() as AuthActivity),
+            searchEnabled = true
+        )
     }
 
     private fun validateAndRegister() {
@@ -92,13 +177,6 @@ class RegisterFragment : Fragment() {
             return
         }
 
-        if (binding.passwordInput.text.toString().isEmpty()) {
-            binding.passwordInput.error = getString(R.string.enter_password_err_msg)
-            binding.passwordInput.showSnakeBarError(getString(R.string.enter_password_err_msg))
-            return
-        }
-
-
         if (binding.phoneNumberInputLayout.editText?.text.toString()
                 .isEmpty() || !phoneNumberKit.isValid
         ) {
@@ -106,6 +184,13 @@ class RegisterFragment : Fragment() {
             binding.phoneNumberInputLayout.showSnakeBarError(getString(R.string.enter_phone_err_msg))
             return
         }
+
+        if (binding.passwordInput.text.toString().isEmpty()) {
+            binding.passwordInput.error = getString(R.string.enter_password_err_msg)
+            binding.passwordInput.showSnakeBarError(getString(R.string.enter_password_err_msg))
+            return
+        }
+
 
     }
 

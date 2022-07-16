@@ -3,6 +3,7 @@ package com.bluethunder.tar2.cloud_db
 import android.content.Context
 import android.util.Log
 import com.bluethunder.tar2.Tar2Application
+import com.bluethunder.tar2.cloud_db.CloudStorageWrapper.initStorage
 import com.bluethunder.tar2.ui.auth.model.ObjectTypeInfoHelper
 import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.AGConnectOptionsBuilder
@@ -17,7 +18,7 @@ object CloudDBWrapper {
     private var mCloudDB: AGConnectCloudDB = AGConnectCloudDB.getInstance()
     var mUsersCloudDBZone: CloudDBZone? = null
 
-    fun setStorageLocation(context: Context?) {
+    fun setStorageLocation(context: Context) {
         val builder = AGConnectOptionsBuilder()
             .setRoutePolicy(Tar2Application.regionRoutePolicy)
         val instance = AGConnectInstance.buildInstance(builder.build(context))

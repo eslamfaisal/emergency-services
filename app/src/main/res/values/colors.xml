@@ -16,4 +16,10 @@
     <color name="overlay_dark_20">#33000000</color>
     <color name="color_transparent">#00000000</color>
     <color name="dark_red">#CC0000</color>
+
+    <!-- Here you can add color of your choice  -->
+<!--    <color name="ucrop_color_toolbar">@color/colorWhite</color>-->
+    <color name="ucrop_color_statusbar">@color/colorPrimary</color>
+    <color name="ucrop_color_widget_active">@color/colorPrimary</color>
+
 </resources>

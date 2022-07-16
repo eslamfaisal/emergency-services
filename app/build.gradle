@@ -57,6 +57,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
+    implementation "androidx.activity:activity-ktx:1.5.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.0"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2'
@@ -67,6 +68,7 @@ dependencies {
     implementation 'com.huawei.agconnect:agconnect-cloud-database:1.5.3.300'
     implementation 'com.huawei.agconnect:agconnect-crash:1.7.0.300'
     implementation 'com.huawei.agconnect:agconnect-appmessaging:1.7.0.300'
+    implementation "com.huawei.agconnect:agconnect-storage:1.5.0.100"
     implementation 'com.huawei.hms:maps:5.3.0.300'
 
     //third party
@@ -75,4 +77,5 @@ dependencies {
     implementation 'io.github.inflationx:viewpump:2.0.3'
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation 'com.airbnb.android:lottie:5.2.0'
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 }

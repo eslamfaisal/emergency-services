@@ -97,24 +97,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/password"
-                    app:boxStrokeColor="@color/color_transparent"
-                    app:passwordToggleEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:inputType="textPassword" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/phone_number_input_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
@@ -132,16 +114,100 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/forget_password"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/password"
+                    app:boxStrokeColor="@color/color_transparent"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/image_view_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:padding="8dp"
-                    android:text="@string/forgot_password"
-                    android:textColor="@color/dark_red" />
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_camera"
+                        android:drawablePadding="8dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="@string/profile_picture"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="8dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/profile_picture_view"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_place_holder" />
+
+                        <androidx.cardview.widget.CardView
+                            android:visibility="gone"
+                            android:id="@+id/clear_profile_pic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/ic_close_24dp" />
+                        </androidx.cardview.widget.CardView>
+
+                    </RelativeLayout>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/terms_and_conditions_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/by_registering_you_agree_to_our"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/forget_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/terms_and_conditions"
+                        android:textColor="@color/dark_red" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <com.balysv.materialripple.MaterialRippleLayout
                     style="@style/RippleStyleWhite"
@@ -150,7 +216,7 @@
                     android:layout_marginTop="16sp">
 
                     <TextView
-                        android:id="@+id/btn_register"
+                        android:id="@+id/create_account_btn"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/main_btn_bg"
@@ -171,7 +237,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="16sp"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="@string/sign_in_with_huawei"
+                    android:text="@string/create_account_with_huawei_id"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/header2_text_size"
                     android:textStyle="bold" />
