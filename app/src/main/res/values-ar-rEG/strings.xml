@@ -44,4 +44,6 @@
     <string name="incorrect_verification_code">Incorrect verification code</string>
     <string name="change_password">Change Password</string>
     <string name="forget_password_msg">Enter your mobile number to be able to change password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm password</string>
 </resources>

@@ -84,6 +84,9 @@ class VerifyPhoneFragment : BaseFragment() {
         binding.backBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        binding.resendCodeLayout.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         viewModel.verifyPhoneNumber(countryCode, phoneNumber)
     }
 

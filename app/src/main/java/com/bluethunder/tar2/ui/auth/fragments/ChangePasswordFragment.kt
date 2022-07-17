@@ -89,7 +89,7 @@ class ChangePasswordFragment : BaseFragment() {
             try {
                 NavHostFragment.findNavController(this)
                     .navigate(
-                        R.id.action_registerFragment_to_verifyPhoneFragment,
+                        R.id.action_changePasswordFragment_to_newPasswordPhoneFragment,
                         bundleOf(
                             PHONE_NUMBER_KEY to phone.nationalNumber.toString(),
                             COUNTRY_CODE_KEY to phone.countryCode.toString()
