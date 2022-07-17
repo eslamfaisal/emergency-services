@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentVerifyPhoneBinding
@@ -20,7 +21,11 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.MainActivity
+import com.bluethunder.tar2.utils.SharedHelper
+import com.bluethunder.tar2.utils.SharedHelperKeys.IS_LOGGED_IN
+import com.bluethunder.tar2.utils.SharedHelperKeys.USER_DATA
 import com.bluethunder.tar2.utils.getErrorMsg
+import com.google.gson.Gson
 
 
 class VerifyPhoneFragment : BaseFragment() {
@@ -159,10 +164,20 @@ class VerifyPhoneFragment : BaseFragment() {
         }
     }
 
-    private fun goToHome(data: UserModel) {
-        Log.d(TAG, "goToHome: $data")
+    fun goToHome(data: UserModel) {
+        Toast.makeText(requireContext(), getString(R.string.register_succ_msg), Toast.LENGTH_LONG)
+            .show()
+        val userDataJson = Gson().toJson(data)
+        SharedHelper.putBoolean(requireContext(), IS_LOGGED_IN, true)
+        SharedHelper.putString(requireContext(), USER_DATA, userDataJson)
+        goToLoginActivity()
+    }
+
+    private fun goToLoginActivity() {
         val intent = Intent(requireActivity(), MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         requireActivity().startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun onPhoneVerified(msg: String) {
@@ -197,9 +212,7 @@ class VerifyPhoneFragment : BaseFragment() {
                 binding.otpInput.text.toString()
             )
         }
-
     }
-
 
     override fun onDestroyView() {
         removeObservers()

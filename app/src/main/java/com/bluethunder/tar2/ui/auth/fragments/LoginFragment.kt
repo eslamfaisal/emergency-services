@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
@@ -16,11 +17,15 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentLoginBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.auth.AuthActivity
+import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.MainActivity
+import com.bluethunder.tar2.utils.SharedHelper
+import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.bluethunder.tar2.utils.getErrorMsg
+import com.google.gson.Gson
 import com.huawei.agconnect.auth.AGConnectAuth
 import me.ibrahimsn.lib.PhoneNumberKit
 
@@ -116,7 +121,7 @@ class LoginFragment : Fragment() {
 
         if (binding.passwordInput.text.toString()
                 .isEmpty() || binding.passwordInput.text.toString().length < 6
-        )  {
+        ) {
             binding.passwordInput.error = getString(R.string.enter_password_err_msg)
             binding.passwordInput.showSnakeBarError(getString(R.string.enter_password_err_msg))
             return
@@ -181,7 +186,7 @@ class LoginFragment : Fragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-                    goToHome()
+                    goToHome(resource.data!!)
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
@@ -198,9 +203,19 @@ class LoginFragment : Fragment() {
         binding.btnNext.showSnakeBarError(requireActivity().getErrorMsg(errorBody))
     }
 
-    private fun goToHome() {
-        var intent = Intent(requireActivity(), MainActivity::class.java)
-        requireActivity().startActivity(intent)
+    fun goToHome(data: UserModel) {
+        Toast.makeText(requireContext(), getString(R.string.register_succ_msg), Toast.LENGTH_LONG)
+            .show()
+        val userDataJson = Gson().toJson(data)
+        SharedHelper.putBoolean(requireContext(), SharedHelperKeys.IS_LOGGED_IN, true)
+        SharedHelper.putString(requireContext(), SharedHelperKeys.USER_DATA, userDataJson)
+        goToLoginActivity()
     }
 
+    private fun goToLoginActivity() {
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        requireActivity().startActivity(intent)
+        requireActivity().finish()
+    }
 }

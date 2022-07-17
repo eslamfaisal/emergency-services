@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 
 object SharedHelperKeys {
     const val IS_LOGGED_IN = "isLoggedIn"
+    const val USER_DATA = "userData"
 }
 
 object SharedHelper {

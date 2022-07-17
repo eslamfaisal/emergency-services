@@ -78,4 +78,5 @@ dependencies {
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation 'com.airbnb.android:lottie:5.2.0'
     implementation 'com.github.dhaval2404:imagepicker:2.1'
+    implementation 'com.google.code.gson:gson:2.9.0'
 }

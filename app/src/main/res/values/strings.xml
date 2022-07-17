@@ -48,5 +48,7 @@
     <string name="enter_otp_code">Please Enter OTP Code</string>
     <string name="enter_confirm_password_err_msg">Please enter a matching password</string>
     <string name="password_reset_success">Password reset sucessfully, Please login</string>
+    <string name="register_success_msg">Your account created successfully, Please login.</string>
+    <string name="register_succ_msg">Account created successfully</string>
 
 </resources>
