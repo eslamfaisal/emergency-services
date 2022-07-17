@@ -139,10 +139,14 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    fun verifyPhoneNumber(countryCodeStr: String, phoneNumberStr: String) {
+    fun verifyPhoneNumber(
+        countryCodeStr: String,
+        phoneNumberStr: String,
+        action: Int = VerifyCodeSettings.ACTION_REGISTER_LOGIN
+    ) {
         setPhoneCodeResult(Resource.loading())
         val settings = VerifyCodeSettings.newBuilder()
-            .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
+            .action(action)
             .sendInterval(30)
             .locale(Locale.ENGLISH)
             .build()

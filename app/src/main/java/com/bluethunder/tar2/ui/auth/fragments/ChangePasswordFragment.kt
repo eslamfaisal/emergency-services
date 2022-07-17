@@ -23,6 +23,7 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.utils.getErrorMsg
+import com.huawei.agconnect.auth.VerifyCodeSettings
 import me.ibrahimsn.lib.PhoneNumberKit
 import me.ibrahimsn.lib.api.Phone
 
@@ -139,7 +140,8 @@ class ChangePasswordFragment : BaseFragment() {
         validatePhoneNumber { phone ->
             viewModel.verifyPhoneNumber(
                 phone.countryCode.toString(),
-                phone.nationalNumber.toString()
+                phone.nationalNumber.toString(),
+                action = VerifyCodeSettings.ACTION_RESET_PASSWORD
             )
         }
 
