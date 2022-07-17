@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
@@ -27,7 +29,7 @@
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_gravity="bottom"
             android:backgroundTint="#ffffff"
             app:fabCradleMargin="14dp"
@@ -41,54 +43,121 @@
                 android:layout_marginEnd="16dp"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/map_tab_icon"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="-8dp"
                     android:layout_weight="1"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
                     android:onClick="@{() -> viewmodel.setOnMapSelected(0)}"
-                    android:src="@drawable/ic_on_map"
-                    android:tint="@color/colorGreyLight" />
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/case_list_tab_icon"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/map_tab_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_map_tab_selected" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/map_tab_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/map"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
                     android:onClick="@{() -> viewmodel.setOnMapSelected(1)}"
-                    android:src="@drawable/ic_case_list"
-                    android:tint="@color/colorGreyLight" />
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/case_list_tab_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_case_list_tab_un_selected" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/case_list_tab_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/cases"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.2"
                     android:src="@drawable/ic_on_map"
                     android:visibility="invisible" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/my_cases_tab_icon"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
                     android:onClick="@{() -> viewmodel.setOnMapSelected(2)}"
-                    android:src="@drawable/ic_on_map"
-                    android:tint="@color/colorGreyLight" />
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/menu_tab_icon"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/my_cases_tab_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_my_cases_un_selected" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/my_cases_tab_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/my_cases"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="-8dp"
                     android:layout_weight="1"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:gravity="center"
                     android:onClick="@{() -> viewmodel.setOnMapSelected(3)}"
-                    android:src="@drawable/ic_on_map"
-                    android:tint="@color/colorGreyLight" />
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/menu_tab_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="1dp"
+                        android:src="@drawable/ic_more_tab_selected" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/menu_tab_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/menu"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

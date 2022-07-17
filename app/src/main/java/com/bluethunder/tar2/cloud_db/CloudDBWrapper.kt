@@ -41,6 +41,7 @@ object CloudDBWrapper {
             CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC
         )
         val usersTask = mCloudDB.openCloudDBZone2(mUsersConfig, true)
+
         usersTask.addOnCompleteListener {
             if (it.isSuccessful) {
                 Log.d(TAG, "openUsersCloudDBZoneV2: success")

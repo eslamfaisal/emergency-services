@@ -50,5 +50,8 @@
     <string name="password_reset_success">Password reset sucessfully, Please login</string>
     <string name="register_success_msg">Your account created successfully, Please login.</string>
     <string name="register_succ_msg">Account created successfully</string>
+    <string name="cases">Cases</string>
+    <string name="my_cases">My cases</string>
+    <string name="menu">More</string>
 
 </resources>

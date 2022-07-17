@@ -1,6 +1,7 @@
 package com.bluethunder.tar2.ui.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -43,36 +44,38 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel() {
 
         // region tab layout
-        viewModel.onSelectedTabIndex.observe(this) { position ->
+        viewModel. onSelectedTabIndex.observe(this) { position ->
             binding.homeTabViewPager.currentItem = position
-            DrawableCompat.setTint(
-                DrawableCompat.wrap(binding.mapTabIcon.drawable),
-                ContextCompat.getColor(
-                    this,
-                    if (position == 0) R.color.colorPrimary else R.color.colorGreyLight
+
+            binding.mapTabIcon.setImageDrawable(
+                getDrawable(
+                    if (position == 0) R.drawable.ic_map_tab_selected else R.drawable.ic_map_tab_un_selected
                 )
             )
-            DrawableCompat.setTint(
-                DrawableCompat.wrap(binding.caseListTabIcon.drawable),
-                ContextCompat.getColor(
-                    this,
-                    if (position == 1) R.color.colorPrimary else R.color.colorGreyLight
+            binding.mapTabText.visibility = if (position == 0) View.VISIBLE else View.GONE
+
+
+            binding.caseListTabIcon.setImageDrawable(
+                getDrawable(
+                    if (position == 1) R.drawable.ic_case_list_tab_selected else R.drawable.ic_case_list_tab_un_selected
                 )
             )
-            DrawableCompat.setTint(
-                DrawableCompat.wrap(binding.myCasesTabIcon.drawable),
-                ContextCompat.getColor(
-                    this,
-                    if (position == 2) R.color.colorPrimary else R.color.colorGreyLight
+            binding.caseListTabText.visibility = if (position == 1) View.VISIBLE else View.GONE
+
+
+            binding.myCasesTabIcon.setImageDrawable(
+                getDrawable(
+                    if (position == 2) R.drawable.ic_my_cases_selected else R.drawable.ic_my_cases_un_selected
                 )
             )
-            DrawableCompat.setTint(
-                DrawableCompat.wrap(binding.menuTabIcon.drawable),
-                ContextCompat.getColor(
-                    this,
-                    if (position == 3) R.color.colorPrimary else R.color.colorGreyLight
+            binding.myCasesTabText.visibility = if (position == 2) View.VISIBLE else View.GONE
+
+            binding.menuTabIcon.setImageDrawable(
+                getDrawable(
+                    if (position == 3) R.drawable.ic_more_tab_selected else R.drawable.ic_more_tab_un_selected
                 )
             )
+            binding.menuTabText.visibility = if (position == 3) View.VISIBLE else View.GONE
         }
         // endregion
 

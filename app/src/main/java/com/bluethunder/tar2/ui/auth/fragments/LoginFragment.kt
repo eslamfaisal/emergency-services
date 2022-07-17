@@ -204,8 +204,6 @@ class LoginFragment : Fragment() {
     }
 
     fun goToHome(data: UserModel) {
-        Toast.makeText(requireContext(), getString(R.string.register_succ_msg), Toast.LENGTH_LONG)
-            .show()
         val userDataJson = Gson().toJson(data)
         SharedHelper.putBoolean(requireContext(), SharedHelperKeys.IS_LOGGED_IN, true)
         SharedHelper.putString(requireContext(), SharedHelperKeys.USER_DATA, userDataJson)
