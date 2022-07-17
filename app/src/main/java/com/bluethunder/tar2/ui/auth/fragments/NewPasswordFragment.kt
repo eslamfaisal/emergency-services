@@ -22,7 +22,7 @@ class NewPasswordFragment : BaseFragment() {
             binding.root
         } else {
             binding =
-                DataBindingUtil.inflate(inflater, R.layout.fragment_verify_phone, container, false)
+                DataBindingUtil.inflate(inflater, R.layout.fragment_new_password, container, false)
             binding.root
         }
 

@@ -150,7 +150,11 @@ class AuthViewModel : ViewModel() {
             setPhoneCodeResult(Resource.success(it))
         }.addOnFailureListener {
             // onFail
-            setPhoneCodeResult(Resource.error(it.message))
+            if (it.message!!.contains("203818048")) {
+                setPhoneCodeResult(Resource.success(null))
+            } else {
+                setPhoneCodeResult(Resource.error(it.message))
+            }
         }
     }
 
@@ -283,7 +287,12 @@ class AuthViewModel : ViewModel() {
         setSignInWithHuaweiIdResponse(Resource.empty())
     }
 
-    fun resetPassword(countryCode: String, phoneNumber: String, newPassword: String, verifyCode: String) {
+    fun resetPassword(
+        countryCode: String,
+        phoneNumber: String,
+        newPassword: String,
+        verifyCode: String
+    ) {
         AGConnectAuth.getInstance().resetPassword(countryCode, phoneNumber, newPassword, verifyCode)
             .addOnSuccessListener {
                 // onSuccess

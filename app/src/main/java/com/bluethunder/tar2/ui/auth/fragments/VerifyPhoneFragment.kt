@@ -30,6 +30,7 @@ class VerifyPhoneFragment : BaseFragment() {
 
         const val COUNTRY_CODE_KEY = "country_code_key"
         const val PHONE_NUMBER_KEY = "phone_number_key"
+        const val FULL_PHONE_NUMBER_KEY = "full_phone_number_key"
     }
 
     private lateinit var viewModel: AuthViewModel
