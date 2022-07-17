@@ -49,6 +49,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AGConnectAuth.getInstance().signOut()
         initViewModel()
         initView()
         AGConnectAuth.getInstance().signOut()
@@ -71,6 +72,12 @@ class LoginFragment : Fragment() {
 
         binding.huaweiIdSignInBtn.setOnClickListener {
             viewModel.signInWithHuaweiId(requireActivity())
+        }
+        binding.forgetPassword.setOnClickListener {
+            try {
+                findNavController(this).navigate(R.id.action_loginFragment_to_changePasswordFragment)
+            } catch (e: Exception) {
+            }
         }
 
     }

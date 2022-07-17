@@ -42,4 +42,6 @@
     <string name="no_enternet_connection">No Internet Connection</string>
     <string name="incorrect_phone_or_password">Incorrect phone or password</string>
     <string name="incorrect_verification_code">Incorrect verification code</string>
+    <string name="change_password">Change Password</string>
+    <string name="forget_password_msg">Enter your mobile number to be able to change password</string>
 </resources>
