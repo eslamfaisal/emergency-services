@@ -2,8 +2,8 @@ package com.bluethunder.tar2.cloud_db
 
 import android.content.Context
 import android.util.Log
-import com.bluethunder.tar2.Tar2Application
 import com.bluethunder.tar2.ui.auth.model.ObjectTypeInfoHelper
+import com.huawei.agconnect.AGCRoutePolicy
 import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.AGConnectOptionsBuilder
 import com.huawei.agconnect.auth.AGConnectAuth
@@ -18,9 +18,10 @@ object CloudDBWrapper {
     private var mCloudDB: AGConnectCloudDB = AGConnectCloudDB.getInstance()
     var mTar2APPCloudDBZone: CloudDBZone? = null
 
+
     fun setStorageLocation(context: Context) {
         val builder = AGConnectOptionsBuilder()
-            .setRoutePolicy(Tar2Application.regionRoutePolicy)
+            .setRoutePolicy(AGCRoutePolicy.SINGAPORE)
         val instance = AGConnectInstance.buildInstance(builder.build(context))
         mCloudDB = AGConnectCloudDB.getInstance(instance, AGConnectAuth.getInstance())
     }
@@ -35,12 +36,13 @@ object CloudDBWrapper {
 
     fun openUsersCloudDBZoneV2(complete: (Boolean) -> Unit) {
 
-        val mUsersConfig = CloudDBZoneConfig(
+        Log.d(TAG, "openUsersCloudDBZoneV2: try open DB zone")
+        val mConfig = CloudDBZoneConfig(
             DB_ZONE_NAME,
             CloudDBZoneConfig.CloudDBZoneSyncProperty.CLOUDDBZONE_CLOUD_CACHE,
             CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC
         )
-        val usersTask = mCloudDB.openCloudDBZone2(mUsersConfig, true)
+        val usersTask = mCloudDB.openCloudDBZone2(mConfig, true)
 
         usersTask.addOnCompleteListener {
             if (it.isSuccessful) {

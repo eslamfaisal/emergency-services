@@ -23,7 +23,7 @@ import com.huawei.agconnect.cloud.database.AGConnectCloudDB
 class Tar2Application : Application() {
     override fun onCreate() {
         super.onCreate()
-        initHMS()
+
     }
 
     private fun initHMS() {
@@ -32,13 +32,4 @@ class Tar2Application : Application() {
         }
         AGConnectCloudDB.initialize(this)
     }
-
-    companion object {
-        var regionRoutePolicy : AGCRoutePolicy = AGCRoutePolicy.SINGAPORE
-            get() = field
-            set(value) {
-                field = value
-            }
-    }
-
 }

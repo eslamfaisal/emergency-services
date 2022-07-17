@@ -3,6 +3,7 @@ package com.bluethunder.tar2.ui.splash
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bluethunder.tar2.cloud_db.CloudDBWrapper
 import com.bluethunder.tar2.cloud_db.CloudStorageWrapper
@@ -11,10 +12,15 @@ import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.home.MainActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys.IS_LOGGED_IN
+import com.huawei.agconnect.AGConnectInstance
+import com.huawei.agconnect.cloud.database.AGConnectCloudDB
 import java.io.File
 
 class SplashActivity : AppCompatActivity() {
 
+    companion object {
+        private const val TAG = "SplashActivity"
+    }
     private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
             runOnUiThread {
                 try {
                     openCloudDBZones()
-                }catch (e: Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                     deleteCache(this)
                     recreate()
@@ -36,12 +42,18 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun openCloudDBZones() {
+        AGConnectInstance.initialize(this)
+        AGConnectCloudDB.initialize(this)
         CloudDBWrapper.setStorageLocation(this)
         CloudDBWrapper.createObjectType()
         CloudDBWrapper.openUsersCloudDBZoneV2 {
             if (it) {
                 CloudStorageWrapper.initStorage(this)
                 checkLogin()
+            } else {
+                Log.d(TAG, "openCloudDBZones: failed to open cloud db zone recreate then")
+                deleteCache(this)
+                recreate()
             }
         }
     }
@@ -73,7 +85,7 @@ class SplashActivity : AppCompatActivity() {
 
     fun deleteCache(context: Context) {
         try {
-            val dir: File = context.getCacheDir()
+            val dir: File = context.cacheDir
             deleteDir(dir)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -81,7 +93,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun deleteDir(dir: File?): Boolean {
-        return if (dir != null && dir.isDirectory()) {
+        return if (dir != null && dir.isDirectory) {
             val children: Array<String> = dir.list()
             for (i in children.indices) {
                 val success = deleteDir(File(dir, children[i]))
@@ -90,7 +102,7 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
             dir.delete()
-        } else if (dir != null && dir.isFile()) {
+        } else if (dir != null && dir.isFile) {
             dir.delete()
         } else {
             false
