@@ -38,5 +38,7 @@
     <string name="enter_otp_phone_msg">An identification code has been sent to  the mobile number</string>
     <string name="phone_regestered_before_mss">Phone number is already registered to another account</string>
     <string name="agree">Agree</string>
+    <string name="no_enternet_connection">No Internet Connection</string>
+    <string name="incorrect_phone_or_password">Incorrect phone or password</string>
 
 </resources>

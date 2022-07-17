@@ -22,6 +22,7 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.MainActivity
+import com.bluethunder.tar2.utils.getErrorMsg
 
 
 class VerifyPhoneFragment : BaseFragment() {
@@ -146,7 +147,7 @@ class VerifyPhoneFragment : BaseFragment() {
     }
 
     private fun goToHome(data: UserModel) {
-        Log.d(TAG, "goToHome: ${data.toString()}")
+        Log.d(TAG, "goToHome: $data")
         val intent = Intent(requireActivity(), MainActivity::class.java)
         requireActivity().startActivity(intent)
     }
@@ -161,19 +162,8 @@ class VerifyPhoneFragment : BaseFragment() {
         viewModel.createUserToDatabase(userModel)
     }
 
-    private fun parseErrorCodeBody(toString: String) {
-
-        if(toString.contains("203818038")) {
-            binding.phoneTv.showSnakeBarError(getString(R.string.phone_regestered_before_mss))
-        }
-        else {
-            binding.phoneTv.showSnakeBarError(
-                toString.replace("code", "")
-                    .replace("\\d".toRegex(), "")
-            )
-        }
-
-
+    private fun parseErrorCodeBody(errorBody: String) {
+        binding.phoneTv.showSnakeBarError(requireActivity().getErrorMsg(errorBody))
     }
 
     private fun createAccountWithPhone() {

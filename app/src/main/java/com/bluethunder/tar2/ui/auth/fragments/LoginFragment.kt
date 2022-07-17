@@ -20,6 +20,7 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.MainActivity
+import com.bluethunder.tar2.utils.getErrorMsg
 import com.huawei.agconnect.auth.AGConnectAuth
 import me.ibrahimsn.lib.PhoneNumberKit
 
@@ -139,7 +140,7 @@ class LoginFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     Log.d(TAG, "initViewModel: ${resource.errorBody}")
-                    binding.btnNext.showSnakeBarError(resource.errorBody.toString())
+                    parsingError(resource.errorBody.toString())
                     progressDialog.dismiss()
                 }
                 else -> {}
@@ -158,7 +159,7 @@ class LoginFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     Log.d(TAG, "initViewModel: ${resource.errorBody}")
-                    binding.btnNext.showSnakeBarError(resource.errorBody.toString())
+                    parsingError(resource.errorBody.toString())
                     progressDialog.dismiss()
                 }
                 else -> {}
@@ -182,6 +183,10 @@ class LoginFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun parsingError(errorBody: String) {
+        binding.btnNext.showSnakeBarError(requireActivity().getErrorMsg(errorBody))
     }
 
     private fun goToHome() {

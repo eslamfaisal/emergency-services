@@ -7,9 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.TelephonyManager
-import android.text.TextUtils
 import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -249,14 +247,6 @@ class RegisterFragment : BaseFragment() {
             return
         }
 
-//        if (binding.emailInput.text.toString()
-//                .isEmpty() || !isValidEmail(binding.emailInput.text.toString())
-//        ) {
-//            binding.emailInput.error = getString(R.string.enter_email_err_msg)
-//            binding.emailInput.showSnakeBarError(getString(R.string.enter_email_err_msg))
-//            return
-//        }
-
         if (binding.phoneNumberInputLayout.editText?.text.toString()
                 .isEmpty() || !phoneNumberKit.isValid
         ) {
@@ -333,7 +323,6 @@ class RegisterFragment : BaseFragment() {
         val userModel = UserModel()
         userModel.id = signInResult.user.uid
         userModel.name = signInResult.user.displayName
-//        userModel.email = signInResult.user.email
         userModel.phone = signInResult.user.phone
         userModel.password = signInResult.user.uid
         userModel.imageUrl = signInResult.user.photoUrl
@@ -342,19 +331,27 @@ class RegisterFragment : BaseFragment() {
 
     private fun getUserModelFromFields(): UserModel {
         val userModel = UserModel()
+        val phone = phoneNumberKit.parsePhoneNumber(
+            binding.phoneNumberInputLayout.editText?.text.toString(),
+            "eg"
+        )
         userModel.name = binding.nameInput.text.toString()
-        userModel.email = binding.emailInput.text.toString()
-        userModel.phone = binding.phoneNumberInput.text.toString().replace(" ", "").trim()
+        phone?.let { parsedPhone ->
+            parsedPhone.nationalNumber?.let { phoneNumber ->
+                userModel.phone = phoneNumber.toString()
+            }
+            parsedPhone.countryCode?.let { countryCode ->
+                userModel.countryCode = countryCode.toString()
+            }
+        }
+        userModel.countryCode = phone!!.countryCode.toString()
+        userModel.phone = phone.countryCode.toString()
         userModel.password = binding.passwordInput.text.toString()
 
         if (viewModel.profileImageUrl.isNotEmpty()) {
             userModel.imageUrl = viewModel.profileImageUrl
         }
         return userModel
-    }
-
-    private fun isValidEmail(target: CharSequence?): Boolean {
-        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
     private fun requestReadContactsPermission() {
