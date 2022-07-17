@@ -3,7 +3,6 @@ package com.bluethunder.tar2.cloud_db
 import android.content.Context
 import android.util.Log
 import com.bluethunder.tar2.Tar2Application
-import com.bluethunder.tar2.cloud_db.CloudStorageWrapper.initStorage
 import com.bluethunder.tar2.ui.auth.model.ObjectTypeInfoHelper
 import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.AGConnectOptionsBuilder
@@ -15,8 +14,9 @@ import com.huawei.agconnect.cloud.database.exceptions.AGConnectCloudDBException
 
 object CloudDBWrapper {
     private const val TAG = "CloudDBWrapper"
+    private const val DB_ZONE_NAME = "Tar2AppDBZone"
     private var mCloudDB: AGConnectCloudDB = AGConnectCloudDB.getInstance()
-    var mUsersCloudDBZone: CloudDBZone? = null
+    var mTar2APPCloudDBZone: CloudDBZone? = null
 
     fun setStorageLocation(context: Context) {
         val builder = AGConnectOptionsBuilder()
@@ -36,7 +36,7 @@ object CloudDBWrapper {
     fun openUsersCloudDBZoneV2(complete: (Boolean) -> Unit) {
 
         val mUsersConfig = CloudDBZoneConfig(
-            "users",
+            DB_ZONE_NAME,
             CloudDBZoneConfig.CloudDBZoneSyncProperty.CLOUDDBZONE_CLOUD_CACHE,
             CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC
         )
@@ -45,7 +45,7 @@ object CloudDBWrapper {
         usersTask.addOnCompleteListener {
             if (it.isSuccessful) {
                 Log.d(TAG, "openUsersCloudDBZoneV2: success")
-                mUsersCloudDBZone = it.result
+                mTar2APPCloudDBZone = it.result
             } else {
                 complete(false)
                 Log.d(TAG, "openUsersCloudDBZoneV2: ${it.exception?.message}")
@@ -60,7 +60,7 @@ object CloudDBWrapper {
     }
 
     fun closConnections() {
-        mCloudDB.closeCloudDBZone(mUsersCloudDBZone)
+        mCloudDB.closeCloudDBZone(mTar2APPCloudDBZone)
     }
 
 }

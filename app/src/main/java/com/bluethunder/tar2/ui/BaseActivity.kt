@@ -16,23 +16,23 @@ abstract class BaseActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
 
     }
-
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        ViewPump.init(
-            ViewPump.builder()
-                .addInterceptor(
-                    CalligraphyInterceptor(
-                        CalligraphyConfig.Builder()
-                            .setDefaultFontPath("fonts/almarai_regular.ttf")
-                            .build()
-                    )
-                )
-                .build()
-        )
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase))
-    }
+//
+//    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+//        super.onCreate(savedInstanceState, persistentState)
+//        ViewPump.init(
+//            ViewPump.builder()
+//                .addInterceptor(
+//                    CalligraphyInterceptor(
+//                        CalligraphyConfig.Builder()
+//                            .setDefaultFontPath("fonts/almarai_regular.ttf")
+//                            .build()
+//                    )
+//                )
+//                .build()
+//        )
+//    }
+//
+//    override fun attachBaseContext(newBase: Context) {
+//        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase))
+//    }
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bluethunder.tar2.cloud_db.CloudDBWrapper.mUsersCloudDBZone
+import com.bluethunder.tar2.cloud_db.CloudDBWrapper.mTar2APPCloudDBZone
 import com.bluethunder.tar2.cloud_db.CloudStorageWrapper.storageManagement
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.auth.model.UserModel
@@ -77,7 +77,7 @@ class AuthViewModel : ViewModel() {
     fun getUserDetails(it: SignInResult) {
         val query = CloudDBZoneQuery.where(UserModel::class.java)
             .equalTo("id", it.user.uid).limit(1)
-        mUsersCloudDBZone!!.executeQuery(
+        mTar2APPCloudDBZone!!.executeQuery(
             query,
             CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
         ).addOnCompleteListener {
@@ -96,7 +96,7 @@ class AuthViewModel : ViewModel() {
 
     fun createUserToDatabase(userModel: UserModel) {
         userModel.id = AGConnectAuth.getInstance().currentUser?.uid
-        mUsersCloudDBZone!!.executeUpsert(userModel).addOnCompleteListener {
+        mTar2APPCloudDBZone!!.executeUpsert(userModel).addOnCompleteListener {
             if (it.isSuccessful) {
                 setCreateUserData(Resource.success(userModel))
             } else {

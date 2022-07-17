@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "19909699082",
+    "project_id": "tar2-app",
+    "storage_bucket": "tar2-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19909699082:android:3f0618374d578b66fb21f3",
+        "android_client_info": {
+          "package_name": "com.bluethunder.tar2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "19909699082-sv6kjcu50cihc1s245eenti9bdke3p75.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bluethunder.tar2",
+            "certificate_hash": "07a952e41108fe838247d1cbaad833bd3c6a72af"
+          }
+        },
+        {
+          "client_id": "19909699082-ks8fhobjrhijubg5outorord1mofjrja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbBqHQg8felpKwlatVHdPmGqGsY37u__w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "19909699082-ks8fhobjrhijubg5outorord1mofjrja.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
