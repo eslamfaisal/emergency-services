@@ -15,5 +15,7 @@ fun Context.getErrorMsg(msg: String): String {
         this.getString(R.string.no_enternet_connection)
     } else if (msg.contains("code: 203818032")) {
         this.getString(R.string.incorrect_phone_or_password)
+    }else if (msg.contains("code: 203818129")) {
+        this.getString(R.string.incorrect_verification_code)
     } else parseHMSErrorMsg(msg)
 }

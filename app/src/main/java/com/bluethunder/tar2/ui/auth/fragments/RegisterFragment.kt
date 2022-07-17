@@ -337,15 +337,12 @@ class RegisterFragment : BaseFragment() {
         )
         userModel.name = binding.nameInput.text.toString()
         phone?.let { parsedPhone ->
-            parsedPhone.nationalNumber?.let { phoneNumber ->
-                userModel.phone = phoneNumber.toString()
-            }
             parsedPhone.countryCode?.let { countryCode ->
                 userModel.countryCode = countryCode.toString()
             }
         }
         userModel.countryCode = phone!!.countryCode.toString()
-        userModel.phone = phone.countryCode.toString()
+        userModel.phone = binding.phoneNumberInput.text.toString()
         userModel.password = binding.passwordInput.text.toString()
 
         if (viewModel.profileImageUrl.isNotEmpty()) {
