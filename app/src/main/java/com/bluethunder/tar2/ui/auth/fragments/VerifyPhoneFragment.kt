@@ -13,8 +13,6 @@ import com.bluethunder.tar2.databinding.FragmentVerifyPhoneBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.auth.AuthActivity
-import com.bluethunder.tar2.ui.auth.fragments.RegisterFragment.Companion.COUNTRY_CODE_KEY
-import com.bluethunder.tar2.ui.auth.fragments.RegisterFragment.Companion.PHONE_NUMBER_KEY
 import com.bluethunder.tar2.ui.auth.fragments.RegisterFragment.Companion.REGISTER_TYPE_HUAWEI_ID
 import com.bluethunder.tar2.ui.auth.fragments.RegisterFragment.Companion.USER_MODEL_KEY
 import com.bluethunder.tar2.ui.auth.model.UserModel
@@ -29,6 +27,9 @@ class VerifyPhoneFragment : BaseFragment() {
 
     companion object {
         private const val TAG = "VerifyPhoneFragment"
+
+        const val COUNTRY_CODE_KEY = "country_code_key"
+        const val PHONE_NUMBER_KEY = "phone_number_key"
     }
 
     private lateinit var viewModel: AuthViewModel
@@ -65,9 +66,9 @@ class VerifyPhoneFragment : BaseFragment() {
         }
         hasInitializedRootView = true
 
-        userModel = arguments?.getSerializable(USER_MODEL_KEY) as UserModel
         phoneNumber = arguments?.getString(PHONE_NUMBER_KEY)!!
         countryCode = arguments?.getString(COUNTRY_CODE_KEY)!!
+        userModel = arguments?.getSerializable(USER_MODEL_KEY) as UserModel
         registerFromHuaweiID = arguments?.getBoolean(REGISTER_TYPE_HUAWEI_ID)!!
 
         initViewModel()
@@ -93,6 +94,10 @@ class VerifyPhoneFragment : BaseFragment() {
             createAccountWithPhone()
         }
     }
+
+//    private fun sendCodeForResetPassword() {
+//        viewModel.resetPassword(countryCode, phoneNumber)
+//    }
 
     private fun observeToViewModel() {
         viewModel.phoneCodeResult.observe(viewLifecycleOwner) { resource ->

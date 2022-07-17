@@ -22,6 +22,8 @@ import com.bluethunder.tar2.databinding.FragmentRegisterBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.auth.AuthActivity
+import com.bluethunder.tar2.ui.auth.fragments.VerifyPhoneFragment.Companion.COUNTRY_CODE_KEY
+import com.bluethunder.tar2.ui.auth.fragments.VerifyPhoneFragment.Companion.PHONE_NUMBER_KEY
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
@@ -39,8 +41,6 @@ class RegisterFragment : BaseFragment() {
         const val COMPLETE_REGISTER_KEY = "complete_register_key"
         const val USER_MODEL_KEY = "user_model_key"
         const val REGISTER_TYPE_HUAWEI_ID = "register_type_huawei_id"
-        const val COUNTRY_CODE_KEY = "country_code_key"
-        const val PHONE_NUMBER_KEY = "phone_number_key"
     }
 
     private lateinit var binding: FragmentRegisterBinding

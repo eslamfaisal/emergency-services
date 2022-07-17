@@ -283,5 +283,14 @@ class AuthViewModel : ViewModel() {
         setSignInWithHuaweiIdResponse(Resource.empty())
     }
 
+    fun resetPassword(countryCode: String, phoneNumber: String, newPassword: String, verifyCode: String) {
+        AGConnectAuth.getInstance().resetPassword(countryCode, phoneNumber, newPassword, verifyCode)
+            .addOnSuccessListener {
+                // onSuccess
+            }.addOnFailureListener {
+                // onFail
+            }
+    }
+
 
 }
