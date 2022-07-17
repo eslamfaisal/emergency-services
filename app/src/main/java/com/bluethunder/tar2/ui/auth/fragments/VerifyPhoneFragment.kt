@@ -82,20 +82,21 @@ class VerifyPhoneFragment : BaseFragment() {
         binding.viewmodel = viewModel
         observeToViewModel()
 
-        binding.backBtn.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
-        binding.resendCodeLayout.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
         viewModel.verifyPhoneNumber(countryCode, phoneNumber)
     }
 
     private fun initViews() {
         progressDialog = requireActivity().showLoadingDialog()
         binding.phoneTv.text = "$countryCode $phoneNumber"
+
         binding.btnNext.setOnClickListener {
             createAccountWithPhone()
+        }
+        binding.backBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+        binding.resendCodeLayout.setOnClickListener {
+            requireActivity().onBackPressed()
         }
     }
 

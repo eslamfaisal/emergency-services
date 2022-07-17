@@ -45,6 +45,9 @@ class AuthViewModel : ViewModel() {
     private val _newAccountWithPhoneResult = MutableLiveData<Resource<String>>()
     val newAccountWithPhoneResult: LiveData<Resource<String>> = _newAccountWithPhoneResult
 
+    private val _resetPasswordResult = MutableLiveData<Resource<String>>()
+    val resetPasswordResult: LiveData<Resource<String>> = _resetPasswordResult
+
     private val _phoneCodeResult = MutableLiveData<Resource<VerifyCodeResult>>()
     val phoneCodeResult: LiveData<Resource<VerifyCodeResult>> = _phoneCodeResult
 
@@ -211,6 +214,27 @@ class AuthViewModel : ViewModel() {
     }
 
 
+    fun resetPassword(
+        countryCode: String,
+        phoneNumber: String,
+        newPassword: String,
+        verifyCode: String
+    ) {
+        setResetPasswordResultValue(Resource.loading())
+        AGConnectAuth.getInstance().resetPassword(countryCode, phoneNumber, newPassword, verifyCode)
+            .addOnSuccessListener {
+                // onSuccess
+                setResetPasswordResultValue(Resource.success("done"))
+            }.addOnFailureListener {
+                // onFail
+                setResetPasswordResultValue(Resource.error(it.message))
+            }
+    }
+
+    fun setResetPasswordResultValue(result: Resource<String>) {
+        _resetPasswordResult.value = result
+    }
+
     fun signInWithHuaweiId(activity: Activity) {
         setSignInWithHuaweiIdResponse(Resource.loading())
         AGConnectAuth.getInstance().signIn(activity, AGConnectAuthCredential.HMS_Provider)
@@ -286,20 +310,5 @@ class AuthViewModel : ViewModel() {
         setNewAccountWithPhoneResult(Resource.empty())
         setSignInWithHuaweiIdResponse(Resource.empty())
     }
-
-    fun resetPassword(
-        countryCode: String,
-        phoneNumber: String,
-        newPassword: String,
-        verifyCode: String
-    ) {
-        AGConnectAuth.getInstance().resetPassword(countryCode, phoneNumber, newPassword, verifyCode)
-            .addOnSuccessListener {
-                // onSuccess
-            }.addOnFailureListener {
-                // onFail
-            }
-    }
-
 
 }

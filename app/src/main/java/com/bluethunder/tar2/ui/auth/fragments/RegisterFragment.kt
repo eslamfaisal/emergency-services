@@ -255,7 +255,9 @@ class RegisterFragment : BaseFragment() {
             return
         }
 
-        if (binding.passwordInput.text.toString().isEmpty()) {
+        if (binding.passwordInput.text.toString()
+                .isEmpty() || binding.passwordInput.text.toString().length < 6
+        )  {
             binding.passwordInput.error = getString(R.string.enter_password_err_msg)
             binding.passwordInput.showSnakeBarError(getString(R.string.enter_password_err_msg))
             return
