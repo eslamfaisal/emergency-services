@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -9,6 +10,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.ActivityMainBinding
+import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.ViewPagerFragmentAdapter
 import com.bluethunder.tar2.ui.home.fragments.CategorizedEmergencyCaseListFragment
@@ -38,7 +40,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         initViewPager()
+        binding.newCaseFabBtn.setOnClickListener {
+            goToCreateNewCase()
+        }
 
+    }
+
+    private fun goToCreateNewCase() {
+        val intent = Intent(this, EditCaseActivity::class.java)
+        intent.putExtra(EditCaseActivity.EXTRA_IS_NEW_CASE, true)
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     private fun initViewModel() {

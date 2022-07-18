@@ -164,7 +164,7 @@
         </com.google.android.material.bottomappbar.BottomAppBar>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/home_floating_button2"
+            android:id="@+id/new_case_fab_btn"
             android:layout_width="60dp"
             android:layout_height="80dp"
             android:layout_marginBottom="25dp"
