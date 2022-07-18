@@ -53,5 +53,8 @@
     <string name="cases">Cases</string>
     <string name="my_cases">My cases</string>
     <string name="menu">More</string>
+    <string name="add_new_case">Add New Case</string>
+    <string name="case_details">Case Details</string>
+    <string name="personal_details">Personal Details</string>
 
 </resources>

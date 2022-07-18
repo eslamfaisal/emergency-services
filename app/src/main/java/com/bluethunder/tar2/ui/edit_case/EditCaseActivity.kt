@@ -24,11 +24,20 @@ class EditCaseActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun initViewModel() {
+        initObservers()
+        viewModel.setOnMapSelected(2)
+    }
 
+    private fun initObservers() {
+        viewModel.onSelectedTabIndex.observe(this) {
+
+        }
     }
 
     companion object {
