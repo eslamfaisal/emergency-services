@@ -56,5 +56,11 @@
     <string name="add_new_case">Add New Case</string>
     <string name="case_details">Case Details</string>
     <string name="personal_details">Personal Details</string>
+    <string name="case_title">Case Title</string>
+    <string name="description">Description</string>
+    <string name="case_category">Case Category</string>
+    <string name="case_location">Location</string>
+    <string name="case_images">Case Images</string>
+    <string name="main_image">Main Image</string>
 
 </resources>

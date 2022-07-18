@@ -8,6 +8,7 @@
     <color name="colorGreyDark">#858585</color>
     <color name="colorGreyLight">#BFBFBF</color>
     <color name="colorGreyMedium">#CCCCCC</color>
+    <color name="colorGreyVeryLight">#F9F9F9</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorOrange">#FFBC3B</color>
