@@ -96,6 +96,8 @@
                     android:id="@+id/case_location_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableTint="@color/colorGreyLight"
+                    android:drawableEnd="@drawable/ic_baseline_location_on_24"
                     android:clickable="true"
                     android:focusable="false"
                     android:fontFamily="@font/poppins_regular"

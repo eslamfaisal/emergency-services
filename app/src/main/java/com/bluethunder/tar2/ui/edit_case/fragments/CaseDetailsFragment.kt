@@ -1,9 +1,11 @@
 package com.bluethunder.tar2.ui.edit_case.fragments
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,6 +17,8 @@ import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
+import com.google.android.material.internal.CheckableImageButton
+
 
 class CaseDetailsFragment : BaseFragment() {
 
@@ -71,6 +75,7 @@ class CaseDetailsFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initViews() {
         progressDialog = requireActivity().showLoadingDialog()
         binding.caseCategoryInput.setOnClickListener {
@@ -80,8 +85,30 @@ class CaseDetailsFragment : BaseFragment() {
         binding.caseLocationInput.setOnClickListener {
             viewModel.checkDeviceLocation(requireActivity())
         }
+        val togglePasswordButton = findTogglePasswordButton(binding.caseLocationInputLayout)
+        togglePasswordButton?.setOnTouchListener { view, motionEvent ->
+            if(motionEvent.action == MotionEvent.ACTION_DOWN) {
+                viewModel.checkDeviceLocation(requireActivity())
+                true
+            }
+            false
+        }
     }
-
+    private fun findTogglePasswordButton(viewGroup: ViewGroup): View? {
+        val childCount = viewGroup.childCount
+        for (ind in 0 until childCount) {
+            val child = viewGroup.getChildAt(ind)
+            if (child is ViewGroup) {
+                val togglePasswordButton = findTogglePasswordButton(child)
+                if (togglePasswordButton != null) {
+                    return togglePasswordButton
+                }
+            } else if (child is CheckableImageButton) {
+                return child
+            }
+        }
+        return null
+    }
 
     companion object
 }
