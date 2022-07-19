@@ -17,7 +17,7 @@ import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 
 class EditCaseActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<EditCaseViewModel> { getViewModelFactory() }
+    val viewModel by viewModels<EditCaseViewModel> { getViewModelFactory() }
 
     private lateinit var binding: ActivityEditCaseBinding
 
@@ -44,7 +44,6 @@ class EditCaseActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.checkDeviceLocation(this)
         viewModel.deviceLocationCheck.observe(this) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -60,7 +59,6 @@ class EditCaseActivity : AppCompatActivity() {
                     Log.e("EditCaseActivity", "Unknown error")
                 }
             }
-
         }
     }
 
