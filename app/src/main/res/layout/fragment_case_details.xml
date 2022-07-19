@@ -97,6 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableTint="@color/colorGreyLight"
+                    android:drawablePadding="8dp"
                     android:drawableEnd="@drawable/ic_baseline_location_on_24"
                     android:clickable="true"
                     android:focusable="false"
