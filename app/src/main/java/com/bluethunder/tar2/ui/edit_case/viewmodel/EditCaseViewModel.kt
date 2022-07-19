@@ -92,33 +92,32 @@ class EditCaseViewModel : ViewModel() {
 
     fun requestLastLocation(activity: Activity) {
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                setLastLocationValue(Resource.success(location))
-                getLocationName(location, activity)
-            }
-        }
-
-//        fusedLocationProviderClient
-//            .requestLocationUpdates(
-//                getLocationRequest(),
-//                object : LocationCallback() {
-//                    override fun onLocationResult(locationResult: LocationResult) {
-//                        locationResult.lastLocation?.let {
-//                            Log.d("EditCaseActivity", "onLocationResult: $it")
-//                            Log.d("EditCaseActivity", "onLocationResult: ${it.latitude}")
-//                            Log.d("EditCaseActivity", "onLocationResult: ${it.longitude}")
-//
-//                            setLastLocationValue(Resource.success(it))
-//                            getLocationName(it, activity)
-//                        }
-//                    }
-//                },
-//                Looper.getMainLooper()
-//            ).addOnSuccessListener {
-//                Log.d(TAG, "requestLastLocation: onSuccess")
+//        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+//            if (location != null) {
+//                setLastLocationValue(Resource.success(location))
+//                getLocationName(location, activity)
 //            }
+//        }
 
+        fusedLocationProviderClient
+            .requestLocationUpdates(
+                getLocationRequest(),
+                object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult) {
+                        locationResult.lastLocation?.let {
+                            Log.d("EditCaseActivity", "onLocationResult: $it")
+                            Log.d("EditCaseActivity", "onLocationResult: ${it.latitude}")
+                            Log.d("EditCaseActivity", "onLocationResult: ${it.longitude}")
+
+                            setLastLocationValue(Resource.success(it))
+                            getLocationName(it, activity)
+                        }
+                    }
+                },
+                Looper.getMainLooper()
+            ).addOnSuccessListener {
+                Log.d(TAG, "requestLastLocation: onSuccess")
+            }
 
     }
 

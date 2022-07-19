@@ -85,30 +85,8 @@ class CaseDetailsFragment : BaseFragment() {
         binding.caseLocationInput.setOnClickListener {
             viewModel.checkDeviceLocation(requireActivity())
         }
-        val togglePasswordButton = findTogglePasswordButton(binding.caseLocationInputLayout)
-        togglePasswordButton?.setOnTouchListener { view, motionEvent ->
-            if(motionEvent.action == MotionEvent.ACTION_DOWN) {
-                viewModel.checkDeviceLocation(requireActivity())
-                true
-            }
-            false
-        }
     }
-    private fun findTogglePasswordButton(viewGroup: ViewGroup): View? {
-        val childCount = viewGroup.childCount
-        for (ind in 0 until childCount) {
-            val child = viewGroup.getChildAt(ind)
-            if (child is ViewGroup) {
-                val togglePasswordButton = findTogglePasswordButton(child)
-                if (togglePasswordButton != null) {
-                    return togglePasswordButton
-                }
-            } else if (child is CheckableImageButton) {
-                return child
-            }
-        }
-        return null
-    }
+
 
     companion object
 }

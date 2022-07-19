@@ -40,7 +40,7 @@ class EditCaseActivity : AppCompatActivity() {
     private fun initViewModel() {
         initObservers()
         viewModel.setOnMapSelected(2)
-
+        viewModel.checkDeviceLocation(this)
     }
 
     private fun initObservers() {
