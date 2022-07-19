@@ -8,13 +8,14 @@
 
         <variable
             name="viewmodel"
-            type="com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel" />
+            type="com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16sp">
+        android:paddingStart="16sp"
+        android:paddingEnd="16dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
