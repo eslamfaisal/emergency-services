@@ -9,13 +9,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
+import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
 import com.huawei.hms.location.*
-import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -25,12 +24,11 @@ class EditCaseViewModel : ViewModel() {
         private val TAG = EditCaseViewModel::class.java.simpleName
     }
 
-    private val _onSelectedTabIndex = MutableLiveData(0)
-    val onSelectedTabIndex: LiveData<Int> = _onSelectedTabIndex
+    private val _currentCaseModel = MutableLiveData<Resource<CaseModel>>()
+    val currentCaseModel: LiveData<Resource<CaseModel>> = _currentCaseModel
 
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
-
 
     private val _deviceLocationCheck = MutableLiveData<Resource<String>>()
     val deviceLocationCheck: LiveData<Resource<String>> = _deviceLocationCheck
@@ -41,22 +39,6 @@ class EditCaseViewModel : ViewModel() {
     private val _lastLocation = MutableLiveData<Resource<Location>>()
     val lastLocation: LiveData<Resource<Location>> = _lastLocation
 
-
-    fun refresh() {
-
-        _dataLoading.value = true
-        viewModelScope.launch {
-            _dataLoading.value = false
-        }
-    }
-
-    fun setOnMapSelected(index: Int) {
-        Log.d(TAG, "setOnMapSelected: $index")
-        viewModelScope.launch {
-            _onSelectedTabIndex.value = index
-        }
-
-    }
 
     fun checkDeviceLocation(activity: Activity) {
         val settingsClient = LocationServices.getSettingsClient(activity)
@@ -121,10 +103,6 @@ class EditCaseViewModel : ViewModel() {
 
     }
 
-    private fun setLastLocationValue(success: Resource<Location>) {
-        _lastLocation.value = success
-    }
-
     fun getLocationName(location: Location, activity: Activity) {
         val geocoder = Geocoder(activity, Locale.getDefault())
         val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -135,17 +113,51 @@ class EditCaseViewModel : ViewModel() {
 
     }
 
-    private fun setAddressValue(toString: Resource<String>) {
-        _locationAddress.value = toString
-    }
-
-
     private fun getLocationRequest(): LocationRequest {
         val mLocationRequest = LocationRequest()
         mLocationRequest.interval = 5000
         mLocationRequest.fastestInterval = 2000
         mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         return mLocationRequest
+    }
+
+    private fun setLastLocationValue(success: Resource<Location>) {
+        _lastLocation.value = success
+    }
+
+    private fun setAddressValue(toString: Resource<String>) {
+        _locationAddress.value = toString
+    }
+
+    fun setCurrentCase(mCurrentCase: CaseModel) {
+        _currentCaseModel.value = Resource.success(mCurrentCase)
+    }
+
+
+    private var profileImageLocalPath: String = ""
+    var profileImageUrl: String = ""
+    private var imageSelected = false
+    var imageUploaded = false
+
+    fun setProfileImageLocalPath(path: String) {
+        profileImageLocalPath = path
+        setImageSelected(true)
+    }
+
+    fun setImageSelected(selected: Boolean) {
+        imageSelected = selected
+        if (!imageSelected) {
+            profileImageUrl = ""
+            imageUploaded = false
+        }
+    }
+
+    fun removeImage() {
+        setImageSelected(false)
+    }
+
+    fun isImageSelected(): Boolean {
+        return imageSelected
     }
 
 }

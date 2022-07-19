@@ -22,6 +22,94 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/image_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_camera"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="start"
+                    android:text="@string/case_images"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/main_image_placeholder_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorGreyVeryLight"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:scaleType="centerCrop"
+                                app:srcCompat="@drawable/ic_smal_place_holder" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/poppins_regular"
+                                android:text="@string/main_image"
+                                android:textStyle="bold" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/main_image_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/clear_profile_pic"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:visibility="visible">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:padding="2dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_close_24dp" />
+
+                    </androidx.cardview.widget.CardView>
+                </RelativeLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/image_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/case_title_input_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -88,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="@string/case_location"
+                android:hint="@string/case_current_location"
                 app:boxStrokeColor="@color/color_transparent"
                 app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium.Inverse">
 
@@ -96,103 +184,35 @@
                     android:id="@+id/case_location_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableTint="@color/colorGreyLight"
-                    android:drawablePadding="8dp"
-                    android:drawableEnd="@drawable/ic_baseline_location_on_24"
                     android:clickable="true"
+                    android:drawableEnd="@drawable/ic_current_location"
+                    android:drawablePadding="8dp"
                     android:focusable="false"
                     android:fontFamily="@font/poppins_regular"
                     android:inputType="textEmailAddress|textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/image_view_container"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:layout_marginBottom="24dp"
+                android:hint="@string/manual_address_optional"
+                app:boxStrokeColor="@color/color_transparent"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium.Inverse">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/case_manual_address_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_camera"
-                    android:drawablePadding="8dp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="start"
-                    android:text="@string/case_images"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold" />
+                    android:inputType="textEmailAddress|textMultiLine"
+                    android:minLines="3" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp">
-
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:id="@+id/main_image_placeholder_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/colorGreyVeryLight"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/profile_picture_view"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/ic_smal_place_holder" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:fontFamily="@font/poppins_regular"
-                                android:text="@string/main_image"
-                                android:textStyle="bold" />
-
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/main_image_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop" />
-
-                    </RelativeLayout>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/clear_profile_pic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:visibility="gone">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:scaleType="centerCrop"
-                            app:srcCompat="@drawable/ic_close_24dp" />
-
-                    </androidx.cardview.widget.CardView>
-                </RelativeLayout>
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/image_list_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.balysv.materialripple.MaterialRippleLayout
                 style="@style/RippleStyleWhite"

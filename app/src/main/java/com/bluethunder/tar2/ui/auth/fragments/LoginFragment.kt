@@ -190,6 +190,7 @@ class LoginFragment : Fragment() {
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
+                    parsingError(resource.errorBody.toString())
                     Log.d(TAG, "initViewModel: ${resource.errorBody}")
                     progressDialog.dismiss()
                 }

@@ -62,5 +62,8 @@
     <string name="case_location">Location</string>
     <string name="case_images">Case Images</string>
     <string name="main_image">Main Image</string>
+    <string name="case_current_location">Current Location</string>
+    <string name="manual_address_optional">Address (Optional)</string>
+    <string name="account_not_found">No Account found, Please Register first</string>
 
 </resources>

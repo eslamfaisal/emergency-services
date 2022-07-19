@@ -168,6 +168,18 @@ class RegisterFragment : BaseFragment() {
 //        completeCreateAccount()
     }
 
+    private fun clearImage() {
+        binding.profilePictureView.setImageResource(R.drawable.ic_place_holder)
+        binding.clearProfilePic.visibility = View.GONE
+        viewModel.removeImage()
+    }
+
+    private fun imageSelected(fileUri: Uri) {
+        binding.clearProfilePic.visibility = View.VISIBLE
+        binding.profilePictureView.setImageURI(fileUri)
+        viewModel.setProfileImageLocalPath(fileUri.path!!)
+    }
+
     private val startForProfileImageResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val resultCode = result.resultCode
@@ -192,17 +204,6 @@ class RegisterFragment : BaseFragment() {
             }
         }
 
-    private fun clearImage() {
-        binding.profilePictureView.setImageResource(R.drawable.ic_place_holder)
-        binding.clearProfilePic.visibility = View.GONE
-        viewModel.removeImage()
-    }
-
-    private fun imageSelected(fileUri: Uri) {
-        binding.clearProfilePic.visibility = View.VISIBLE
-        binding.profilePictureView.setImageURI(fileUri)
-        viewModel.setProfileImageLocalPath(fileUri.path!!)
-    }
 
     private fun pickImage() {
         ImagePicker.with(this)

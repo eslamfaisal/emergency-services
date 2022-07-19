@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.bluethunder.tar2.databinding.ActivityEditCaseBinding
 import com.bluethunder.tar2.model.Status
+import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 
@@ -21,6 +22,7 @@ class EditCaseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditCaseBinding
     var isNewCase = false
+    lateinit var mCurrentCase: CaseModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,10 @@ class EditCaseActivity : AppCompatActivity() {
 
     private fun initIntentExtra() {
         isNewCase = intent.getBooleanExtra(EXTRA_IS_NEW_CASE, false)
+        if (isNewCase) {
+            mCurrentCase = CaseModel()
+        }
+        viewModel.setCurrentCase(mCurrentCase)
     }
 
     private fun initViews() {
@@ -45,7 +51,6 @@ class EditCaseActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         initObservers()
-        viewModel.setOnMapSelected(2)
         viewModel.checkDeviceLocation(this)
     }
 
@@ -57,9 +62,6 @@ class EditCaseActivity : AppCompatActivity() {
                 }
                 Status.ERROR -> {
                     showRequestDeviceLocationErrorDialog()
-                }
-                Status.LOADING -> {
-                    Log.e("EditCaseActivity", "Loading")
                 }
                 else -> {
                     Log.e("EditCaseActivity", "Unknown error")

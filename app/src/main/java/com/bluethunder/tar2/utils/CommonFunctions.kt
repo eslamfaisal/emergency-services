@@ -13,6 +13,8 @@ fun Context.getErrorMsg(msg: String): String {
         this.getString(R.string.no_enternet_connection)
     } else if (msg.contains("code: 203818038")) {
         this.getString(R.string.phone_regestered_before_mss)
+    }else if (msg.contains("User not found")) {
+        this.getString(R.string.account_not_found)
     } else if (msg.contains("code: 203818032")) {
         this.getString(R.string.incorrect_phone_or_password)
     }else if (msg.contains("code: 203818129")) {
