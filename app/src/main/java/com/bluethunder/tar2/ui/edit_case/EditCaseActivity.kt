@@ -4,42 +4,24 @@ import android.Manifest
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
 import android.content.pm.PackageManager
-import android.location.Location
-import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.bluethunder.tar2.databinding.ActivityEditCaseBinding
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
-import com.bluethunder.tar2.ui.edit_case.viewmodel.LocationViewModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
+import com.huawei.hmf.tasks.OnSuccessListener
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
-
-import com.huawei.hms.location.LocationRequest
-import com.huawei.hms.location.LocationServices
-import com.huawei.hms.location.LocationSettingsRequest
-import com.huawei.hms.location.LocationSettingsStatusCodes
-import com.patloew.colocation.CoGeocoder
-import com.patloew.colocation.CoLocation
+import com.huawei.hms.location.*
 
 
 class EditCaseActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<EditCaseViewModel> { getViewModelFactory() }
-    private val locationViewModel: LocationViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T =
-                LocationViewModel(
-                    CoLocation.from(this@EditCaseActivity),
-                    CoGeocoder.from(this@EditCaseActivity)
-                ) as T
-        }
-    }
 
     private lateinit var binding: ActivityEditCaseBinding
 
@@ -69,82 +51,58 @@ class EditCaseActivity : AppCompatActivity() {
         viewModel.onSelectedTabIndex.observe(this) {
 
         }
-
-        lifecycle.addObserver(locationViewModel)
-        locationViewModel.resolveSettingsEvent.observe(this) {
-            it.resolve(
-                this, REQUEST_SHOW_SETTINGS
-            )
-        }
-        observeLocation()
-    }
-
-    private fun observeLocation() {
-        locationViewModel.locationUpdates.observe(this, this::onLocationUpdate)
-    }
-
-    private fun onLocationUpdate(location: Location?) {
-        if (location == null) return
-
-        Log.d("EditCaseActivity", "onLocationUpdate: $location")
-        Log.d("EditCaseActivity", "onLocationUpdate: ${location.latitude}")
-        Log.d("EditCaseActivity", "onLocationUpdate: ${location.longitude}")
-
+        checkDeviceLocation()
     }
 
     fun requestLocationPermission() {
-
-        // Dynamically apply for required permissions if the API level is 28 or smaller.
-        // Dynamically apply for required permissions if the API level is 28 or smaller.
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            Log.i(TAG, "android sdk <= 28 Q")
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                val strings = arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-                ActivityCompat.requestPermissions(this, strings, 1)
-            } else {
-                observeLocation()
-            }
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val strings = arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            ActivityCompat.requestPermissions(this, strings, REQUEST_LOCATION_PERMISSION)
         } else {
-            // Dynamically apply for required permissions if the API level is greater than 28. The android.permission.ACCESS_BACKGROUND_LOCATION permission is required.
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    "android.permission.ACCESS_BACKGROUND_LOCATION"
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                val strings = arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    "android.permission.ACCESS_BACKGROUND_LOCATION"
-                )
-                ActivityCompat.requestPermissions(this, strings, 2)
-            } else {
-                observeLocation()
-            }
+            requestLastLocation()
         }
     }
 
 
+    fun requestLastLocation() {
+
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationProviderClient
+            .requestLocationUpdates(
+                getLocationRequest(),
+                object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult) {
+                        locationResult.lastLocation?.let {
+                            Log.d("EditCaseActivity", "onLocationResult: $it")
+                            Log.d("EditCaseActivity", "onLocationResult: ${it.latitude}")
+                            Log.d("EditCaseActivity", "onLocationResult: ${it.longitude}")
+                        }
+                    }
+
+                },
+                Looper.getMainLooper()
+            ).addOnSuccessListener {
+                Log.d(TAG, "requestLastLocation: onSuccess")
+            }
+    }
+
     fun checkDeviceLocation() {
+
         val settingsClient = LocationServices.getSettingsClient(this)
         val builder = LocationSettingsRequest.Builder()
-        val mLocationRequest = LocationRequest()
+        val mLocationRequest = getLocationRequest()
+
         builder.addLocationRequest(mLocationRequest)
         val locationSettingsRequest = builder.build()
         settingsClient.checkLocationSettings(locationSettingsRequest) // Define callback for success in checking the device location settings.
@@ -169,6 +127,14 @@ class EditCaseActivity : AppCompatActivity() {
             }
     }
 
+    private fun getLocationRequest(): LocationRequest {
+        val mLocationRequest = LocationRequest()
+        mLocationRequest.interval = 5000
+        mLocationRequest.fastestInterval = 2000
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        return mLocationRequest
+    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -179,7 +145,7 @@ class EditCaseActivity : AppCompatActivity() {
         when (requestCode) {
             REQUEST_LOCATION_PERMISSION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    observeLocation()
+                   requestLastLocation()
                 } else {
                     Log.i(TAG, "Permission denied")
                 }
