@@ -20,6 +20,7 @@ class EditCaseActivity : AppCompatActivity() {
     val viewModel by viewModels<EditCaseViewModel> { getViewModelFactory() }
 
     private lateinit var binding: ActivityEditCaseBinding
+    var isNewCase = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +28,13 @@ class EditCaseActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         setContentView(binding.root)
 
+        initIntentExtra()
         initViews()
         initViewModel()
+    }
+
+    private fun initIntentExtra() {
+        isNewCase = intent.getBooleanExtra(EXTRA_IS_NEW_CASE, false)
     }
 
     private fun initViews() {
@@ -107,7 +113,7 @@ class EditCaseActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            REQUEST_SHOW_SETTINGS -> {
+            REQUEST_DEVICE_SETTINGS -> {
                 if (resultCode == Activity.RESULT_OK) {
                     requestLocationPermission()
                 } else {
@@ -119,7 +125,7 @@ class EditCaseActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_IS_NEW_CASE = "com.bluethunder.tar2.ui.edit_case.EXTRA_IS_NEW_CASE"
-        private const val REQUEST_SHOW_SETTINGS = 123
+        const val REQUEST_DEVICE_SETTINGS = 123
         const val REQUEST_LOCATION_PERMISSION = 124
         private const val TAG = "EditCaseActivity"
 

@@ -77,7 +77,7 @@ class EditCaseViewModel : ViewModel() {
                         // Call startResolutionForResult to display a pop-up asking the user to enable related permission.
                         rae.startResolutionForResult(
                             activity,
-                            EditCaseActivity.REQUEST_LOCATION_PERMISSION
+                            EditCaseActivity.REQUEST_DEVICE_SETTINGS
                         )
                     } catch (sie: IntentSender.SendIntentException) {
                         setDeviceLocationCheckValue(Resource.error("Unable to resolve location settings: ${sie.message}"))
