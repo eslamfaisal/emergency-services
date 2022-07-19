@@ -78,6 +78,7 @@ class LoginFragment : Fragment() {
         binding.huaweiIdSignInBtn.setOnClickListener {
             viewModel.signInWithHuaweiId(requireActivity())
         }
+
         binding.forgetPassword.setOnClickListener {
             try {
                 findNavController(this).navigate(R.id.action_loginFragment_to_changePasswordFragment)
@@ -90,6 +91,7 @@ class LoginFragment : Fragment() {
     private fun setUpPhoneNumberTextField() {
         phoneNumberKit =
             PhoneNumberKit.Builder((requireActivity() as AuthActivity)).setIconEnabled(true).build()
+
         try {
             val tm =
                 requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager

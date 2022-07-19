@@ -330,4 +330,9 @@ class AuthViewModel : ViewModel() {
         setSignInWithHuaweiIdResponse(Resource.empty())
     }
 
+    fun changeLanguage() {
+
+
+    }
+
 }

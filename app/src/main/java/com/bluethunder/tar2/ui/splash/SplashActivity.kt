@@ -9,9 +9,11 @@ import com.bluethunder.tar2.cloud_db.CloudDBWrapper
 import com.bluethunder.tar2.cloud_db.CloudStorageWrapper
 import com.bluethunder.tar2.databinding.ActivitySplashBinding
 import com.bluethunder.tar2.ui.auth.AuthActivity
+import com.bluethunder.tar2.ui.extentions.setAppLocale
 import com.bluethunder.tar2.ui.home.MainActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys.IS_LOGGED_IN
+import com.bluethunder.tar2.utils.SharedHelperKeys.LANGUAGE_KEY
 import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.cloud.database.AGConnectCloudDB
 import java.io.File
@@ -21,12 +23,15 @@ class SplashActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "SplashActivity"
     }
+
     private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initLanguage()
 
         binding.root.postDelayed({
             runOnUiThread {
@@ -39,6 +44,15 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
         }, 1000)
+    }
+
+    private fun initLanguage() {
+        SharedHelper.getString(this, LANGUAGE_KEY, defaultValue = "en").let {
+            Log.d(TAG, "currentLanguage from splash: ${it}")
+            it?.let { setAppLocale(this, it) } ?: kotlin.run {
+                setAppLocale(this, "en")
+            }
+        }
     }
 
     private fun openCloudDBZones() {

@@ -1,13 +1,19 @@
 package com.bluethunder.tar2.ui.extentions
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 
 fun Context.showLoadingDialog(): Dialog {
@@ -31,4 +37,17 @@ fun View.showSnakeBarError(message: String) {
         .setActionTextColor(
             ContextCompat.getColor(this.context, R.color.colorWhite)
         ).show()
+}
+
+fun setAppLocale(activity: Activity, languageCode: String) {
+    val locale = Locale(languageCode)
+    Locale.setDefault(locale)
+    val resources: Resources = activity.resources
+    val config: Configuration = resources.configuration
+    config.setLocale(locale)
+    resources.updateConfiguration(config, resources.displayMetrics)
+    val intent = Intent(activity, AuthActivity::class.java)
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+    activity.startActivity(intent)
+    activity.finish()
 }

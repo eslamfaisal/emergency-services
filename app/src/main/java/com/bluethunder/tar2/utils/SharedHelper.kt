@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 object SharedHelperKeys {
     const val IS_LOGGED_IN = "isLoggedIn"
     const val USER_DATA = "userData"
+    const val LANGUAGE_KEY = "languageKey"
 }
 
 object SharedHelper {
@@ -21,9 +22,9 @@ object SharedHelper {
         editor.commit()
     }
 
-    fun getString(contextGetKey: Context, Key: String?): String? {
+    fun getString(contextGetKey: Context, Key: String?, defaultValue: String? = ""): String? {
         sharedPreferences = contextGetKey.getSharedPreferences(KEY, Context.MODE_PRIVATE)
-        return sharedPreferences.getString(Key, "")
+        return sharedPreferences.getString(Key, defaultValue)
     }
 
     fun getBoolean(contextGetKey: Context, Key: String?): Boolean {
