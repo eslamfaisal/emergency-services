@@ -96,9 +96,24 @@ class AuthViewModel : ViewModel() {
 
     fun createUserToDatabase(userModel: UserModel) {
         userModel.id = AGConnectAuth.getInstance().currentUser?.uid
-        mTar2APPCloudDBZone!!.executeUpsert(userModel).addOnCompleteListener {
+        val query = CloudDBZoneQuery.where(UserModel::class.java)
+            .equalTo("id", userModel.id).limit(1)
+        mTar2APPCloudDBZone!!.executeQuery(
+            query,
+            CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
+        ).addOnCompleteListener {
             if (it.isSuccessful) {
-                setCreateUserData(Resource.success(userModel))
+                if (it.result.snapshotObjects.size() > 0) {
+                    setCreateUserData(Resource.error("code: 203818038"))
+                } else {
+                    mTar2APPCloudDBZone!!.executeUpsert(userModel).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            setCreateUserData(Resource.success(userModel))
+                        } else {
+                            setCreateUserData(Resource.error(it.exception?.message))
+                        }
+                    }
+                }
             } else {
                 setCreateUserData(Resource.error(it.exception?.message))
             }

@@ -25,6 +25,7 @@ import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys.IS_LOGGED_IN
 import com.bluethunder.tar2.utils.SharedHelperKeys.USER_DATA
 import com.bluethunder.tar2.utils.getErrorMsg
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 
 
@@ -133,7 +134,7 @@ class VerifyPhoneFragment : BaseFragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-                    onPhoneVerified(resource.data!!)
+                    onPhoneVerified()
                     progressDialog.dismiss()
                 }
                 Status.ERROR -> {
@@ -180,9 +181,7 @@ class VerifyPhoneFragment : BaseFragment() {
         requireActivity().finish()
     }
 
-    private fun onPhoneVerified(msg: String) {
-        binding.phoneTv.showSnakeBarError(msg)
-
+    private fun onPhoneVerified() {
         createUserToDatabase()
     }
 
@@ -191,7 +190,22 @@ class VerifyPhoneFragment : BaseFragment() {
     }
 
     private fun parseErrorCodeBody(errorBody: String) {
-        binding.phoneTv.showSnakeBarError(requireActivity().getErrorMsg(errorBody))
+        if (errorBody.contains("203818038")) {
+            showRegisteredBeforeAccountDialog()
+        } else
+            binding.phoneTv.showSnakeBarError(requireActivity().getErrorMsg(errorBody))
+    }
+
+    private fun showRegisteredBeforeAccountDialog() {
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setMessage(getString(R.string.phone_regestered_before_mss))
+            .setPositiveButton(getString(R.string.ok)) { dialog, which ->
+                dialog.dismiss()
+                requireActivity().onBackPressed()
+            }
+            .setCancelable(false)
+            .create()
+        dialog.show()
     }
 
     private fun createAccountWithPhone() {
