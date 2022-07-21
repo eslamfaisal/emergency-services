@@ -79,4 +79,14 @@ public final class CaseCategoryModel extends CloudDBZoneObject {
         return priority;
     }
 
+    @Override
+    public String toString() {
+        return "CaseCategoryModel{" +
+                "id='" + id + '\'' +
+                ", nameAr='" + nameAr + '\'' +
+                ", nameEn='" + nameEn + '\'' +
+                ", reference='" + reference + '\'' +
+                ", priority=" + priority +
+                '}';
+    }
 }

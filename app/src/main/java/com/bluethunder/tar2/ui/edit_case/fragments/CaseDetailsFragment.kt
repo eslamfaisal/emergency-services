@@ -7,22 +7,25 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants.currentLanguage
 import com.bluethunder.tar2.databinding.FragmentCaseDetailsBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
+import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
+import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.internal.CheckableImageButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class CaseDetailsFragment : BaseFragment() {
@@ -57,7 +60,7 @@ class CaseDetailsFragment : BaseFragment() {
     private fun initViews() {
         progressDialog = requireActivity().showLoadingDialog()
         binding.caseCategoryInput.setOnClickListener {
-            Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
+            serviceHistoryDialog?.show()
         }
 
         binding.caseLocationInput.setOnClickListener {
@@ -79,22 +82,36 @@ class CaseDetailsFragment : BaseFragment() {
     }
 
     private fun validateCaseData() {
+
+        if (!viewModel.isImageSelected())
+            binding.caseTitleInput.showSnakeBarError(getString(R.string.select_iameg))
+
         if (binding.caseTitleInput.text.toString().isEmpty()) {
-            binding.caseTitleInput.error = "Please enter a title"
+            binding.caseTitleInput.error = getString(R.string.case_title_err_msg)
+            binding.caseTitleInput.showSnakeBarError(getString(R.string.case_title_err_msg))
             return
         }
         if (binding.caseCategoryInput.text.toString().isEmpty()) {
-            binding.caseCategoryInput.error = "Please enter a category"
+            binding.caseCategoryInput.error = getString(R.string.choose_category_err_msg)
+            binding.caseCategoryInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
         }
         if (binding.caseLocationInput.text.toString().isEmpty()) {
-            binding.caseLocationInput.error = "Please enter a location"
+            binding.caseLocationInput.error = getString(R.string.location_err_msg)
+            binding.caseCategoryInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
         }
+
         if (binding.caseDescriptionInput.text.toString().isEmpty()) {
-            binding.caseDescriptionInput.error = "Please enter a description"
+            binding.caseDescriptionInput.error = getString(R.string.enter_description)
+            binding.caseDescriptionInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
         }
+
+        moveToPersonalDataPage()
+    }
+
+    private fun moveToPersonalDataPage() {
 
     }
 
@@ -109,6 +126,7 @@ class CaseDetailsFragment : BaseFragment() {
         viewModel = (requireActivity() as EditCaseActivity).viewModel
         binding.viewmodel = viewModel
 
+        viewModel.getCategories()
         initObservers()
     }
 
@@ -130,6 +148,48 @@ class CaseDetailsFragment : BaseFragment() {
                 }
             }
         }
+
+        viewModel.categories.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dismiss()
+                    Log.d("EditCaseActivity ", "Categories : ${resource.data}")
+                    resource.data?.let {
+                        setUpCategoriesDialog(it)
+                    } ?: run {
+                        Log.d(TAG, "initObservers: categories is null")
+                    }
+
+                }
+                Status.LOADING -> {
+                    progressDialog.show()
+                    Log.e("EditCaseActivity", "Loading")
+                }
+                else -> {
+                    progressDialog.dismiss()
+                    Log.e("EditCaseActivity", "Unknown error")
+                }
+            }
+        }
+    }
+
+    var selectedCategoryModel: CaseCategoryModel? = null
+    var serviceHistoryDialog: AlertDialog? = null
+    private fun setUpCategoriesDialog(data: MutableList<CaseCategoryModel>) {
+        val historyOptions = data.map { if (currentLanguage == "ar") it.nameAr else it.nameEn }
+            .toMutableList()
+
+        val checkedItem = -1
+        serviceHistoryDialog = MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(getString(R.string.select_category))
+            .setPositiveButton(resources.getString(R.string.cancel)) { dialog, which ->
+                dialog.dismiss()
+            }
+            .setSingleChoiceItems(historyOptions.toTypedArray(), checkedItem) { dialog, which ->
+                selectedCategoryModel = data[which]
+                binding.caseCategoryInput.setText(historyOptions[which])
+                dialog.dismiss()
+            }.create()
     }
 
     private val startForProfileImageResult =
@@ -151,7 +211,7 @@ class CaseDetailsFragment : BaseFragment() {
                     ).show()
                 }
                 else -> {
-                    Toast.makeText(requireActivity(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+
                 }
             }
         }
@@ -178,5 +238,7 @@ class CaseDetailsFragment : BaseFragment() {
     }
 
 
-    companion object
+    companion object {
+        private const val TAG = "CaseDetailsFragment"
+    }
 }

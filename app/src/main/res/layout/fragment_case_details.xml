@@ -88,7 +88,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentEnd="true"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="match_parent"
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/case_title"
                 app:boxStrokeColor="@color/color_transparent"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium.Inverse">
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/case_title_input"
@@ -136,7 +136,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/description"
                 app:boxStrokeColor="@color/color_transparent"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium.Inverse">
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/case_description_input"
@@ -157,7 +157,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/case_category"
                 app:boxStrokeColor="@color/color_transparent"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium.Inverse">
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/case_category_input"
@@ -178,7 +178,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/case_current_location"
                 app:boxStrokeColor="@color/color_transparent"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium.Inverse">
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/case_location_input"
@@ -201,7 +201,7 @@
                 android:layout_marginBottom="24dp"
                 android:hint="@string/manual_address_optional"
                 app:boxStrokeColor="@color/color_transparent"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium.Inverse">
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/case_manual_address_input"

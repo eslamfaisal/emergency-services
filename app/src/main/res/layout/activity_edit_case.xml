@@ -77,6 +77,7 @@
                     app:cardCornerRadius="5dp" />
 
                 <View
+                    android:id="@+id/case_line_view"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginStart="-2dp"
@@ -85,6 +86,7 @@
                     android:background="@color/colorGreyLight" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/pd_circle_view"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
                     app:cardBackgroundColor="@color/colorBlack"
@@ -99,6 +101,7 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/case_details_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
@@ -112,6 +115,7 @@
                     android:layout_weight="1" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/personal_data_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"

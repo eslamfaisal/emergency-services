@@ -9,9 +9,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bluethunder.tar2.cloud_db.CloudDBWrapper
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
+import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
+import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
+import com.huawei.agconnect.cloud.database.exceptions.AGConnectCloudDBException
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
 import com.huawei.hms.location.*
@@ -23,6 +27,9 @@ class EditCaseViewModel : ViewModel() {
     companion object {
         private val TAG = EditCaseViewModel::class.java.simpleName
     }
+
+    private val _selectedFragmentIndex = MutableLiveData(0)
+    val selectedFragmentIndex: LiveData<Int> = _selectedFragmentIndex
 
     private val _currentCaseModel = MutableLiveData<Resource<CaseModel>>()
     val currentCaseModel: LiveData<Resource<CaseModel>> = _currentCaseModel
@@ -38,6 +45,9 @@ class EditCaseViewModel : ViewModel() {
 
     private val _lastLocation = MutableLiveData<Resource<Location>>()
     val lastLocation: LiveData<Resource<Location>> = _lastLocation
+
+    private val _categories = MutableLiveData<Resource<MutableList<CaseCategoryModel>>>()
+    val categories: LiveData<Resource<MutableList<CaseCategoryModel>>> = _categories
 
 
     fun checkDeviceLocation(activity: Activity) {
@@ -121,6 +131,39 @@ class EditCaseViewModel : ViewModel() {
         return mLocationRequest
     }
 
+    fun getCategories() {
+        val query = CloudDBZoneQuery.where(CaseCategoryModel::class.java)
+            .orderByDesc("priority")
+        CloudDBWrapper.mTar2APPCloudDBZone!!.executeQuery(
+            query,
+            CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
+        ).addOnCompleteListener {
+            if (it.isSuccessful) {
+
+                val bookInfoCursor = it.result.snapshotObjects
+                val categoriesList: MutableList<CaseCategoryModel> = ArrayList()
+                try {
+                    while (bookInfoCursor.hasNext()) {
+                        val bookInfo = bookInfoCursor.next()
+                        categoriesList.add(bookInfo)
+                    }
+                } catch (e: AGConnectCloudDBException) {
+                    Log.w(TAG, "processQueryResult: " + e.message)
+                } finally {
+                    it.result.release()
+                }
+
+                setCategoriesValue(Resource.success(categoriesList))
+            } else {
+                setCategoriesValue(Resource.error(it.exception?.message))
+            }
+        }
+    }
+
+    private fun setCategoriesValue(success: Resource<MutableList<CaseCategoryModel>>) {
+        _categories.value = success
+    }
+
     private fun setLastLocationValue(success: Resource<Location>) {
         _lastLocation.value = success
     }
@@ -133,6 +176,9 @@ class EditCaseViewModel : ViewModel() {
         _currentCaseModel.value = Resource.success(mCurrentCase)
     }
 
+    fun setSelectedFragmentIndex(index: Int) {
+        _selectedFragmentIndex.value = index
+    }
 
     private var profileImageLocalPath: String = ""
     var profileImageUrl: String = ""

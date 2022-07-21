@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.cloud_db.CloudDBWrapper
 import com.bluethunder.tar2.cloud_db.CloudStorageWrapper
 import com.bluethunder.tar2.databinding.ActivitySplashBinding
@@ -47,11 +48,9 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun initLanguage() {
-        SharedHelper.getString(this, LANGUAGE_KEY, defaultValue = "en").let {
-            Log.d(TAG, "currentLanguage from splash: ${it}")
-            it?.let { setAppLocale(this, it) } ?: kotlin.run {
-                setAppLocale(this, "en")
-            }
+        SharedHelper.getString(this, LANGUAGE_KEY, defaultValue = "en")?.let {
+            SessionConstants.currentLanguage = it
+            setAppLocale(this, it)
         }
     }
 

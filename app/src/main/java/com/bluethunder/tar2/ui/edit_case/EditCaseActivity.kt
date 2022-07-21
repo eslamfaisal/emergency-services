@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.ActivityEditCaseBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
@@ -52,6 +53,20 @@ class EditCaseActivity : AppCompatActivity() {
     private fun initViewModel() {
         initObservers()
         viewModel.checkDeviceLocation(this)
+        viewModel.selectedFragmentIndex.observe(this) {
+            binding.caseDetailsTv.textSize = if (it == 0) 18f else 14f
+            binding.personalDataTv.textSize = if (it == 1) 18f else 14f
+            binding.caseLineView.setBackgroundColor(
+                if (it == 0) resources.getColor(R.color.colorGreyLight) else resources.getColor(
+                    R.color.colorBlack
+                )
+            )
+            binding.pdCircleView.setCardBackgroundColor(
+                if (it == 0) resources.getColor(R.color.colorGreyLight) else resources.getColor(
+                    R.color.colorBlack
+                )
+            )
+        }
     }
 
     private fun initObservers() {

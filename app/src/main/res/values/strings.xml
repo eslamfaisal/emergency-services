@@ -66,5 +66,12 @@
     <string name="case_current_location">Current Location</string>
     <string name="manual_address_optional">Address (Optional)</string>
     <string name="account_not_found">No Account found, Please Register first</string>
+    <string name="case_title_err_msg">Please enter a the case title</string>
+    <string name="choose_category_err_msg">Please choose a category</string>
+    <string name="location_err_msg">Please open the device location and accept location permission to get current location coordinates for the case</string>
+    <string name="enter_description">Please enter a description</string>
+    <string name="select_category">Select category</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_iameg">Please Select Image</string>
 
 </resources>

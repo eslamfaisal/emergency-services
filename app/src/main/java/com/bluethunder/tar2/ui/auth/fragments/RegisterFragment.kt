@@ -199,7 +199,7 @@ class RegisterFragment : BaseFragment() {
                     ).show()
                 }
                 else -> {
-                    Toast.makeText(requireActivity(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+                    
                 }
             }
         }
