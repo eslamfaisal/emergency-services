@@ -83,8 +83,10 @@ class CaseDetailsFragment : BaseFragment() {
 
     private fun validateCaseData() {
 
-        if (!viewModel.isImageSelected())
+        if (!viewModel.isImageSelected()){
             binding.caseTitleInput.showSnakeBarError(getString(R.string.select_iameg))
+            return
+        }
 
         if (binding.caseTitleInput.text.toString().isEmpty()) {
             binding.caseTitleInput.error = getString(R.string.case_title_err_msg)
@@ -113,6 +115,7 @@ class CaseDetailsFragment : BaseFragment() {
 
     private fun moveToPersonalDataPage() {
 
+        viewModel.setSelectedFragmentIndex(1)
     }
 
     private fun removeImage() {
