@@ -4,31 +4,30 @@
  */
 package com.bluethunder.tar2.ui.auth.model;
 
+import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel;
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel;
 import com.huawei.agconnect.cloud.database.CloudDBZoneObject;
 import com.huawei.agconnect.cloud.database.ObjectTypeInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Definition of ObjectType Helper.
  *
- * @since 2022-07-17
+ * @since 2022-07-22
  */
 public final class ObjectTypeInfoHelper {
     private static final int FORMAT_VERSION = 2;
-    private static final int OBJECT_TYPE_VERSION = 15;
+    private static final int OBJECT_TYPE_VERSION = 17;
 
     public static ObjectTypeInfo getObjectTypeInfo() {
         ObjectTypeInfo objectTypeInfo = new ObjectTypeInfo();
         objectTypeInfo.setFormatVersion(FORMAT_VERSION);
         objectTypeInfo.setObjectTypeVersion(OBJECT_TYPE_VERSION);
         List<Class<? extends CloudDBZoneObject>> objectTypeList = new ArrayList<>();
-        objectTypeList.add(UserModel.class);
-        objectTypeList.add(CaseModel.class);
+        Collections.addAll(objectTypeList, UserModel.class, CaseCategoryModel.class, CaseModel.class);
         objectTypeInfo.setObjectTypes(objectTypeList);
         return objectTypeInfo;
     }

@@ -77,7 +77,7 @@ class SplashActivity : AppCompatActivity() {
         if (isLoggedIn) {
             openHomeActivity()
         } else {
-            openSplashActivity()
+            openAuthActivity()
         }
     }
 
@@ -89,7 +89,7 @@ class SplashActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun openSplashActivity() {
+    private fun openAuthActivity() {
         val intent = Intent(this, AuthActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)

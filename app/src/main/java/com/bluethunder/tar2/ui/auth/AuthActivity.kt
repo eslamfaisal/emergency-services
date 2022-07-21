@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -28,6 +29,11 @@ class AuthActivity : BaseActivity() {
                     SharedHelper.putString(this, SharedHelperKeys.LANGUAGE_KEY, "en")
                     setAppLocale(this, "en")
                 }
+
+                val intent = Intent(this, AuthActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
             }
         }
     }

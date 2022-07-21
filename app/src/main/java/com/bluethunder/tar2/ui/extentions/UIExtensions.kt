@@ -46,8 +46,4 @@ fun setAppLocale(activity: Activity, languageCode: String) {
     val config: Configuration = resources.configuration
     config.setLocale(locale)
     resources.updateConfiguration(config, resources.displayMetrics)
-    val intent = Intent(activity, AuthActivity::class.java)
-    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-    activity.startActivity(intent)
-    activity.finish()
 }

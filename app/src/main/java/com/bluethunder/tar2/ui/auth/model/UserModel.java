@@ -4,23 +4,24 @@
  */
 package com.bluethunder.tar2.ui.auth.model;
 
-import androidx.annotation.Keep;
-
 import com.huawei.agconnect.cloud.database.CloudDBZoneObject;
+import com.huawei.agconnect.cloud.database.Text;
+import com.huawei.agconnect.cloud.database.annotations.DefaultValue;
+import com.huawei.agconnect.cloud.database.annotations.EntireEncrypted;
+import com.huawei.agconnect.cloud.database.annotations.NotNull;
 import com.huawei.agconnect.cloud.database.annotations.Indexes;
 import com.huawei.agconnect.cloud.database.annotations.PrimaryKeys;
 
-import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Definition of ObjectType UserModel.
  *
- * @since 2022-07-17
+ * @since 2022-07-22
  */
-@Keep
 @PrimaryKeys({"id"})
 @Indexes({"id:id"})
-public final class UserModel extends CloudDBZoneObject implements Serializable {
+public final class UserModel extends CloudDBZoneObject {
     private String id;
 
     private String pushToken;
