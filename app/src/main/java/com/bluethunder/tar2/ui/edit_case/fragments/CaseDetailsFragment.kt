@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants.currentLanguage
 import com.bluethunder.tar2.databinding.FragmentCaseDetailsBinding
@@ -24,6 +25,7 @@ import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -83,7 +85,7 @@ class CaseDetailsFragment : BaseFragment() {
 
     private fun validateCaseData() {
 
-        if (!viewModel.isImageSelected()){
+        if (!viewModel.isImageSelected()) {
             binding.caseTitleInput.showSnakeBarError(getString(R.string.select_iameg))
             return
         }
@@ -114,14 +116,18 @@ class CaseDetailsFragment : BaseFragment() {
     }
 
     private fun moveToPersonalDataPage() {
+        try {
+            findNavController().navigate(
+                R.id.action_caseDetailsFragment_to_casePersonalDataFragment
+            )
+            viewModel.setSelectedFragmentIndex(1)
+        } catch (e: Exception) {
+        }
 
-        viewModel.setSelectedFragmentIndex(1)
     }
 
     private fun removeImage() {
-        binding.mainImagePlaceholderView.visibility = View.VISIBLE
-        binding.clearProfilePic.visibility = View.GONE
-        binding.mainImageView.visibility = View.GONE
+        showMainImagePlaceHolder()
         viewModel.removeImage()
     }
 
@@ -134,6 +140,33 @@ class CaseDetailsFragment : BaseFragment() {
     }
 
     private fun initObservers() {
+        viewModel.currentCaseModel.observe(viewLifecycleOwner) { caseModel ->
+
+            caseModel.mainImage?.let {
+                viewModel.setImageSelected(true)
+                viewModel.imageUploaded = true
+                showMainImage(false, imageUrl = it)
+            } ?: run {
+                showMainImagePlaceHolder()
+            }
+
+            caseModel.title?.let {
+                binding.caseTitleInput.setText(it)
+            }
+
+            caseModel.description?.let {
+                binding.caseDescriptionInput.setText(it)
+            }
+
+            caseModel.address?.let {
+                binding.caseManualAddressInput.setText(it)
+            }
+
+            caseModel.locationName?.let {
+                binding.caseLocationInput.setText(it)
+            }
+        }
+
         viewModel.locationAddress.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -204,7 +237,7 @@ class CaseDetailsFragment : BaseFragment() {
                 Activity.RESULT_OK -> {
                     //Image Uri will not be null for RESULT_OK
                     val fileUri = data?.data!!
-                    imageSelected(fileUri)
+                    localeImageSelected(fileUri)
                 }
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(
@@ -233,13 +266,32 @@ class CaseDetailsFragment : BaseFragment() {
             }
     }
 
-    private fun imageSelected(fileUri: Uri) {
-        binding.clearProfilePic.visibility = View.VISIBLE
-        binding.mainImageView.visibility = View.VISIBLE
-        binding.mainImageView.setImageURI(fileUri)
-        viewModel.setProfileImageLocalPath(fileUri.path!!)
+    private fun localeImageSelected(fileUri: Uri) {
+        showMainImage(true, fileUri = fileUri)
     }
 
+    fun showMainImagePlaceHolder() {
+        binding.clearProfilePic.visibility = View.GONE
+        binding.mainImageView.visibility = View.GONE
+        binding.mainImagePlaceholderView.visibility = View.VISIBLE
+    }
+
+    fun showMainImage(isLocale: Boolean, fileUri: Uri? = null, imageUrl: String? = null) {
+        binding.clearProfilePic.visibility = View.VISIBLE
+        binding.mainImageView.visibility = View.VISIBLE
+        binding.mainImagePlaceholderView.visibility = View.GONE
+
+        if (isLocale) {
+            fileUri?.let {
+                binding.mainImageView.setImageURI(fileUri)
+                viewModel.setProfileImageLocalPath(fileUri.path!!)
+            }
+        } else {
+            Glide.with(this)
+                .load(imageUrl)
+                .into(binding.mainImageView)
+        }
+    }
 
     companion object {
         private const val TAG = "CaseDetailsFragment"

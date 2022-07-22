@@ -20,7 +20,7 @@ import java.util.List;
  */
 public final class ObjectTypeInfoHelper {
     private static final int FORMAT_VERSION = 2;
-    private static final int OBJECT_TYPE_VERSION = 17;
+    private static final int OBJECT_TYPE_VERSION = 19;
 
     public static ObjectTypeInfo getObjectTypeInfo() {
         ObjectTypeInfo objectTypeInfo = new ObjectTypeInfo();

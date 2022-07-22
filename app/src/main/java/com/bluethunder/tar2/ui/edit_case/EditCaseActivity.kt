@@ -148,4 +148,9 @@ class EditCaseActivity : AppCompatActivity() {
 
         //https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides-V5/location-develop-steps-0000001050746143-V5#EN-US_TOPIC_0000001050746143__section090594025818
     }
+
+    override fun onBackPressed() {
+        viewModel.onBackPressed()
+        super.onBackPressed()
+    }
 }

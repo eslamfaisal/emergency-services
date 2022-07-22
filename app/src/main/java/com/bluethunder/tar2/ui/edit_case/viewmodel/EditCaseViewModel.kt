@@ -31,8 +31,8 @@ class EditCaseViewModel : ViewModel() {
     private val _selectedFragmentIndex = MutableLiveData(0)
     val selectedFragmentIndex: LiveData<Int> = _selectedFragmentIndex
 
-    private val _currentCaseModel = MutableLiveData<Resource<CaseModel>>()
-    val currentCaseModel: LiveData<Resource<CaseModel>> = _currentCaseModel
+    private val _currentCaseModel = MutableLiveData<CaseModel>()
+    val currentCaseModel: LiveData<CaseModel> = _currentCaseModel
 
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -125,8 +125,8 @@ class EditCaseViewModel : ViewModel() {
 
     private fun getLocationRequest(): LocationRequest {
         val mLocationRequest = LocationRequest()
-        mLocationRequest.interval = 5000
-        mLocationRequest.fastestInterval = 2000
+        mLocationRequest.interval = 2000
+        mLocationRequest.fastestInterval = 1000
         mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         return mLocationRequest
     }
@@ -173,7 +173,7 @@ class EditCaseViewModel : ViewModel() {
     }
 
     fun setCurrentCase(mCurrentCase: CaseModel) {
-        _currentCaseModel.value = Resource.success(mCurrentCase)
+        _currentCaseModel.value = mCurrentCase
     }
 
     fun setSelectedFragmentIndex(index: Int) {
@@ -204,6 +204,12 @@ class EditCaseViewModel : ViewModel() {
 
     fun isImageSelected(): Boolean {
         return imageSelected
+    }
+
+    fun onBackPressed() {
+        if (selectedFragmentIndex.value!! > 0) {
+            setSelectedFragmentIndex(0)
+        }
     }
 
 }

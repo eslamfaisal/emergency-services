@@ -28,6 +28,8 @@ public final class CaseModel extends CloudDBZoneObject {
 
     private String images;
 
+    private String mainImage;
+
     private String latitude;
 
     private String longitude;
@@ -39,6 +41,11 @@ public final class CaseModel extends CloudDBZoneObject {
     private String hasOnlineCall;
 
     private String hasVideoCall;
+
+    private String locationName;
+
+    private String address;
+
 
     public CaseModel() {
         super(CaseModel.class);
@@ -92,6 +99,14 @@ public final class CaseModel extends CloudDBZoneObject {
         return images;
     }
 
+    public void setMainImage(String mainImage) {
+        this.mainImage = mainImage;
+    }
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
@@ -140,4 +155,19 @@ public final class CaseModel extends CloudDBZoneObject {
         return hasVideoCall;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
 }

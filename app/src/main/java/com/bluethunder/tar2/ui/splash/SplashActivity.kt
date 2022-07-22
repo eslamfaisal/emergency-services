@@ -39,9 +39,7 @@ class SplashActivity : AppCompatActivity() {
                 try {
                     openCloudDBZones()
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                    deleteCache(this)
-                    recreate()
+                    Log.e(TAG, "Error opening cloud db zones", e)
                 }
             }
         }, 1000)
@@ -65,8 +63,6 @@ class SplashActivity : AppCompatActivity() {
                 checkLogin()
             } else {
                 Log.d(TAG, "openCloudDBZones: failed to open cloud db zone recreate then")
-                deleteCache(this)
-                recreate()
             }
         }
     }
