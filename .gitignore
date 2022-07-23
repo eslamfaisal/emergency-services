@@ -90,3 +90,4 @@ lint/tmp/
 gradlew
 
 gradlew.bat
+/private_key.pepk
