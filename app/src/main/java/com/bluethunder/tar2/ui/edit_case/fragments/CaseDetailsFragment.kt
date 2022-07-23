@@ -140,51 +140,14 @@ class CaseDetailsFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewModel.currentCaseModel.observe(viewLifecycleOwner) { caseModel ->
+        initObserveCaseDetails()
 
-            caseModel.mainImage?.let {
-                viewModel.setImageSelected(true)
-                viewModel.imageUploaded = true
-                showMainImage(false, imageUrl = it)
-            } ?: run {
-                showMainImagePlaceHolder()
-            }
+        initObserveLocationAddress()
 
-            caseModel.title?.let {
-                binding.caseTitleInput.setText(it)
-            }
+        initObserveCategories()
+    }
 
-            caseModel.description?.let {
-                binding.caseDescriptionInput.setText(it)
-            }
-
-            caseModel.address?.let {
-                binding.caseManualAddressInput.setText(it)
-            }
-
-            caseModel.locationName?.let {
-                binding.caseLocationInput.setText(it)
-            }
-        }
-
-        viewModel.locationAddress.observe(viewLifecycleOwner) { resource ->
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    progressDialog.dismiss()
-                    binding.caseLocationInput.setText(resource.data.toString())
-                    Log.d("EditCaseActivity ", "Addressnae : ${resource.data}")
-                }
-                Status.LOADING -> {
-                    progressDialog.show()
-                    Log.e("EditCaseActivity", "Loading")
-                }
-                else -> {
-                    progressDialog.dismiss()
-                    Log.e("EditCaseActivity", "Unknown error")
-                }
-            }
-        }
-
+    private fun initObserveCategories() {
         viewModel.categories.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -205,6 +168,59 @@ class CaseDetailsFragment : BaseFragment() {
                     progressDialog.dismiss()
                     Log.e("EditCaseActivity", "Unknown error")
                 }
+            }
+        }
+    }
+
+    private fun initObserveLocationAddress() {
+        viewModel.locationAddress.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dismiss()
+                    binding.caseLocationInput.setText(resource.data.toString())
+                    Log.d("EditCaseActivity ", "Addressnae : ${resource.data}")
+                }
+                Status.LOADING -> {
+                    progressDialog.show()
+                    Log.e("EditCaseActivity", "Loading")
+                }
+                else -> {
+                    progressDialog.dismiss()
+                    Log.e("EditCaseActivity", "Unknown error")
+                }
+            }
+        }
+    }
+
+    private fun initObserveCaseDetails() {
+        viewModel.currentCaseModel.observe(viewLifecycleOwner) { caseModel ->
+            Log.d(TAG, "initObservers: caseModel $caseModel")
+            caseModel.mainImage?.let {
+                viewModel.setImageSelected(true)
+                viewModel.imageUploaded = true
+                showMainImage(false, imageUrl = it)
+            } ?: run {
+                if (viewModel.isImageSelected()) {
+                    showMainImage(false, imageUrl = viewModel.getProfileImageLocalPath())
+                } else {
+                    showMainImagePlaceHolder()
+                }
+            }
+
+            caseModel.title?.let {
+                binding.caseTitleInput.setText(it)
+            }
+
+            caseModel.description?.let {
+                binding.caseDescriptionInput.setText(it)
+            }
+
+            caseModel.address?.let {
+                binding.caseManualAddressInput.setText(it)
+            }
+
+            caseModel.locationName?.let {
+                binding.caseLocationInput.setText(it)
             }
         }
     }

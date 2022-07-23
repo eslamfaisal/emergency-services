@@ -170,4 +170,25 @@ public final class CaseModel extends CloudDBZoneObject {
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
+
+    @Override
+    public String toString() {
+        return "CaseModel{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", images='" + images + '\'' +
+                ", mainImage='" + mainImage + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", showUserData=" + showUserData +
+                ", hasPhoneCall=" + hasPhoneCall +
+                ", hasOnlineCall='" + hasOnlineCall + '\'' +
+                ", hasVideoCall='" + hasVideoCall + '\'' +
+                ", locationName='" + locationName + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }

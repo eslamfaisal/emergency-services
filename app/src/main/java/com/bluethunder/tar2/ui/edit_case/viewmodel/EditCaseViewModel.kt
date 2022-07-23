@@ -57,16 +57,13 @@ class EditCaseViewModel : ViewModel() {
 
         builder.addLocationRequest(mLocationRequest)
         val locationSettingsRequest = builder.build()
-        settingsClient.checkLocationSettings(locationSettingsRequest) // Define callback for success in checking the device location settings.
+        settingsClient.checkLocationSettings(locationSettingsRequest)
             .addOnSuccessListener {
                 setDeviceLocationCheckValue(Resource.success("Location settings are satisfied."))
-            } // Define callback for failure in checking the device location settings.
-            .addOnFailureListener { e ->
-                // Device location settings do not meet the requirements.
+            }.addOnFailureListener { e ->
                 when ((e as ApiException).statusCode) {
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
                         val rae: ResolvableApiException = e as ResolvableApiException
-                        // Call startResolutionForResult to display a pop-up asking the user to enable related permission.
                         rae.startResolutionForResult(
                             activity,
                             EditCaseActivity.REQUEST_DEVICE_SETTINGS
@@ -188,6 +185,10 @@ class EditCaseViewModel : ViewModel() {
     fun setProfileImageLocalPath(path: String) {
         profileImageLocalPath = path
         setImageSelected(true)
+    }
+
+    fun getProfileImageLocalPath(): String {
+        return profileImageLocalPath
     }
 
     fun setImageSelected(selected: Boolean) {

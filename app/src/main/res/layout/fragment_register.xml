@@ -69,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16sp"
+                    android:layoutDirection="ltr"
                     android:hint="@string/full_name"
                     app:boxStrokeColor="@color/color_transparent">
 
@@ -86,6 +87,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layoutDirection="ltr"
                     android:layout_marginTop="8dp"
                     android:hint="@string/phone_number"
                     app:boxStrokeColor="@color/color_transparent">
@@ -105,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:hint="@string/password"
+                    android:layoutDirection="ltr"
                     app:boxStrokeColor="@color/color_transparent"
                     app:passwordToggleEnabled="true">
 
