@@ -85,6 +85,9 @@ class CaseDetailsFragment : BaseFragment() {
 
     private fun validateCaseData() {
 
+
+        moveToPersonalDataPage()
+
         if (!viewModel.isImageSelected()) {
             binding.caseTitleInput.showSnakeBarError(getString(R.string.select_iameg))
             return
@@ -112,7 +115,6 @@ class CaseDetailsFragment : BaseFragment() {
             return
         }
 
-        moveToPersonalDataPage()
     }
 
     private fun moveToPersonalDataPage() {

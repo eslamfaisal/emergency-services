@@ -75,8 +75,8 @@ dependencies {
     implementation 'com.huawei.hms:location:6.4.0.300'
 
 //    //firebase
-//    implementation platform('com.google.firebase:firebase-bom:30.2.0')
-//    implementation 'com.google.firebase:firebase-firestore'
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    implementation 'com.google.firebase:firebase-firestore'
 
     //third party
     implementation 'com.github.ibrahimsn98:PhoneNumberKit:2.0.6'

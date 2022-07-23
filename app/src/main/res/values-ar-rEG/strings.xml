@@ -67,11 +67,12 @@
     <string name="case_current_location">الموقع الحالي</string>
     <string name="manual_address_optional">العنوان (اختياري)</string>
     <string name="account_not_found">لم يتم العثور على حساب ، الرجاء التسجيل أولاً</string>
-    <string name="case_title_err_msg">Please enter a the case title</string>
-    <string name="choose_category_err_msg">Please choose a category</string>
-    <string name="location_err_msg">Please open the device location and accept location permission to get current location coordinates for the case</string>
-    <string name="enter_description">Please enter a description</string>
-    <string name="select_category">Select category</string>
-    <string name="cancel">Cancel</string>
-    <string name="select_iameg">Please Select Image</string>
+    <string name="case_title_err_msg">الرجاء إدخال عنوان الحالة</string>
+    <string name="choose_category_err_msg">الرجاء اختيار فئة</string>
+    <string name="location_err_msg">يرجى فتح موقع الجهاز وقبول إذن الموقع للحصول على إحداثيات الموقع الحالي للحالة</string>
+    <string name="enter_description">الرجاء إدخال وصف</string>
+    <string name="select_category">اختر الفئة</string>
+    <string name="cancel">إلغاء</string>
+    <string name="select_iameg">الرجاء تحديد الصورة</string>
+    <string name="showing_personal_details">إظهار البيانات الشخصية</string>
 </resources>

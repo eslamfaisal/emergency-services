@@ -2,6 +2,7 @@ package com.bluethunder.tar2.ui.edit_case.fragments
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,18 @@ class CasePersonalDataFragment : BaseFragment() {
     private fun initViewModel() {
         viewModel = (requireActivity() as EditCaseActivity).viewModel
         binding.viewmodel = viewModel
+
+        initObserveCaseDetails()
     }
+
+    private fun initObserveCaseDetails() {
+        viewModel.currentCaseModel.observe(viewLifecycleOwner) { caseModel ->
+            Log.d(TAG, "initObservers: caseModel $caseModel")
+
+
+        }
+    }
+
 
     companion object {
         private const val TAG = "CasePersonalDataFragmen"

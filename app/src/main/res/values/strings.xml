@@ -73,5 +73,6 @@
     <string name="select_category">Select category</string>
     <string name="cancel">Cancel</string>
     <string name="select_iameg">Please Select Image</string>
+    <string name="showing_personal_details">Showing Personal Details</string>
 
 </resources>
