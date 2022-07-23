@@ -88,10 +88,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16sp"
+                    android:enabled="false"
                     android:hint="@string/full_name"
                     android:layoutDirection="ltr"
-                    app:boxStrokeColor="@color/color_transparent"
-                    app:boxStrokeWidth="0dp">
+                    app:boxStrokeColor="@color/color_transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/name_input"
@@ -108,10 +108,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:enabled="false"
                     android:hint="@string/phone_number"
                     android:layoutDirection="ltr"
-                    app:boxStrokeColor="@color/color_transparent"
-                    app:boxStrokeWidth="0dp">
+                    app:boxStrokeColor="@color/color_transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/phone_number_input"

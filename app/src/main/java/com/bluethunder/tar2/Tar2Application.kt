@@ -16,9 +16,6 @@
 package com.bluethunder.tar2
 
 import android.app.Application
-import com.huawei.agconnect.AGCRoutePolicy
-import com.huawei.agconnect.AGConnectInstance
-import com.huawei.agconnect.cloud.database.AGConnectCloudDB
 
 class Tar2Application : Application() {
     override fun onCreate() {
@@ -26,10 +23,4 @@ class Tar2Application : Application() {
 
     }
 
-    private fun initHMS() {
-        if (AGConnectInstance.getInstance() == null) {
-            AGConnectInstance.initialize(this)
-        }
-        AGConnectCloudDB.initialize(this)
-    }
 }

@@ -9,13 +9,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bluethunder.tar2.cloud_db.CloudDBWrapper
+import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
-import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
-import com.huawei.agconnect.cloud.database.exceptions.AGConnectCloudDBException
+import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
 import com.huawei.hms.location.*
@@ -129,32 +128,17 @@ class EditCaseViewModel : ViewModel() {
     }
 
     fun getCategories() {
-        val query = CloudDBZoneQuery.where(CaseCategoryModel::class.java)
-            .orderByDesc("priority")
-        CloudDBWrapper.mTar2APPCloudDBZone!!.executeQuery(
-            query,
-            CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
-        ).addOnCompleteListener {
-            if (it.isSuccessful) {
-
-                val bookInfoCursor = it.result.snapshotObjects
-                val categoriesList: MutableList<CaseCategoryModel> = ArrayList()
-                try {
-                    while (bookInfoCursor.hasNext()) {
-                        val bookInfo = bookInfoCursor.next()
-                        categoriesList.add(bookInfo)
-                    }
-                } catch (e: AGConnectCloudDBException) {
-                    Log.w(TAG, "processQueryResult: " + e.message)
-                } finally {
-                    it.result.release()
+        FirebaseFirestore.getInstance()
+            .collection(FirestoreReferences.CaseCategoriesCollection.value()).get()
+            .addOnSuccessListener {
+                val categories = mutableListOf<CaseCategoryModel>()
+                it.forEach {
+                    categories.add(it.toObject(CaseCategoryModel::class.java))
                 }
-
-                setCategoriesValue(Resource.success(categoriesList))
-            } else {
-                setCategoriesValue(Resource.error(it.exception?.message))
+                setCategoriesValue(Resource.success(categories))
+            }.addOnFailureListener {
+                setCategoriesValue(Resource.error(it.message))
             }
-        }
     }
 
     private fun setCategoriesValue(success: Resource<MutableList<CaseCategoryModel>>) {

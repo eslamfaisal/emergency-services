@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.FragmentCasePersonalDataBinding
 import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
@@ -49,6 +50,8 @@ class CasePersonalDataFragment : BaseFragment() {
 
     private fun initViews() {
         progressDialog = requireActivity().showLoadingDialog()
+        binding.phoneNumberInput.setText(SessionConstants.currentLoggedInUserModel!!.phone!!)
+        binding.nameInput.setText(SessionConstants.currentLoggedInUserModel!!.name!!)
     }
 
     private fun initViewModel() {

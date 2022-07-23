@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.FragmentVerifyPhoneBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
@@ -166,6 +167,7 @@ class VerifyPhoneFragment : BaseFragment() {
     }
 
     fun goToHome(data: UserModel) {
+        SessionConstants.currentLoggedInUserModel = data
         Toast.makeText(requireContext(), getString(R.string.register_succ_msg), Toast.LENGTH_LONG)
             .show()
         val userDataJson = Gson().toJson(data)

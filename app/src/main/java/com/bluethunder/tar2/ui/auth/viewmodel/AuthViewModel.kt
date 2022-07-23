@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bluethunder.tar2.cloud_db.CloudDBWrapper.mTar2APPCloudDBZone
 import com.bluethunder.tar2.cloud_db.CloudStorageWrapper.storageManagement
+import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.auth.model.UserModel
+import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.agconnect.auth.*
-import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
@@ -75,49 +75,43 @@ class AuthViewModel : ViewModel() {
 
 
     fun getUserDetails(it: SignInResult) {
-        val query = CloudDBZoneQuery.where(UserModel::class.java)
-            .equalTo("id", it.user.uid).limit(1)
-        mTar2APPCloudDBZone!!.executeQuery(
-            query,
-            CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
-        ).addOnCompleteListener {
-            if (it.isSuccessful) {
-                if (it.result.snapshotObjects.size() > 0) {
-                    val user = it.result.snapshotObjects.get(0) as UserModel
+        FirebaseFirestore.getInstance()
+            .collection(FirestoreReferences.UsersCollection.value())
+            .document(it.user.uid).get()
+            .addOnSuccessListener {
+                try {
+                    val user: UserModel = it.toObject(UserModel::class.java)!!
                     setUserData(Resource.success(user))
-                } else {
-                    setUserData(Resource.error("User not found"))
+                } catch (e: Exception) {
+                    setUserData(Resource.error(e.message))
                 }
-            } else {
-                setUserData(Resource.error(it.exception?.message))
+            }.addOnFailureListener {
+                setUserData(Resource.error(it.message))
             }
-        }
     }
 
     fun createUserToDatabase(userModel: UserModel) {
         userModel.id = AGConnectAuth.getInstance().currentUser?.uid
-        val query = CloudDBZoneQuery.where(UserModel::class.java)
-            .equalTo("id", userModel.id).limit(1)
-        mTar2APPCloudDBZone!!.executeQuery(
-            query,
-            CloudDBZoneQuery.CloudDBZoneQueryPolicy.POLICY_QUERY_DEFAULT
-        ).addOnCompleteListener {
-            if (it.isSuccessful) {
-                if (it.result.snapshotObjects.size() > 0) {
+
+        FirebaseFirestore.getInstance()
+            .collection(FirestoreReferences.UsersCollection.value())
+            .document(userModel.id).get()
+            .addOnSuccessListener {
+                if (it.exists()) {
                     setCreateUserData(Resource.error("code: 203818038"))
                 } else {
-                    mTar2APPCloudDBZone!!.executeUpsert(userModel).addOnCompleteListener {
-                        if (it.isSuccessful) {
+                    FirebaseFirestore.getInstance()
+                        .collection(FirestoreReferences.UsersCollection.value())
+                        .document(userModel.id).set(userModel)
+                        .addOnSuccessListener {
                             setCreateUserData(Resource.success(userModel))
-                        } else {
-                            setCreateUserData(Resource.error(it.exception?.message))
+                        }.addOnFailureListener {
+                            setCreateUserData(Resource.error(it.message))
                         }
-                    }
                 }
-            } else {
-                setCreateUserData(Resource.error(it.exception?.message))
+            }.addOnFailureListener {
+                setUserData(Resource.error(it.message))
             }
-        }
     }
 
     private fun setCreateUserData(error: Resource<UserModel>) {
