@@ -76,7 +76,7 @@ dependencies {
 
 //    //firebase
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
-    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 
     //third party
     implementation 'com.github.ibrahimsn98:PhoneNumberKit:2.0.6'
