@@ -197,4 +197,29 @@ class EditCaseViewModel : ViewModel() {
         }
     }
 
+    fun reverseShowPersonalData() {
+        val case = currentCaseModel.value!!
+        case.showUserData = !case.showUserData
+        setCurrentCase(case)
+    }
+
+    fun handleCaseCallViewPhoneNumber() {
+        val case = currentCaseModel.value!!
+        case.hasPhoneCall = !case.hasPhoneCall
+        setCurrentCase(case)
+    }
+
+    fun handleCallViaOnlineCall() {
+        val case = currentCaseModel.value!!
+        case.hasOnlineCall = !case.hasOnlineCall
+        setCurrentCase(case)
+    }
+
+    fun handleCallViaVideoCall() {
+        val case = currentCaseModel.value!!
+        case.hasVideoCall = !case.hasVideoCall
+        setCurrentCase(case)
+    }
+
+
 }

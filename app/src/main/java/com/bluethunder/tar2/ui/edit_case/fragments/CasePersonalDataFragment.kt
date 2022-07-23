@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
@@ -50,8 +51,60 @@ class CasePersonalDataFragment : BaseFragment() {
 
     private fun initViews() {
         progressDialog = requireActivity().showLoadingDialog()
+
+        binding.showPersonalDataBox.setOnClickListener {
+            handleShowPersonalData()
+        }
         binding.phoneNumberInput.setText(SessionConstants.currentLoggedInUserModel!!.phone!!)
         binding.nameInput.setText(SessionConstants.currentLoggedInUserModel!!.name!!)
+
+        binding.contactMeViaPhoneView.setOnClickListener {
+            handleCallViaPHoneNumber()
+        }
+
+        binding.contactMeViaOnlineCallView.setOnClickListener {
+            handleCallViaOnlineCall()
+        }
+
+        binding.contactMeViaVideoCallView.setOnClickListener {
+            handleCallViaVideoCall()
+        }
+    }
+
+    private fun handleCallViaVideoCall() {
+        viewModel.handleCallViaVideoCall()
+        binding.contactMeViaPhone.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireActivity(),
+                if (viewModel.currentCaseModel.value!!.hasPhoneCall)
+                    R.drawable.ic_selected_check_box
+                else R.drawable.ic_unselected_check_box
+            )
+        )
+    }
+
+    private fun handleCallViaPHoneNumber() {
+        viewModel.handleCaseCallViewPhoneNumber()
+        binding.contactMeViaPhone.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireActivity(),
+                if (viewModel.currentCaseModel.value!!.hasPhoneCall)
+                    R.drawable.ic_selected_check_box
+                else R.drawable.ic_unselected_check_box
+            )
+        )
+    }
+
+    private fun handleCallViaOnlineCall() {
+        viewModel.handleCallViaOnlineCall()
+        binding.contactMeViaOnlineCall.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireActivity(),
+                if (viewModel.currentCaseModel.value!!.hasPhoneCall)
+                    R.drawable.ic_selected_check_box
+                else R.drawable.ic_unselected_check_box
+            )
+        )
     }
 
     private fun initViewModel() {
@@ -64,11 +117,24 @@ class CasePersonalDataFragment : BaseFragment() {
     private fun initObserveCaseDetails() {
         viewModel.currentCaseModel.observe(viewLifecycleOwner) { caseModel ->
             Log.d(TAG, "initObservers: caseModel $caseModel")
-
-
+            initShowUSerData(caseModel.showUserData)
         }
     }
 
+    private fun initShowUSerData(showUserData: Boolean) {
+        binding.personalDataLayout.visibility = if (showUserData) View.VISIBLE else View.GONE
+        binding.personalDataCheckbox.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireActivity(),
+                if (showUserData) R.drawable.ic_selected_check_box
+                else R.drawable.ic_unselected_check_box
+            )
+        )
+    }
+
+    fun handleShowPersonalData() {
+        viewModel.reverseShowPersonalData()
+    }
 
     companion object {
         private const val TAG = "CasePersonalDataFragmen"
