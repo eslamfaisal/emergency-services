@@ -91,26 +91,38 @@ class CaseDetailsFragment : BaseFragment() {
             return
         }
 
+
         if (binding.caseTitleInput.text.toString().isEmpty()) {
             binding.caseTitleInput.error = getString(R.string.case_title_err_msg)
             binding.caseTitleInput.showSnakeBarError(getString(R.string.case_title_err_msg))
             return
+        } else {
+            viewModel.setCaseTitle(binding.caseTitleInput.text.toString())
         }
+
         if (binding.caseCategoryInput.text.toString().isEmpty()) {
             binding.caseCategoryInput.error = getString(R.string.choose_category_err_msg)
             binding.caseCategoryInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
+        } else {
+            viewModel.setCaseCategory(selectedCategoryModel!!.id)
         }
+
+
         if (binding.caseLocationInput.text.toString().isEmpty()) {
             binding.caseLocationInput.error = getString(R.string.location_err_msg)
             binding.caseCategoryInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
+        } else {
+            viewModel.setCaseLocation(binding.caseLocationInput.text.toString())
         }
 
         if (binding.caseDescriptionInput.text.toString().isEmpty()) {
             binding.caseDescriptionInput.error = getString(R.string.enter_description)
             binding.caseDescriptionInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
+        } else {
+            viewModel.setCaseDescription(binding.caseDescriptionInput.text.toString())
         }
 
         moveToPersonalDataPage()
