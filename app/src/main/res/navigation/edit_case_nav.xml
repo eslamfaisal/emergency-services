@@ -7,10 +7,14 @@
     <fragment
         android:id="@+id/caseDetailsFragment"
         android:name="com.bluethunder.tar2.ui.edit_case.fragments.CaseDetailsFragment"
-        android:label="CaseDetailsFragment" >
+        android:label="CaseDetailsFragment">
         <action
             android:id="@+id/action_caseDetailsFragment_to_casePersonalDataFragment"
-            app:destination="@id/casePersonalDataFragment" />
+            app:destination="@id/casePersonalDataFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/casePersonalDataFragment"

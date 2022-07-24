@@ -14,6 +14,7 @@ class CaseModel : Serializable {
     var latitude: String? = null
     var longitude: String? = null
     var showUserData = true
+    var hasChatMessages = true
     var hasPhoneCall = true
     var hasOnlineCall = true
     var hasVideoCall = true
@@ -33,6 +34,7 @@ class CaseModel : Serializable {
                 ", longitude='" + longitude + '\'' +
                 ", showUserData=" + showUserData +
                 ", hasPhoneCall=" + hasPhoneCall +
+                ", hasChatMessages=" + hasChatMessages +
                 ", hasOnlineCall='" + hasOnlineCall + '\'' +
                 ", hasVideoCall='" + hasVideoCall + '\'' +
                 ", locationName='" + locationName + '\'' +

@@ -209,7 +209,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/contact_me_via_online_call_view"
+                android:id="@+id/contact_me_via_chat_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -220,7 +220,7 @@
                 android:paddingBottom="8dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/contact_me_via_online_call"
+                    android:id="@+id/contact_me_chat"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     app:srcCompat="@drawable/ic_selected_check_box" />
@@ -231,43 +231,36 @@
                     android:layout_marginStart="16dp"
                     android:drawablePadding="16dp"
                     android:gravity="center"
-                    android:text="@string/online_call"
+                    android:text="@string/chat"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/contact_me_via_video_call_view"
-                android:layout_width="wrap_content"
+            <com.balysv.materialripple.MaterialRippleLayout
+                style="@style/RippleStyleWhite"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/contact_me_via_video_call"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    app:srcCompat="@drawable/ic_selected_check_box" />
+                android:layout_marginTop="16sp"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:drawablePadding="16dp"
+                    android:id="@+id/btn_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/main_btn_bg"
+                    android:fontFamily="@font/poppins_regular"
                     android:gravity="center"
-                    android:text="@string/online_call"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="18sp" />
+                    android:text="@string/publish"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
+            </com.balysv.materialripple.MaterialRippleLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

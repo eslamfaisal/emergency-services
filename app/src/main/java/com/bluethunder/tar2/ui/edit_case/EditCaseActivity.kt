@@ -15,6 +15,7 @@ import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class EditCaseActivity : AppCompatActivity() {
@@ -40,6 +41,7 @@ class EditCaseActivity : AppCompatActivity() {
         isNewCase = intent.getBooleanExtra(EXTRA_IS_NEW_CASE, false)
         if (isNewCase) {
             mCurrentCase = CaseModel()
+            mCurrentCase.id = FirebaseFirestore.getInstance().collection("cases").document().id
         }
         viewModel.setCurrentCase(mCurrentCase)
     }

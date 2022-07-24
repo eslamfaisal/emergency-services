@@ -86,8 +86,6 @@ class CaseDetailsFragment : BaseFragment() {
     private fun validateCaseData() {
 
 
-        moveToPersonalDataPage()
-
         if (!viewModel.isImageSelected()) {
             binding.caseTitleInput.showSnakeBarError(getString(R.string.select_iameg))
             return
@@ -114,6 +112,8 @@ class CaseDetailsFragment : BaseFragment() {
             binding.caseDescriptionInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
         }
+
+        moveToPersonalDataPage()
 
     }
 
@@ -147,7 +147,9 @@ class CaseDetailsFragment : BaseFragment() {
         initObserveLocationAddress()
 
         initObserveCategories()
+
     }
+
 
     private fun initObserveCategories() {
         viewModel.categories.observe(viewLifecycleOwner) { resource ->

@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bluethunder.tar2.cloud_db.CloudStorageWrapper
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
 import com.huawei.hms.location.*
+import java.io.File
 import java.util.*
 
 
@@ -33,8 +35,8 @@ class EditCaseViewModel : ViewModel() {
     private val _currentCaseModel = MutableLiveData<CaseModel>()
     val currentCaseModel: LiveData<CaseModel> = _currentCaseModel
 
-    private val _dataLoading = MutableLiveData(false)
-    val dataLoading: LiveData<Boolean> = _dataLoading
+    private val _savingCaseModel = MutableLiveData<Resource<Boolean>>()
+    val savingCaseModel: LiveData<Resource<Boolean>> = _savingCaseModel
 
     private val _deviceLocationCheck = MutableLiveData<Resource<String>>()
     val deviceLocationCheck: LiveData<Resource<String>> = _deviceLocationCheck
@@ -48,6 +50,8 @@ class EditCaseViewModel : ViewModel() {
     private val _categories = MutableLiveData<Resource<MutableList<CaseCategoryModel>>>()
     val categories: LiveData<Resource<MutableList<CaseCategoryModel>>> = _categories
 
+    private val _uploadingImage = MutableLiveData<Resource<Boolean>>()
+    val uploadingImage: LiveData<Resource<Boolean>> = _uploadingImage
 
     fun checkDeviceLocation(activity: Activity) {
         val settingsClient = LocationServices.getSettingsClient(activity)
@@ -78,6 +82,10 @@ class EditCaseViewModel : ViewModel() {
         _deviceLocationCheck.value = resource
     }
 
+    fun setSavingCaseModelValue(resource: Resource<Boolean>) {
+        _savingCaseModel.value = resource
+    }
+
     fun requestLastLocation(activity: Activity) {
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
 //        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
@@ -93,9 +101,11 @@ class EditCaseViewModel : ViewModel() {
                 object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult) {
                         locationResult.lastLocation?.let {
-                            Log.d("EditCaseActivity", "onLocationResult: $it")
-                            Log.d("EditCaseActivity", "onLocationResult: ${it.latitude}")
-                            Log.d("EditCaseActivity", "onLocationResult: ${it.longitude}")
+
+                            val case = currentCaseModel.value!!
+                            case.latitude = it.latitude.toString()
+                            case.longitude = it.longitude.toString()
+                            setCurrentCase(case)
 
                             setLastLocationValue(Resource.success(it))
                             getLocationName(it, activity)
@@ -110,11 +120,17 @@ class EditCaseViewModel : ViewModel() {
     }
 
     fun getLocationName(location: Location, activity: Activity) {
-        val geocoder = Geocoder(activity, Locale.getDefault())
-        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-        if (addresses.isNotEmpty()) {
-            val address = addresses[0]
-            setAddressValue(Resource.success(address.getAddressLine(0)))
+        try {
+            val geocoder = Geocoder(activity, Locale.getDefault())
+            val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            if (addresses.isNotEmpty()) {
+                val address = addresses[0]
+                val case = currentCaseModel.value!!
+                case.locationName = address.getAddressLine(0)
+                setCurrentCase(case)
+                setAddressValue(Resource.success(address.getAddressLine(0)))
+            }
+        } catch (e: Exception) {
         }
 
     }
@@ -139,6 +155,36 @@ class EditCaseViewModel : ViewModel() {
             }.addOnFailureListener {
                 setCategoriesValue(Resource.error(it.message))
             }
+    }
+
+    fun uploadMainCaseImage() {
+        setMainImageLoading(Resource.loading())
+
+        val reference =
+            CloudStorageWrapper.storageManagement.getStorageReference("cases/${System.currentTimeMillis()}.jpg")
+        val uploadTask = reference.putFile(File(profileImageLocalPath))
+        uploadTask.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                task.result.storage.downloadUrl.addOnSuccessListener {
+                    profileImageUrl = it.toString()
+                    val case = currentCaseModel.value!!
+                    case.mainImage = profileImageUrl
+                    setCurrentCase(case)
+                    imageUploaded = true
+
+                    Log.d(TAG, "uploadProfileImage: ${profileImageUrl}}")
+                    setMainImageLoading(Resource.success(true))
+                }.addOnFailureListener {
+                    setMainImageLoading(Resource.error(it.message))
+                }
+            } else {
+                setMainImageLoading(Resource.error(task.exception?.message))
+            }
+        }
+    }
+
+    private fun setMainImageLoading(loading: Resource<Boolean>) {
+        _uploadingImage.value = loading
     }
 
     private fun setCategoriesValue(success: Resource<MutableList<CaseCategoryModel>>) {
@@ -209,9 +255,9 @@ class EditCaseViewModel : ViewModel() {
         setCurrentCase(case)
     }
 
-    fun handleCallViaOnlineCall() {
+    fun handleCallViaChatMessages() {
         val case = currentCaseModel.value!!
-        case.hasOnlineCall = !case.hasOnlineCall
+        case.hasChatMessages = !case.hasChatMessages
         setCurrentCase(case)
     }
 
@@ -219,6 +265,19 @@ class EditCaseViewModel : ViewModel() {
         val case = currentCaseModel.value!!
         case.hasVideoCall = !case.hasVideoCall
         setCurrentCase(case)
+    }
+
+    fun saveCase() {
+        setSavingCaseModelValue(Resource.loading())
+        FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
+            .document(currentCaseModel.value!!.id!!).set(currentCaseModel.value!!)
+            .addOnSuccessListener {
+                Log.d(TAG, "saveCase: onSuccess")
+                setSavingCaseModelValue(Resource.success(true))
+            }.addOnFailureListener {
+                Log.d(TAG, "saveCase: onFailure")
+                setSavingCaseModelValue(Resource.error(it.message))
+            }
     }
 
 

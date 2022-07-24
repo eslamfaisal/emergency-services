@@ -75,6 +75,9 @@
     <string name="cancel">إلغاء</string>
     <string name="select_iameg">الرجاء تحديد الصورة</string>
     <string name="showing_personal_details">إظهار البيانات الشخصية</string>
-    <string name="contact_me_via">سماح الاتصال بي عبر</string>
-    <string name="online_call">Online Call</string>
+    <string name="contact_me_via">سماح التواصل عبر</string>
+    <string name="online_call">مكالمة صوتية اونلاين</string>
+    <string name="chat">دردشة</string>
+    <string name="publish">نشر الحاله</string>
+    <string name="case_created_succ_msg">تم إنشاء الحالة بنجاح</string>
 </resources>

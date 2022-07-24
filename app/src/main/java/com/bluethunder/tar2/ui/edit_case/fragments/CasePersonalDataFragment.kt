@@ -6,11 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.FragmentCasePersonalDataBinding
+import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
@@ -55,6 +57,7 @@ class CasePersonalDataFragment : BaseFragment() {
         binding.showPersonalDataBox.setOnClickListener {
             handleShowPersonalData()
         }
+
         binding.phoneNumberInput.setText(SessionConstants.currentLoggedInUserModel!!.phone!!)
         binding.nameInput.setText(SessionConstants.currentLoggedInUserModel!!.name!!)
 
@@ -62,18 +65,31 @@ class CasePersonalDataFragment : BaseFragment() {
             handleCallViaPHoneNumber()
         }
 
-        binding.contactMeViaOnlineCallView.setOnClickListener {
-            handleCallViaOnlineCall()
+        binding.contactMeViaChatView.setOnClickListener {
+            handleCallViaChatMessages()
         }
 
-        binding.contactMeViaVideoCallView.setOnClickListener {
+        binding.contactMeChat.setOnClickListener {
             handleCallViaVideoCall()
+        }
+
+        binding.btnNext.setOnClickListener {
+            validateCaseData()
+        }
+
+    }
+
+    private fun validateCaseData() {
+        if (viewModel.imageUploaded) {
+            createNewCase()
+        } else {
+            viewModel.uploadMainCaseImage()
         }
     }
 
     private fun handleCallViaVideoCall() {
         viewModel.handleCallViaVideoCall()
-        binding.contactMeViaPhone.setImageDrawable(
+        binding.contactMeChat.setImageDrawable(
             ContextCompat.getDrawable(
                 requireActivity(),
                 if (viewModel.currentCaseModel.value!!.hasPhoneCall)
@@ -95,9 +111,9 @@ class CasePersonalDataFragment : BaseFragment() {
         )
     }
 
-    private fun handleCallViaOnlineCall() {
-        viewModel.handleCallViaOnlineCall()
-        binding.contactMeViaOnlineCall.setImageDrawable(
+    private fun handleCallViaChatMessages() {
+        viewModel.handleCallViaChatMessages()
+        binding.contactMeChat.setImageDrawable(
             ContextCompat.getDrawable(
                 requireActivity(),
                 if (viewModel.currentCaseModel.value!!.hasPhoneCall)
@@ -112,6 +128,45 @@ class CasePersonalDataFragment : BaseFragment() {
         binding.viewmodel = viewModel
 
         initObserveCaseDetails()
+        observeUploadImage()
+        viewModel.savingCaseModel.observe(viewLifecycleOwner){resource->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(), getString(R.string.case_created_succ_msg), Toast.LENGTH_LONG).show()
+                    requireActivity().finish()
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    progressDialog.dismiss()
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun observeUploadImage() {
+        viewModel.uploadingImage.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    createNewCase()
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    progressDialog.dismiss()
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun createNewCase() {
+        viewModel.saveCase()
     }
 
     private fun initObserveCaseDetails() {

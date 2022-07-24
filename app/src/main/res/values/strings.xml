@@ -76,5 +76,8 @@
     <string name="showing_personal_details">Showing Personal Details</string>
     <string name="contact_me_via">Contact me via</string>
     <string name="online_call">Online Call</string>
+    <string name="chat">Chat</string>
+    <string name="publish">Publish</string>
+    <string name="case_created_succ_msg">Case created successfully</string>
 
 </resources>
