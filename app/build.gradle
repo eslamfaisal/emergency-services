@@ -10,6 +10,15 @@ plugins {
 
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:\\Eslam Work\\programming projects\\android\\Tar2\\key_store.jks')
+            storePassword '111111'
+            keyAlias 'upload'
+            keyPassword '111111'
+            v2SigningEnabled true
+        }
+    }
     compileSdkVersion 32
 
     defaultConfig {
@@ -21,12 +30,19 @@ android {
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

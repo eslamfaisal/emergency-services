@@ -22,9 +22,7 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.MainActivity
-import com.bluethunder.tar2.utils.SharedHelper
-import com.bluethunder.tar2.utils.SharedHelperKeys
-import com.bluethunder.tar2.utils.getErrorMsg
+import com.bluethunder.tar2.utils.*
 import com.google.gson.Gson
 import com.huawei.agconnect.auth.AGConnectAuth
 import me.ibrahimsn.lib.PhoneNumberKit

@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/home_tab_view_pager"
+        <fragment
+            android:id="@+id/map_view"
+            android:name="com.huawei.hms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@+id/title_view"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            app:userInputEnabled="@{false}" />
+            android:layout_height="match_parent" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+
 </layout>

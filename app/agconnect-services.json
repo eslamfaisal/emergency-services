@@ -65,7 +65,8 @@
 			"storage_url":"https://agc-storage-drcn.platform.dbankcloud.cn",
 			"storage_url_sg":"https://ops-dra.agcstorage.link",
 			"storage_url_cn_back":"https://agc-storage-drcn.cloud.huawei.com.cn",
-			"storage_url_cn":"https://agc-storage-drcn.platform.dbankcloud.cn"
+			"storage_url_cn":"https://agc-storage-drcn.platform.dbankcloud.cn",
+			"default_storage":"tar2-storage-instance-74bao"
 		},
 		"ml":{
 			"mlservice_url":"ml-api-dra.ai.dbankcloud.com,ml-api-dra.ai.dbankcloud.cn"
