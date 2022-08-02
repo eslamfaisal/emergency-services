@@ -5,7 +5,7 @@ enum class FirestoreReferences(val value: String) {
     // region collections references
     UsersCollection("users"),
     CaseCategoriesCollection("case_categories"),
-    CasesCollection("cases");
+    CasesCollection("cases"),
     // endregion
 
     // region documents references
@@ -13,7 +13,7 @@ enum class FirestoreReferences(val value: String) {
     // endregion
 
     // region fields references
-
+    UserIdField("userId");
     // endregion
 
     fun value(): String {

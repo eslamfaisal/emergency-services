@@ -18,6 +18,7 @@ import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.ViewPagerFragmentAdapter
 import com.bluethunder.tar2.ui.home.fragments.CategorizedEmergencyCaseListFragment
 import com.bluethunder.tar2.ui.home.fragments.HomeMapFragment
+import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 
 
@@ -107,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         val mutableFragmentList: MutableList<Fragment> = ArrayList()
         mutableFragmentList.add(HomeMapFragment())
         mutableFragmentList.add(CategorizedEmergencyCaseListFragment())
-        mutableFragmentList.add(HomeMapFragment())
+        mutableFragmentList.add(MyCasesFragment())
         mutableFragmentList.add(CategorizedEmergencyCaseListFragment())
         binding.homeTabViewPager.adapter =
             ViewPagerFragmentAdapter(this, mutableFragmentList)
