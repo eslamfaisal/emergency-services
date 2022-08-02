@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bluethunder.tar2.databinding.MyCasesItemBinding
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
+import com.bumptech.glide.Glide
 
 class MyCasesAdapter(
     val interaction: MyCasesInteractions
@@ -27,6 +28,10 @@ class MyCasesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindingView.titleTv.text = myCases[holder.absoluteAdapterPosition].title
+
+        Glide.with(holder.bindingView.mainImageView.context)
+            .load(myCases[holder.absoluteAdapterPosition].mainImage)
+            .into(holder.bindingView.mainImageView)
     }
 
     override fun getItemCount(): Int {
