@@ -20,6 +20,7 @@ class CaseModel : Serializable {
     var hasVideoCall = true
     var locationName: String? = null
     var address: String? = null
+    var countryCode: String? = null
 
     override fun toString(): String {
         return "CaseModel{" +

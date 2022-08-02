@@ -31,14 +31,18 @@
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1575" />
         <entry key="app/src/main/res/layout-v23/fragment_case_details.xml" value="0.3458333333333333" />
+        <entry key="app/src/main/res/layout/activity_edit_case.xml" value="0.30092592592592593" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2657407407407407" />
         <entry key="app/src/main/res/layout/fragment_case_details.xml" value="0.3" />
+        <entry key="app/src/main/res/layout/fragment_home_map.xml" value="0.30120481927710846" />
+        <entry key="app/src/main/res/layout/fragment_my_cases.xml" value="0.25" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
-    <option name="id" value="Android" />
+    <option name="id" value="jpab" />
   </component>
 </project>

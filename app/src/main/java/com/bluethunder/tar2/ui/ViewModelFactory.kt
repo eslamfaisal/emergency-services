@@ -10,6 +10,7 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
+import com.bluethunder.tar2.ui.home.viewmodel.MyCasesViewModel
 
 /**
  * Factory for all ViewModels.
@@ -35,6 +36,8 @@ class ViewModelFactory constructor(
                 AuthViewModel()
             isAssignableFrom(EditCaseViewModel::class.java) ->
                 EditCaseViewModel()
+            isAssignableFrom(MyCasesViewModel::class.java) ->
+                MyCasesViewModel()
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
