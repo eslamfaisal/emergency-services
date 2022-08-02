@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentMyCasesBinding
 import com.bluethunder.tar2.model.Status
@@ -19,6 +20,7 @@ import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.adapter.MyCasesAdapter
 import com.bluethunder.tar2.ui.home.viewmodel.MyCasesViewModel
 import com.bluethunder.tar2.utils.getErrorMsg
+import com.bluethunder.tar2.views.setupRefreshLayout
 
 
 class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
@@ -41,12 +43,16 @@ class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = this.viewLifecycleOwner
+        this.setupRefreshLayout(binding.refreshLayout)
         initViews()
         initViewModel()
     }
 
     private fun initViewModel() {
         Log.d(TAG, "initViewModel: get my cases")
+        viewModel.getMyCases()
         viewModel.myCases.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -72,7 +78,10 @@ class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
     private fun initViews() {
         progressDialog = requireActivity().showLoadingDialog()
         myCasesAdapter = MyCasesAdapter(this)
-        binding.myCasesRecyclerView.adapter = myCasesAdapter
+        binding.myCasesRecyclerView.apply {
+            adapter = myCasesAdapter
+            layoutManager = LinearLayoutManager(requireActivity())
+        }
 
     }
 

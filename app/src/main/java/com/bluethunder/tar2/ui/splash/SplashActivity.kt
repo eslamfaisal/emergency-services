@@ -64,6 +64,7 @@ class SplashActivity : AppCompatActivity() {
             currentLoggedInUserModel = Gson().fromJson(
                 SharedHelper.getString(this, USER_DATA), UserModel::class.java
             )
+            Log.d(TAG, "checkLogin: userId = ${currentLoggedInUserModel?.id}")
             openHomeActivity()
         } else {
             openAuthActivity()

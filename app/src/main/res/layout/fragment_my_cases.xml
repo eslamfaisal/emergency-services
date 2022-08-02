@@ -6,8 +6,9 @@
 
         <variable
             name="viewmodel"
-            type="com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel" />
+            type="com.bluethunder.tar2.ui.home.viewmodel.MyCasesViewModel" />
     </data>
+
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -51,10 +52,20 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_cases_recycler_view"
+
+        <com.bluethunder.tar2.views.ScrollChildSwipeRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:onRefreshListener="@{viewmodel::refresh}"
+            app:refreshing="@{viewmodel.dataRefreshLoading}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/my_cases_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.bluethunder.tar2.views.ScrollChildSwipeRefreshLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

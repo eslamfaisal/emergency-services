@@ -79,5 +79,6 @@
     <string name="chat">Chat</string>
     <string name="publish">Publish</string>
     <string name="case_created_succ_msg">Case created successfully</string>
+    <string name="up_votes">UpVotes</string>
 
 </resources>

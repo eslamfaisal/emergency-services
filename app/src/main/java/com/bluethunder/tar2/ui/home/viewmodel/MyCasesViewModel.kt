@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.home.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,10 @@ class MyCasesViewModel : ViewModel() {
     companion object {
         private val TAG = MyCasesViewModel::class.java.simpleName
     }
+
+
+    private val _dataRefreshLoading = MutableLiveData(false)
+    val dataRefreshLoading: LiveData<Boolean> = _dataRefreshLoading
 
     private val _myCases = MutableLiveData<Resource<ArrayList<CaseModel>>>()
     val myCases: LiveData<Resource<ArrayList<CaseModel>>> = _myCases
@@ -34,11 +39,15 @@ class MyCasesViewModel : ViewModel() {
                     querySnapShot.documents.forEach { document ->
                         myCasesList.add(document.toObject(CaseModel::class.java)!!)
                     }
+                    Log.d(TAG, "getMyCases: size  ${myCasesList.size}")
                     setCasesValue(Resource.success(myCasesList))
                 } catch (e: Exception) {
+                    Log.d(TAG, "getMyCases: exception $e")
                     setCasesValue(Resource.error(e.message!!))
                 }
             }.addOnFailureListener {
+
+                Log.d(TAG, "getMyCases: exception ${it.message!!}")
                 setCasesValue(Resource.error(it.message!!))
             }
     }

@@ -80,4 +80,5 @@
     <string name="chat">دردشة</string>
     <string name="publish">نشر الحاله</string>
     <string name="case_created_succ_msg">تم إنشاء الحالة بنجاح</string>
+    <string name="up_votes">UpVotes</string>
 </resources>

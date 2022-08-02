@@ -26,8 +26,7 @@ class MyCasesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-
+        holder.bindingView.titleTv.text = myCases[holder.absoluteAdapterPosition].title
     }
 
     override fun getItemCount(): Int {
