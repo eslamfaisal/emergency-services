@@ -53,6 +53,7 @@ class MyCasesViewModel : ViewModel() {
     }
 
     private fun setCasesValue(success: Resource<java.util.ArrayList<CaseModel>>) {
+        _dataRefreshLoading.value = false
         _myCases.value = success
     }
 
