@@ -134,6 +134,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/status_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -169,7 +170,7 @@
                             android:textColor="@color/greenDarkColor"
                             android:fontFamily="@font/poppins_regular"
                             android:gravity="center"
-                            android:text="@string/up_votes"
+                            android:text="@string/saved"
                             android:textStyle="bold" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>

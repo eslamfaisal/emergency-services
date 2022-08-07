@@ -21,6 +21,10 @@ class CaseModel : Serializable {
     var locationName: String? = null
     var address: String? = null
     var countryCode: String? = null
+    var status: String? = null
+    var upVotesCount: Int? = null
+    var viewsCount: Int? = null
+    var commentsCount: Int? = null
 
     override fun toString(): String {
         return "CaseModel{" +
@@ -39,7 +43,12 @@ class CaseModel : Serializable {
                 ", hasOnlineCall='" + hasOnlineCall + '\'' +
                 ", hasVideoCall='" + hasVideoCall + '\'' +
                 ", locationName='" + locationName + '\'' +
+                ", countryCode='" + countryCode + '\'' +
                 ", address='" + address + '\'' +
+                ", upVotesCount='" + upVotesCount + '\'' +
+                ", viewsCount='" + viewsCount + '\'' +
+                ", commentsCount='" + commentsCount + '\'' +
+                ", status='" + status + '\'' +
                 '}'
     }
 }

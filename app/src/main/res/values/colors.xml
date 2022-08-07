@@ -24,5 +24,7 @@
 <!--    <color name="ucrop_color_toolbar">@color/colorWhite</color>-->
     <color name="ucrop_color_statusbar">@color/colorPrimary</color>
     <color name="ucrop_color_widget_active">@color/colorPrimary</color>
+    <color name="color_published">#FFF4E7</color>
+    <color name="color_unpublished">#FFEBEB</color>
 
 </resources>

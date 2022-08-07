@@ -80,5 +80,8 @@
     <string name="publish">Publish</string>
     <string name="case_created_succ_msg">Case created successfully</string>
     <string name="up_votes">UpVotes</string>
+    <string name="saved">Saved</string>
+    <string name="published">Published</string>
+    <string name="un_published">Un Published</string>
 
 </resources>
