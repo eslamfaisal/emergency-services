@@ -53,7 +53,7 @@ class CategoriesAdapter(
                     R.color.colorWhite
                 )
             )
-            holder.bindingView.categoryIconIv.backgroundTintList = ColorStateList.valueOf(
+            holder.bindingView.categoryIconIv.imageTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     holder.bindingView.categoryNameIv.context,
                     R.color.colorPrimary
@@ -72,7 +72,7 @@ class CategoriesAdapter(
                     R.color.colorGreyVeryLight
                 )
             )
-            holder.bindingView.categoryIconIv.backgroundTintList = ColorStateList.valueOf(
+            holder.bindingView.categoryIconIv.imageTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     holder.bindingView.categoryNameIv.context,
                     R.color.colorGreyLight

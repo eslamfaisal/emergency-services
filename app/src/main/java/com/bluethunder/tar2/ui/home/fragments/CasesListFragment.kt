@@ -88,7 +88,7 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
                 }
                 Status.EMPTY -> {
                     progressDialog.dismiss()
-                    myCasesAdapter.clearData()
+                    categoriesAdapter.clearData()
                 }
             }
         }
