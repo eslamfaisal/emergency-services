@@ -8,10 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
-import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
-import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
-import com.bluethunder.tar2.ui.home.viewmodel.MyCasesViewModel
-import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
+import com.bluethunder.tar2.ui.home.viewmodel.*
 
 /**
  * Factory for all ViewModels.
@@ -41,6 +38,8 @@ class ViewModelFactory constructor(
                 EditCaseViewModel()
             isAssignableFrom(MyCasesViewModel::class.java) ->
                 MyCasesViewModel()
+            isAssignableFrom(CasesListViewModel::class.java) ->
+                CasesListViewModel()
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

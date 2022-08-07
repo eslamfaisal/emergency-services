@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -16,6 +17,7 @@ import com.bluethunder.tar2.databinding.ActivityMainBinding
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.ViewPagerFragmentAdapter
+import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
 import com.bluethunder.tar2.ui.home.fragments.CategorizedEmergencyCaseListFragment
 import com.bluethunder.tar2.ui.home.fragments.HomeMapFragment
 import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
@@ -66,6 +68,17 @@ class MainActivity : AppCompatActivity() {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
+    private fun initViewPager() {
+        val mutableFragmentList: MutableList<Fragment> = ArrayList()
+        mutableFragmentList.add(HomeMapFragment())
+        mutableFragmentList.add(CasesListFragment())
+        mutableFragmentList.add(MyCasesFragment())
+        mutableFragmentList.add(CategorizedEmergencyCaseListFragment())
+        binding.homeTabViewPager.adapter =
+            ViewPagerFragmentAdapter(this, mutableFragmentList)
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initViewModel() {
         notificationViewModel.getToken()
         // region tab layout
@@ -106,15 +119,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun initViewPager() {
-        val mutableFragmentList: MutableList<Fragment> = ArrayList()
-        mutableFragmentList.add(HomeMapFragment())
-        mutableFragmentList.add(CategorizedEmergencyCaseListFragment())
-        mutableFragmentList.add(MyCasesFragment())
-        mutableFragmentList.add(CategorizedEmergencyCaseListFragment())
-        binding.homeTabViewPager.adapter =
-            ViewPagerFragmentAdapter(this, mutableFragmentList)
-
-
-    }
 }
