@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
+import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 
 class CasesListViewModel : ViewModel() {
@@ -24,32 +26,77 @@ class CasesListViewModel : ViewModel() {
     private val _myCases = MutableLiveData<Resource<ArrayList<CaseModel>>>()
     val casesList: LiveData<Resource<ArrayList<CaseModel>>> = _myCases
 
+    private val _categories = MutableLiveData<Resource<ArrayList<CaseCategoryModel>>>()
+    val categories: LiveData<Resource<ArrayList<CaseCategoryModel>>> = _categories
+
     fun refresh() {
         setCasesValue(Resource.empty())
-        getCasesList()
+        setCategoriesValue(Resource.empty())
+        getCategories()
     }
 
-    fun getCasesList() {
-        setCasesValue(Resource.loading())
-        FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
-            .whereNotEqualTo(FirestoreReferences.UserIdField.value(), currentLoggedInUserModel!!.id)
+    fun getCategories() {
+        setCategoriesValue(Resource.loading())
+        FirebaseFirestore.getInstance()
+            .collection(FirestoreReferences.CaseCategoriesCollection.value())
             .get().addOnSuccessListener { querySnapShot ->
                 try {
-                    val myCasesList = ArrayList<CaseModel>()
+                    val categoriesList = ArrayList<CaseCategoryModel>()
+                    categoriesList.add(CaseCategoryModel("all", "الكل", "All", "ALL", 0))
                     querySnapShot.documents.forEach { document ->
-                        myCasesList.add(document.toObject(CaseModel::class.java)!!)
+                        categoriesList.add(document.toObject(CaseCategoryModel::class.java)!!)
                     }
-                    Log.d(TAG, "caseList: size  ${myCasesList.size}")
-                    setCasesValue(Resource.success(myCasesList))
+                    categoriesList.sortBy { it.priority }
+                    setCategoriesValue(Resource.success(categoriesList))
+                    getCasesList(categoriesList.first())
+
+                    Log.d(TAG, "caseewModel: get my ce  ${categoriesList.size}")
                 } catch (e: Exception) {
                     Log.d(TAG, "caseList: exception $e")
-                    setCasesValue(Resource.error(e.message!!))
+                    setCategoriesValue(Resource.error(e.message!!))
                 }
             }.addOnFailureListener {
-
                 Log.d(TAG, "caseList: exception ${it.message!!}")
-                setCasesValue(Resource.error(it.message!!))
+                setCategoriesValue(Resource.error(it.message!!))
             }
+    }
+
+    private fun setCategoriesValue(categoriesResponse: Resource<ArrayList<CaseCategoryModel>>) {
+        _categories.value = categoriesResponse
+    }
+
+    fun getCasesList(category: CaseCategoryModel) {
+        setCasesValue(Resource.empty())
+        setCasesValue(Resource.loading())
+        var query: Query =
+            FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
+                .whereNotEqualTo(
+                    FirestoreReferences.UserIdField.value(),
+                    currentLoggedInUserModel!!.id
+                )
+
+        if (category.reference != "ALL")
+            query = query.whereEqualTo(FirestoreReferences.CaseCategoryId.value(), category.id)
+
+        query =
+            query.orderBy(FirestoreReferences.CreatedAtField.value(), Query.Direction.DESCENDING)
+
+        query.get().addOnSuccessListener { querySnapShot ->
+            try {
+                val myCasesList = ArrayList<CaseModel>()
+                querySnapShot.documents.forEach { document ->
+                    myCasesList.add(document.toObject(CaseModel::class.java)!!)
+                }
+                Log.d(TAG, "caseewModel: get my ce  ${myCasesList.size}")
+                setCasesValue(Resource.success(myCasesList))
+            } catch (e: Exception) {
+                Log.d(TAG, "caseList: exception $e")
+                setCasesValue(Resource.error(e.message!!))
+            }
+        }.addOnFailureListener {
+            Log.d(TAG, "caseList: exception ${it.message!!}")
+            setCasesValue(Resource.error(it.message!!))
+        }
     }
 
     private fun setCasesValue(success: Resource<java.util.ArrayList<CaseModel>>) {

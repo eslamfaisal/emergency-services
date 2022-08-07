@@ -84,4 +84,7 @@
     <string name="saved">تم الانقاذ</string>
     <string name="published">تم النشر</string>
     <string name="un_published">غير منشورة</string>
+    <string name="views">Views</string>
+    <string name="comments">Comments</string>
+    <string name="all">All</string>
 </resources>

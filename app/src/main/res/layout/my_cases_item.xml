@@ -72,6 +72,17 @@
                         android:textSize="12sp"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
                         android:text="@string/up_votes"
                         android:textStyle="bold" />
 
@@ -100,7 +111,18 @@
                         android:textSize="12sp"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center"
-                        android:text="@string/up_votes"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="@string/views"
                         android:textStyle="bold" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -128,7 +150,18 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center"
-                        android:text="@string/up_votes"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="12sp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="@string/comments"
                         android:textStyle="bold" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -156,6 +189,7 @@
                         android:paddingBottom="8dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/status_iv"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             app:srcCompat="@drawable/ic_saved" />

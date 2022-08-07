@@ -12,16 +12,19 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentCasesListBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
+import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.adapter.CasesListAdapter
+import com.bluethunder.tar2.ui.home.adapter.CategoriesAdapter
 import com.bluethunder.tar2.ui.home.viewmodel.CasesListViewModel
 import com.bluethunder.tar2.utils.getErrorMsg
 import com.bluethunder.tar2.views.setupRefreshLayout
 
-class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions {
+class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions,
+    CategoriesAdapter.CategoryInteractions {
 
     private val viewModel by viewModels<CasesListViewModel> { getViewModelFactory() }
     private lateinit var binding: FragmentCasesListBinding
@@ -49,8 +52,46 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
         initViewModel()
     }
 
+    lateinit var categoriesAdapter: CategoriesAdapter
+    lateinit var myCasesAdapter: CasesListAdapter
+    private fun initViews() {
+        progressDialog = requireActivity().showLoadingDialog()
+
+        myCasesAdapter = CasesListAdapter(this)
+        binding.casesListRecyclerView.apply {
+            adapter = myCasesAdapter
+            layoutManager = LinearLayoutManager(requireActivity())
+        }
+
+        categoriesAdapter = CategoriesAdapter(this)
+        binding.categoryListRecyclerView.apply {
+            adapter = categoriesAdapter
+            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+    }
+
     private fun initViewModel() {
-        viewModel.getCasesList()
+        viewModel.getCategories()
+        viewModel.categories.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dismiss()
+                    categoriesAdapter.addNewData(resource.data!!)
+                }
+                Status.ERROR -> {
+                    progressDialog.dismiss()
+                    parsingError(resource.errorBody!!.toString())
+                }
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.EMPTY -> {
+                    progressDialog.dismiss()
+                    myCasesAdapter.clearData()
+                }
+            }
+        }
         viewModel.casesList.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -72,22 +113,15 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
         }
     }
 
-    lateinit var myCasesAdapter: CasesListAdapter
-    private fun initViews() {
-        progressDialog = requireActivity().showLoadingDialog()
-        myCasesAdapter = CasesListAdapter(this)
-        binding.casesListRecyclerView.apply {
-            adapter = myCasesAdapter
-            layoutManager = LinearLayoutManager(requireActivity())
-        }
-
-    }
-
     private fun parsingError(errorBody: String) {
         binding.casesListRecyclerView.showSnakeBarError(requireActivity().getErrorMsg(errorBody))
     }
 
     override fun onCasenClicked(caseModel: CaseModel) {
 
+    }
+
+    override fun onCategoryClicked(category: CaseCategoryModel) {
+        viewModel.getCasesList(category)
     }
 }

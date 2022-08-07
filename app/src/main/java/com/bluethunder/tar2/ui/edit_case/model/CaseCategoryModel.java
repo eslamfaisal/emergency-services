@@ -22,6 +22,14 @@ public final class CaseCategoryModel implements Serializable {
     public CaseCategoryModel() {
     }
 
+    public CaseCategoryModel(String id, String nameAr, String nameEn, String reference, Integer priority) {
+        this.id = id;
+        this.nameAr = nameAr;
+        this.nameEn = nameEn;
+        this.reference = reference;
+        this.priority = priority;
+    }
+
     public void setId(String id) {
         this.id = id;
     }

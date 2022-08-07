@@ -6,7 +6,9 @@
         <entry key="../../../../../../../layout/custom_preview.xml" value="0.15353260869565216" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable-v24/rounded_dialog.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable-v24/splash_screen_background.xml" value="0.1575" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/grey_curved_rectangle_shape.xml" value="0.176" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_add.xml" value="0.174" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_case_list.xml" value="0.195" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/main_btn_bg.xml" value="0.17" />
@@ -16,8 +18,10 @@
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_edit_case.xml" value="0.2734375" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_splash.xml" value="0.3902564102564103" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/category_item.xml" value="0.264" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_case_details.xml" value="0.2" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_case_personal_data.xml" value="0.2" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_cases_list.xml" value="0.2" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_categorized_emergency_case_list.xml" value="0.3902564102564103" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_change_password.xml" value="0.264" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_home_map.xml" value="0.3902564102564103" />

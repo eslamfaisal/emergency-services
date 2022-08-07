@@ -83,5 +83,8 @@
     <string name="saved">Saved</string>
     <string name="published">Published</string>
     <string name="un_published">Un Published</string>
+    <string name="views">Views</string>
+    <string name="comments">Comments</string>
+    <string name="all">All</string>
 
 </resources>

@@ -21,13 +21,6 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/back_btn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_back" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/header_tv"
@@ -43,12 +36,6 @@
                 android:textSize="@dimen/header_text_size"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/ic_back" />
 
         </LinearLayout>
 
@@ -61,10 +48,27 @@
             app:onRefreshListener="@{viewmodel::refresh}"
             app:refreshing="@{viewmodel.dataRefreshLoading}">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cases_list_recycler_view"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/category_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/grey_curved_rectangle_shape"
+                    android:padding="4dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cases_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </com.bluethunder.tar2.views.ScrollChildSwipeRefreshLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

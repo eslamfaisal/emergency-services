@@ -1,6 +1,8 @@
 package com.bluethunder.tar2.ui.edit_case.model
 
+import com.google.firebase.firestore.ServerTimestamp
 import java.io.Serializable
+import java.util.*
 
 class CaseModel : Serializable {
 
@@ -26,6 +28,9 @@ class CaseModel : Serializable {
     var viewsCount: Int? = null
     var commentsCount: Int? = null
 
+    @ServerTimestamp
+    var createdAt: Date = Date()
+
     override fun toString(): String {
         return "CaseModel{" +
                 "id='" + id + '\'' +
@@ -49,6 +54,7 @@ class CaseModel : Serializable {
                 ", viewsCount='" + viewsCount + '\'' +
                 ", commentsCount='" + commentsCount + '\'' +
                 ", status='" + status + '\'' +
+                ", createdAt='" + createdAt + '\'' +
                 '}'
     }
 }

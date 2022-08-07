@@ -21,13 +21,6 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/back_btn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_back" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/header_tv"
@@ -43,12 +36,6 @@
                 android:textSize="@dimen/header_text_size"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/ic_back" />
 
         </LinearLayout>
 

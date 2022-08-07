@@ -9,6 +9,7 @@ import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 
 class MyCasesViewModel : ViewModel() {
@@ -33,6 +34,7 @@ class MyCasesViewModel : ViewModel() {
         setCasesValue(Resource.loading())
         FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
             .whereEqualTo(FirestoreReferences.UserIdField.value(), currentLoggedInUserModel!!.id)
+            .orderBy(FirestoreReferences.CreatedAtField.value(), Query.Direction.DESCENDING)
             .get().addOnSuccessListener { querySnapShot ->
                 try {
                     val myCasesList = ArrayList<CaseModel>()

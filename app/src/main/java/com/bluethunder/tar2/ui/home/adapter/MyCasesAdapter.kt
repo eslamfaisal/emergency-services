@@ -39,13 +39,25 @@ class MyCasesAdapter(
         caseModel.status?.let {
             when (it) {
                 CaseStatus.Published.name -> {
-                    holder.bindingView.statusTv.text =
-                        holder.bindingView.statusTv.context.getString(R.string.published)
+                    holder.bindingView.statusTv.text = holder.bindingView.statusTv.context.getString(R.string.published)
+                    holder.bindingView.statusTv.setTextColor(
+                        ContextCompat.getColor(
+                            holder.bindingView.statusTv.context,
+                            R.color.colorPrimary
+                        )
+                    )
                     setCardColor(holder, color = R.color.color_published)
                 }
                 CaseStatus.UnPublished.name -> {
                     holder.bindingView.statusTv.text =
                         holder.bindingView.statusTv.context.getString(R.string.un_published)
+
+                    holder.bindingView.statusTv.setTextColor(
+                        ContextCompat.getColor(
+                            holder.bindingView.statusTv.context,
+                            R.color.dark_red
+                        )
+                    )
                     setCardColor(holder, color = R.color.color_unpublished)
                 }
             }
@@ -57,7 +69,7 @@ class MyCasesAdapter(
     }
 
     private fun setCardColor(holder: ViewHolder, color: Int = R.color.colorPrimary) {
-        holder.bindingView.statusCard.setCardForegroundColor(
+        holder.bindingView.statusCard.setCardBackgroundColor(
             ColorStateList.valueOf(
                 ContextCompat.getColor(
                     holder.bindingView.statusCard.context,

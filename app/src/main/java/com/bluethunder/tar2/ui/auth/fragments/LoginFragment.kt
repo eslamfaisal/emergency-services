@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.databinding.FragmentLoginBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.auth.AuthActivity
@@ -205,6 +206,7 @@ class LoginFragment : Fragment() {
     }
 
     fun goToHome(data: UserModel) {
+        currentLoggedInUserModel = data
         val userDataJson = Gson().toJson(data)
         SharedHelper.putBoolean(requireContext(), SharedHelperKeys.IS_LOGGED_IN, true)
         SharedHelper.putString(requireContext(), SharedHelperKeys.USER_DATA, userDataJson)
