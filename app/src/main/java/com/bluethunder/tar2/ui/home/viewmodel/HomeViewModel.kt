@@ -1,8 +1,6 @@
 package com.bluethunder.tar2.ui.home.viewmodel
 
 import android.util.Log
-import android.view.View
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,8 +19,6 @@ class HomeViewModel : ViewModel() {
 
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
-
-
 
     fun refresh() {
 

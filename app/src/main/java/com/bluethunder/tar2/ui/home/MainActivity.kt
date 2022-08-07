@@ -20,6 +20,7 @@ import com.bluethunder.tar2.ui.home.fragments.CategorizedEmergencyCaseListFragme
 import com.bluethunder.tar2.ui.home.fragments.HomeMapFragment
 import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
+import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val viewModel by viewModels<HomeViewModel> { getViewModelFactory() }
+    private val notificationViewModel by viewModels<NotificationsViewModel> { getViewModelFactory() }
 
     private lateinit var binding: ActivityMainBinding
 

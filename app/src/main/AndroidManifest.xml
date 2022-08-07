@@ -44,6 +44,14 @@
             android:name="com.huawei.hms.client.appid"
             android:value="106649263" />
 
+        <service
+            android:name=".services.HmsPushService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"

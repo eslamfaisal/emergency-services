@@ -12,7 +12,7 @@ plugins {
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/eslamfaisal/Desktop/Work/projects/android/tar2/key_store.jks')
+            storeFile file('D:\\Eslam Work\\programming projects\\android\\Tar2\\key_store.jks')
             storePassword '111111'
             keyAlias 'upload'
             keyPassword '111111'
@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId "com.bluethunder.tar2"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -71,12 +71,12 @@ dependencies {
 
     // lifecycle components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation "androidx.activity:activity-ktx:1.5.1"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.5.0"
-    implementation "androidx.navigation:navigation-ui-ktx:2.5.0"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2'
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3'
 
     //huawei agconnect libs
     implementation 'com.huawei.agconnect:agconnect-core:1.7.0.300'
@@ -84,8 +84,9 @@ dependencies {
     implementation "com.huawei.agconnect:agconnect-auth-huawei:1.7.0.300"
     implementation 'com.huawei.agconnect:agconnect-crash:1.7.0.300'
     implementation 'com.huawei.agconnect:agconnect-appmessaging:1.7.0.300'
+    implementation 'com.huawei.hms:push:5.0.4.302'
     implementation "com.huawei.agconnect:agconnect-storage:1.5.0.100"
-    implementation 'com.huawei.hms:maps:6.0.0.301'
+    implementation 'com.huawei.hms:maps:6.5.0.301'
     implementation 'com.huawei.hms:location:6.4.0.300'
 
     //firebase

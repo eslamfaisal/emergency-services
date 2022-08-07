@@ -11,6 +11,7 @@ import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.MyCasesViewModel
+import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
 
 /**
  * Factory for all ViewModels.
@@ -32,6 +33,8 @@ class ViewModelFactory constructor(
                 MapScreenViewModel()
             isAssignableFrom(HomeViewModel::class.java) ->
                 HomeViewModel()
+            isAssignableFrom(NotificationsViewModel::class.java) ->
+                NotificationsViewModel(context)
             isAssignableFrom(AuthViewModel::class.java) ->
                 AuthViewModel()
             isAssignableFrom(EditCaseViewModel::class.java) ->
