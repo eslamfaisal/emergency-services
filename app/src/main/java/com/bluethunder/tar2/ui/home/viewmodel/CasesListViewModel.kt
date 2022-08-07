@@ -78,17 +78,17 @@ class CasesListViewModel : ViewModel() {
         if (category.reference != "ALL")
             query = query.whereEqualTo(FirestoreReferences.CaseCategoryId.value(), category.id)
 
-        query =
-            query.orderBy(FirestoreReferences.CreatedAtField.value(), Query.Direction.DESCENDING)
 
         query.get().addOnSuccessListener { querySnapShot ->
             try {
-                val myCasesList = ArrayList<CaseModel>()
+                val casesList = ArrayList<CaseModel>()
                 querySnapShot.documents.forEach { document ->
-                    myCasesList.add(document.toObject(CaseModel::class.java)!!)
+                    casesList.add(document.toObject(CaseModel::class.java)!!)
                 }
-                Log.d(TAG, "caseewModel: get my ce  ${myCasesList.size}")
-                setCasesValue(Resource.success(myCasesList))
+                Log.d(TAG, "caseewModel: get my ce  ${casesList.size}")
+
+                casesList.sortByDescending { it.createdAt }
+                setCasesValue(Resource.success(casesList))
             } catch (e: Exception) {
                 Log.d(TAG, "caseList: exception $e")
                 setCasesValue(Resource.error(e.message!!))

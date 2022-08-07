@@ -14,7 +14,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/status_card"
+        android:id="@+id/category_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"

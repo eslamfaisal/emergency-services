@@ -40,15 +40,39 @@ class CategoriesAdapter(
             }
         }
 
-        if(selectedIndex == holder.absoluteAdapterPosition) {
+        if (selectedIndex == holder.absoluteAdapterPosition) {
             holder.bindingView.categoryNameIv.setTextColor(
                 ContextCompat.getColor(
                     holder.bindingView.categoryNameIv.context,
                     R.color.colorBlack
                 )
             )
-        }else{
+            holder.bindingView.categoryCard.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    holder.bindingView.categoryNameIv.context,
+                    R.color.colorWhite
+                )
+            )
+            holder.bindingView.categoryIconIv.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    holder.bindingView.categoryNameIv.context,
+                    R.color.colorPrimary
+                )
+            )
+        } else {
             holder.bindingView.categoryNameIv.setTextColor(
+                ContextCompat.getColor(
+                    holder.bindingView.categoryNameIv.context,
+                    R.color.colorGreyLight
+                )
+            )
+            holder.bindingView.categoryCard.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    holder.bindingView.categoryNameIv.context,
+                    R.color.colorGreyVeryLight
+                )
+            )
+            holder.bindingView.categoryIconIv.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     holder.bindingView.categoryNameIv.context,
                     R.color.colorGreyLight
@@ -60,17 +84,6 @@ class CategoriesAdapter(
             interaction.onCategoryClicked(category)
             notifyDataSetChanged()
         }
-    }
-
-    private fun setCardColor(holder: ViewHolder, color: Int = R.color.colorPrimary) {
-        holder.bindingView.statusCard.setCardForegroundColor(
-            ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    holder.bindingView.statusCard.context,
-                    color
-                )
-            )
-        )
     }
 
     override fun getItemCount(): Int {

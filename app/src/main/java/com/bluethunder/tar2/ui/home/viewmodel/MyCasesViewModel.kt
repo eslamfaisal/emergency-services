@@ -34,7 +34,6 @@ class MyCasesViewModel : ViewModel() {
         setCasesValue(Resource.loading())
         FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
             .whereEqualTo(FirestoreReferences.UserIdField.value(), currentLoggedInUserModel!!.id)
-            .orderBy(FirestoreReferences.CreatedAtField.value(), Query.Direction.DESCENDING)
             .get().addOnSuccessListener { querySnapShot ->
                 try {
                     val myCasesList = ArrayList<CaseModel>()
@@ -42,6 +41,7 @@ class MyCasesViewModel : ViewModel() {
                         myCasesList.add(document.toObject(CaseModel::class.java)!!)
                     }
                     Log.d(TAG, "getMyCases: size  ${myCasesList.size}")
+                    myCasesList.sortByDescending { it.createdAt }
                     setCasesValue(Resource.success(myCasesList))
                 } catch (e: Exception) {
                     Log.d(TAG, "getMyCases: exception $e")
