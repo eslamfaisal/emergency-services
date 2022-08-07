@@ -16,18 +16,19 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
         android:layout_margin="8dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/main_image_view"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.6"
+                android:scaleType="centerCrop"
                 android:layout_height="match_parent" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -41,12 +42,12 @@
                     android:id="@+id/title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_regular"
                     android:text="@string/my_cases"
                     android:textColor="@color/colorBlack"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -56,8 +57,8 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         app:srcCompat="@drawable/ic_up_vote"
                         app:tint="@color/colorGreyMedium" />
 
@@ -68,6 +69,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="2dp"
                         android:layout_weight="1"
+                        android:textSize="12sp"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center"
                         android:text="@string/up_votes"
@@ -83,8 +85,8 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         app:srcCompat="@drawable/ic_views"
                         app:tint="@color/colorGreyMedium" />
 
@@ -95,6 +97,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="2dp"
                         android:layout_weight="1"
+                        android:textSize="12sp"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center"
                         android:text="@string/up_votes"
@@ -110,8 +113,8 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         app:srcCompat="@drawable/ic_comments"
                         app:tint="@color/colorGreyMedium" />
 
@@ -121,6 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="2dp"
+                        android:textSize="12sp"
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center"
@@ -133,7 +137,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_margin="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
                     app:cardBackgroundColor="@color/greenLightColor"
                     app:cardCornerRadius="8dp">
 
