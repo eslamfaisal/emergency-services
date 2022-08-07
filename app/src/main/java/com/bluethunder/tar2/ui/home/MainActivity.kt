@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-
+        notificationViewModel.getToken()
         // region tab layout
         viewModel. onSelectedTabIndex.observe(this) { position ->
             binding.homeTabViewPager.currentItem = position

@@ -19,12 +19,7 @@ class NotificationsViewModel(
         private val TAG = NotificationsViewModel::class.java.simpleName
     }
 
-    init {
-        Log.d(TAG, "start get user token")
-        getToken()
-    }
-
-    private fun getToken() {
+    fun getToken() {
         // Create a thread.
         object : Thread() {
             override fun run() {
@@ -72,6 +67,7 @@ class NotificationsViewModel(
                 Log.i(TAG, "update token success")
             }
 
+//        sendMessage(token)
     }
 
     //https://forums.developer.huawei.com/forumPortal/en/topic/0201211024056890110
