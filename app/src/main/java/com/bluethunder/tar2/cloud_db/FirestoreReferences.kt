@@ -13,9 +13,9 @@ enum class FirestoreReferences(val value: String) {
     // endregion
 
     // region fields references
-    UserIdField("categoryId"),
+    CaseCategoryId("categoryId"),
     CreatedAtField("createdAt"),
-    CaseCategoryId("userId");
+    UserIdField("userId");
     // endregion
 
     fun value(): String {
