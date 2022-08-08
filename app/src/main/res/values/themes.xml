@@ -16,16 +16,14 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
-        <item name="android:navigationBarColor" >@color/color_transparent</item>
+        <item name="android:navigationBarColor">@color/color_transparent</item>
     </style>
 
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
 
-    <style name="AppModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
     </style>
 
@@ -42,6 +40,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
     <style name="BottomNavigationTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="android:textColorSecondary">@color/colorWhite</item>
@@ -51,7 +50,7 @@
     <!--style for ripple library-->
     <style name="RippleStyleWhite">
         <item name="mrl_rippleOverlay">true</item>
-        <item name="mrl_rippleColor">#80FFFFFF</item>
+        <item name="mrl_rippleColor">@color/colorPrimary</item>
         <item name="mrl_rippleHover">true</item>
         <item name="mrl_rippleAlpha">0.2</item>
     </style>

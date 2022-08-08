@@ -86,5 +86,7 @@
     <string name="views">Views</string>
     <string name="comments">Comments</string>
     <string name="all">All</string>
+    <string name="messages">Messages</string>
+    <string name="about_app">About app</string>
 
 </resources>

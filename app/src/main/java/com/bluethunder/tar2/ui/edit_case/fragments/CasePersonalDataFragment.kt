@@ -17,6 +17,7 @@ import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
+import com.bumptech.glide.Glide
 
 class CasePersonalDataFragment : BaseFragment() {
 
@@ -77,6 +78,10 @@ class CasePersonalDataFragment : BaseFragment() {
             validateCaseData()
         }
 
+        Glide.with(this)
+            .load(SessionConstants.currentLoggedInUserModel!!.imageUrl)
+            .placeholder(R.drawable.ic_small_profile_image_place_holder)
+            .into(binding.profileImage)
     }
 
     private fun validateCaseData() {

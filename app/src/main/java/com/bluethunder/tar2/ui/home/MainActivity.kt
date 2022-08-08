@@ -17,10 +17,7 @@ import com.bluethunder.tar2.databinding.ActivityMainBinding
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.ViewPagerFragmentAdapter
-import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
-import com.bluethunder.tar2.ui.home.fragments.CategorizedEmergencyCaseListFragment
-import com.bluethunder.tar2.ui.home.fragments.HomeMapFragment
-import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
+import com.bluethunder.tar2.ui.home.fragments.*
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
 
@@ -73,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         mutableFragmentList.add(HomeMapFragment())
         mutableFragmentList.add(CasesListFragment())
         mutableFragmentList.add(MyCasesFragment())
-        mutableFragmentList.add(CategorizedEmergencyCaseListFragment())
+        mutableFragmentList.add(MenuFragment())
         binding.homeTabViewPager.adapter =
             ViewPagerFragmentAdapter(this, mutableFragmentList)
     }
