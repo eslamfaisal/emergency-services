@@ -33,10 +33,10 @@ class CasesListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val caseModel = myCases[holder.absoluteAdapterPosition]
         caseModel.title?.let { holder.bindingView.titleTv.text = it }
-        caseModel.upVotesCount?.let { holder.bindingView.upVotesTv.text = it.toString() }
-        caseModel.commentsCount?.let { holder.bindingView.commentsTv.text = it.toString() }
-        caseModel.viewsCount?.let { holder.bindingView.viewsTv.text = it.toString() }
-        caseModel.status?.let {
+        caseModel.upVotesCount.let { holder.bindingView.upVotesTv.text = it.toString() }
+        caseModel.commentsCount.let { holder.bindingView.commentsTv.text = it.toString() }
+        caseModel.viewsCount.let { holder.bindingView.viewsTv.text = it.toString() }
+        caseModel.status.let {
             when (it) {
                 CaseStatus.Published.name -> {
                     holder.bindingView.statusTv.text =

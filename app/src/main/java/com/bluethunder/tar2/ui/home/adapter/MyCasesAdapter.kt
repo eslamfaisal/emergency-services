@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.MyCasesItemBinding
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
@@ -33,13 +34,14 @@ class MyCasesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val caseModel = myCases[holder.absoluteAdapterPosition]
         caseModel.title?.let { holder.bindingView.titleTv.text = it }
-        caseModel.upVotesCount?.let { holder.bindingView.upVotesTv.text = it.toString() }
-        caseModel.commentsCount?.let { holder.bindingView.commentsTv.text = it.toString() }
-        caseModel.viewsCount?.let { holder.bindingView.viewsTv.text = it.toString() }
-        caseModel.status?.let {
+        caseModel.upVotesCount.let { holder.bindingView.upVotesTv.text = it.toString() }
+        caseModel.commentsCount.let { holder.bindingView.commentsTv.text = it.toString() }
+        caseModel.viewsCount.let { holder.bindingView.viewsTv.text = it.toString() }
+        caseModel.status.let {
             when (it) {
                 CaseStatus.Published.name -> {
-                    holder.bindingView.statusTv.text = holder.bindingView.statusTv.context.getString(R.string.published)
+                    holder.bindingView.statusTv.text =
+                        holder.bindingView.statusTv.context.getString(R.string.published)
                     holder.bindingView.statusTv.setTextColor(
                         ContextCompat.getColor(
                             holder.bindingView.statusTv.context,
@@ -63,8 +65,15 @@ class MyCasesAdapter(
             }
         }
 
+        val circularProgressDrawable = CircularProgressDrawable(holder.bindingView.mainImageView.context)
+        circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.centerRadius = 30f
+        circularProgressDrawable.start()
         Glide.with(holder.bindingView.mainImageView.context)
+            .asBitmap()
+            .placeholder(circularProgressDrawable)
             .load(myCases[holder.absoluteAdapterPosition].mainImage)
+            .override(200, 200)
             .into(holder.bindingView.mainImageView)
     }
 
