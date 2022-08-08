@@ -62,7 +62,7 @@ class CaseDetailsFragment : BaseFragment() {
     private fun initViews() {
         progressDialog = requireActivity().showLoadingDialog()
         binding.caseCategoryInput.setOnClickListener {
-            serviceHistoryDialog?.show()
+            selectCategoryDialog?.show()
         }
 
         binding.caseLocationInput.setOnClickListener {
@@ -242,13 +242,13 @@ class CaseDetailsFragment : BaseFragment() {
     }
 
     var selectedCategoryModel: CaseCategoryModel? = null
-    var serviceHistoryDialog: AlertDialog? = null
+    var selectCategoryDialog: AlertDialog? = null
     private fun setUpCategoriesDialog(data: MutableList<CaseCategoryModel>) {
         val historyOptions = data.map { if (currentLanguage == "ar") it.nameAr else it.nameEn }
             .toMutableList()
 
         val checkedItem = -1
-        serviceHistoryDialog = MaterialAlertDialogBuilder(requireActivity())
+        selectCategoryDialog = MaterialAlertDialogBuilder(requireActivity())
             .setTitle(getString(R.string.select_category))
             .setPositiveButton(resources.getString(R.string.cancel)) { dialog, which ->
                 dialog.dismiss()

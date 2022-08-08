@@ -4,15 +4,13 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.databinding.ActivityEditCaseBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
@@ -45,6 +43,7 @@ class EditCaseActivity : AppCompatActivity() {
         if (isNewCase) {
             mCurrentCase = CaseModel()
             mCurrentCase.id = FirebaseFirestore.getInstance().collection("cases").document().id
+            mCurrentCase.userId = currentLoggedInUserModel!!.id
         }
         viewModel.setCurrentCase(mCurrentCase)
     }

@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.edit_case.model
 
+import com.bluethunder.tar2.ui.home.model.CaseStatus
 import com.google.firebase.firestore.ServerTimestamp
 import java.io.Serializable
 import java.util.*
@@ -23,10 +24,10 @@ class CaseModel : Serializable {
     var locationName: String? = null
     var address: String? = null
     var countryCode: String? = null
-    var status: String? = null
-    var upVotesCount: Int? = null
-    var viewsCount: Int? = null
-    var commentsCount: Int? = null
+    var status: String = CaseStatus.Published.name
+    var upVotesCount: Int = 0
+    var viewsCount: Int = 0
+    var commentsCount: Int = 0
 
     @ServerTimestamp
     var createdAt: Date = Date()
