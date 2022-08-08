@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/category_list_recycler_view"
                     android:layout_width="match_parent"
@@ -60,6 +61,13 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/grey_curved_rectangle_shape"
                     android:padding="4dp" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progress_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:padding="8dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/cases_list_recycler_view"

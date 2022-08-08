@@ -62,5 +62,7 @@
     <style name="RippleStyleDark" parent="RippleStyleWhite">
         <item name="mrl_rippleColor">#80000000</item>
     </style>
-
+    <style name="CustomProgressBarTheme">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+    </style>
 </resources>

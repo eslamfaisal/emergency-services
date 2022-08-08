@@ -27,7 +27,6 @@ class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
 
     private val viewModel by viewModels<MyCasesViewModel> { getViewModelFactory() }
     private lateinit var binding: FragmentMyCasesBinding
-    lateinit var progressDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,27 +55,34 @@ class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
         viewModel.myCases.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     myCasesAdapter.addNewData(resource.data!!)
                 }
                 Status.ERROR -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     parsingError(resource.errorBody!!.toString())
                 }
                 Status.LOADING -> {
-                    progressDialog.show()
+                    showProgress()
                 }
                 Status.EMPTY -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     myCasesAdapter.clearData()
                 }
             }
         }
     }
 
+    private fun hideProgress() {
+        binding.progressHorizontal.visibility = View.GONE
+    }
+
+    private fun showProgress() {
+        binding.progressHorizontal.visibility = View.VISIBLE
+    }
+
     lateinit var myCasesAdapter: MyCasesAdapter
     private fun initViews() {
-        progressDialog = requireActivity().showLoadingDialog()
         myCasesAdapter = MyCasesAdapter(this)
         binding.myCasesRecyclerView.apply {
             adapter = myCasesAdapter

@@ -48,10 +48,24 @@
             app:onRefreshListener="@{viewmodel::refresh}"
             app:refreshing="@{viewmodel.dataRefreshLoading}">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/my_cases_recycler_view"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progress_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:padding="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/my_cases_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </com.bluethunder.tar2.views.ScrollChildSwipeRefreshLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

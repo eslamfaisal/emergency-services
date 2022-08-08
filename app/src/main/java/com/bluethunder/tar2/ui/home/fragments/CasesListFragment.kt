@@ -1,6 +1,5 @@
 package com.bluethunder.tar2.ui.home.fragments
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
-import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.adapter.CasesListAdapter
 import com.bluethunder.tar2.ui.home.adapter.CategoriesAdapter
@@ -28,8 +26,6 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
 
     private val viewModel by viewModels<CasesListViewModel> { getViewModelFactory() }
     private lateinit var binding: FragmentCasesListBinding
-    lateinit var progressDialog: Dialog
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +51,6 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
     lateinit var categoriesAdapter: CategoriesAdapter
     lateinit var myCasesAdapter: CasesListAdapter
     private fun initViews() {
-        progressDialog = requireActivity().showLoadingDialog()
 
         myCasesAdapter = CasesListAdapter(this)
         binding.casesListRecyclerView.apply {
@@ -66,7 +61,8 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
         categoriesAdapter = CategoriesAdapter(this)
         binding.categoryListRecyclerView.apply {
             adapter = categoriesAdapter
-            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         }
 
     }
@@ -76,18 +72,18 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
         viewModel.categories.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     categoriesAdapter.addNewData(resource.data!!)
                 }
                 Status.ERROR -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     parsingError(resource.errorBody!!.toString())
                 }
                 Status.LOADING -> {
-                    progressDialog.show()
+                    showProgress()
                 }
                 Status.EMPTY -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     categoriesAdapter.clearData()
                 }
             }
@@ -95,22 +91,30 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
         viewModel.casesList.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     myCasesAdapter.addNewData(resource.data!!)
                 }
                 Status.ERROR -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     parsingError(resource.errorBody!!.toString())
                 }
                 Status.LOADING -> {
-                    progressDialog.show()
+                    showProgress()
                 }
                 Status.EMPTY -> {
-                    progressDialog.dismiss()
+                    hideProgress()
                     myCasesAdapter.clearData()
                 }
             }
         }
+    }
+
+    private fun hideProgress() {
+        binding.progressHorizontal.visibility = View.GONE
+    }
+
+    private fun showProgress() {
+        binding.progressHorizontal.visibility = View.VISIBLE
     }
 
     private fun parsingError(errorBody: String) {

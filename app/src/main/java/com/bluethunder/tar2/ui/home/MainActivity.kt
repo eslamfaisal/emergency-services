@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         mutableFragmentList.add(MenuFragment())
         binding.homeTabViewPager.adapter =
             ViewPagerFragmentAdapter(this, mutableFragmentList)
+        binding.homeTabViewPager.offscreenPageLimit = 4
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
