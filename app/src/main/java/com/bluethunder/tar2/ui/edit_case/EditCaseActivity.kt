@@ -44,6 +44,8 @@ class EditCaseActivity : AppCompatActivity() {
             mCurrentCase = CaseModel()
             mCurrentCase.id = FirebaseFirestore.getInstance().collection("cases").document().id
             mCurrentCase.userId = currentLoggedInUserModel!!.id
+            mCurrentCase.userName = currentLoggedInUserModel!!.name
+            mCurrentCase.userImage = currentLoggedInUserModel!!.imageUrl
         }
         viewModel.setCurrentCase(mCurrentCase)
     }

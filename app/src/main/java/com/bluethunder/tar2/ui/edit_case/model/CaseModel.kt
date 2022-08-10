@@ -9,6 +9,8 @@ class CaseModel : Serializable {
 
     var id: String? = null
     var userId: String? = null
+    var userName: String? = null
+    var userImage: String? = null
     var categoryId: String? = null
     var title: String? = null
     var description: String? = null
@@ -36,6 +38,8 @@ class CaseModel : Serializable {
         return "CaseModel{" +
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
+                ", userId='" + userName + '\'' +
+                ", userId='" + userImage + '\'' +
                 ", categoryId='" + categoryId + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
