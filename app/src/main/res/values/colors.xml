@@ -26,5 +26,6 @@
     <color name="ucrop_color_widget_active">@color/colorPrimary</color>
     <color name="color_published">#FFF4E7</color>
     <color name="color_unpublished">#FFEBEB</color>
+    <color name="color_up_votes">#E99090</color>
 
 </resources>
