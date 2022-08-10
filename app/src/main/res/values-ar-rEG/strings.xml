@@ -94,4 +94,13 @@
     <string name="settings">Settings</string>
     <string name="share_app">Share App</string>
     <string name="logout">Sign Out</string>
+
+    <string name="just_now">الأن</string>
+    <string name="a_min_ago">منذ 1 دقيقة</string>
+    <string name="mins_ago">" دقائق مضت "</string>
+    <string name="a_hour_ago">منذ 1 ساعة</string>
+    <string name="yesterday">في الامس</string>
+    <string name="days_ago">" أيام مضت "</string>
+    <string name="week_ago">" منذ أسبوع "</string>
+    <string name="weeks_ago">" منذ أسابيع"</string>
 </resources>
