@@ -1,12 +1,12 @@
 package com.bluethunder.tar2.ui.home.adapter
 
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.databinding.CasesListItemBinding
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
+import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 
@@ -33,9 +33,10 @@ class CasesListAdapter(
         val caseModel = myCases[holder.absoluteAdapterPosition]
         caseModel.title?.let { holder.bindingView.titleTv.text = it }
         caseModel.createdAt.let {
-            holder.bindingView.dateTv.text = DateFormat.format("yyyy-MM-dd hh:mm:ss a", it)
+            val timeAgo = TimeAgo()
+            timeAgo.locale(holder.bindingView.root.context)
+            holder.bindingView.dateTv.text = timeAgo.getTimeAgo(it)
         }
-
 
         val circularProgressDrawable =
             CircularProgressDrawable(holder.bindingView.mainImageView.context)
