@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,182 +14,381 @@
             type="com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/parent_view"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/parent_view"
             android:layout_width="match_parent"
-            android:layout_height="340dp"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="340dp"
                 android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:titleEnabled="false">
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-                <RelativeLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
-                    android:orientation="vertical"
-                    app:layout_collapseMode="parallax">
+                    app:contentScrim="?attr/colorPrimary"
+                    app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:titleEnabled="false">
 
-                    <ImageView
-                        android:id="@+id/main_image"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_place_holder"
-                        app:layout_collapseMode="parallax" />
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_margin="8dp"
-                        app:cardBackgroundColor="@color/colorWhite"
-                        app:cardCornerRadius="12dp">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/title_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="@dimen/spacing_mlarge"
-                            android:paddingVertical="@dimen/spacing_large"
-                            android:text="Title here"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@color/dark_red"
-                            android:textSize="16sp" />
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/overlay_dark_10" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="16sp"
-                    app:layout_collapseMode="pin">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardBackgroundColor="@color/colorGreyVeryLight">
+                        android:orientation="vertical"
+                        app:layout_collapseMode="parallax">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:src="@drawable/ic_back" />
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardBackgroundColor="@color/colorGreyVeryLight">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:src="@drawable/ic_share_case" />
-                    </com.google.android.material.card.MaterialCardView>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:clipToPadding="false"
-            android:scrollbars="none"
-            android:scrollingCache="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/lyt_form"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_large">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_large" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageButton
-                            android:layout_width="@dimen/spacing_mxlarge"
-                            android:layout_height="@dimen/spacing_mxlarge"
-                            android:background="@android:color/transparent"
-                            app:tint="@color/colorGreyLight" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_large"
-                            android:layout_height="match_parent" />
-
-                        <LinearLayout
+                            android:id="@+id/main_image"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_height="match_parent"
+                            android:fitsSystemWindows="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_place_holder"
+                            app:layout_collapseMode="parallax" />
 
-                            <TextView
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_margin="16dp"
+                            app:cardBackgroundColor="@color/colorWhite"
+                            app:cardCornerRadius="12dp">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:lineSpacingExtra="2dp"
-                                android:text=" very_long_lorem_ipsum very_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsumvery_long_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum ng_lorem_ipsum "
-                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                                android:textColor="@color/greenDarkColor" />
+                                android:orientation="horizontal">
 
-                        </LinearLayout>
+                            </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    </LinearLayout>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/category_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="8dp"
+                                android:textColor="@color/dark_red"
+                                android:textSize="16sp" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_large" />
+                        android:layout_height="match_parent"
+                        android:background="@color/overlay_dark_10" />
 
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="16sp"
+                        app:layout_collapseMode="pin">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/back_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/colorGreyVeryLight">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:src="@drawable/ic_back" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/colorGreyVeryLight">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="12dp"
+                                android:src="@drawable/ic_share_case" />
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:clipToPadding="false"
+                android:padding="8dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        app:cardBackgroundColor="@color/colorGreyVeryLight"
+                        app:cardCornerRadius="8dp">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="4dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/profile_image"
+                                android:layout_width="45dp"
+                                android:layout_height="45dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="4dp"
+                                app:srcCompat="@drawable/ic_small_profile_image_place_holder" />
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="8dp"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/username_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorBlack"
+                                    android:textSize="16sp" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/date_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorGreyDark"
+                                    android:textSize="14sp" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="8dp"
+                                app:cardBackgroundColor="@color/colorWhite"
+                                app:cardCornerRadius="12dp">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="8dp"
+                                    app:srcCompat="@drawable/ic_call" />
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="8dp"
+                                app:cardBackgroundColor="@color/colorWhite"
+                                app:cardCornerRadius="12dp">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="8dp"
+                                    app:srcCompat="@drawable/ic_case_messages" />
+
+                            </com.google.android.material.card.MaterialCardView>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/case_title_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/poppins_regular"
+                                android:gravity="center"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/header_text_size"
+                                android:textStyle="bold" />
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    app:srcCompat="@drawable/ic_views"
+                                    app:tint="@color/colorGreyMedium" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/views_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:text="@string/views"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="8dp"
+                            app:cardBackgroundColor="@color/color_published"
+                            app:cardCornerRadius="12dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/distance_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="8dp"
+                                android:text="50KM"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="16sp" />
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/case_description_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:paddingEnd="16dp"
+                        android:textColor="@color/colorGreyMedium"
+                        android:textSize="@dimen/header2_text_size"
+                        android:textStyle="bold"
+                        tools:text="I made an accident in the road, so I need help as soon as possible, I made an accident in the road, so I need help as soon as possible
+I made an accident in the road, so I need help as soon as possible
+I made an accident in the road, so I need help as soon as possible" />
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/show_personal_data_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/colorGreyVeryLight"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/personal_data_checkbox"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:srcCompat="@drawable/ic_comments" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/comments_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:gravity="center"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/comments"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/header2_text_size"
+                            android:textStyle="bold" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/comments_recycler_view"/>
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        </androidx.core.widget.NestedScrollView>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/comments_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write Comment" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 </layout>

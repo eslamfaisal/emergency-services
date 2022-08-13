@@ -1,24 +1,21 @@
 package com.bluethunder.tar2.ui.case_details
 
-import android.app.Activity
-import android.graphics.Color
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.ActivityCaseDetailsBinding
-import com.bluethunder.tar2.databinding.ActivityMainBinding
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
+import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
-import com.bluethunder.tar2.ui.extentions.setTransparentStatusBar
 import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
-import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
+import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+
 
 class CaseDetailsActivity : AppCompatActivity() {
 
@@ -33,13 +30,47 @@ class CaseDetailsActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         setContentView(binding.root)
         currentCase = intent.getSerializableExtra(CasesListFragment.CASE_LIST) as CaseModel
-
-        initVideos()
+        getCaseCategory()
+        initViews()
 //        setTransparentStatusBar()
     }
 
-    fun initVideos() {
+    private fun getCaseCategory() {
+
+    }
+
+    fun initViews() {
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
+
         setMainImage()
+        currentCase.createdAt.let {
+            val timeAgo = TimeAgo()
+            timeAgo.locale(binding.root.context)
+            binding.dateTv.text = timeAgo.getTimeAgo(it)
+        }
+        currentCase.userName?.let { binding.usernameTv.text = it }
+        currentCase.title?.let { binding.caseTitleTv.text = it }
+
+        currentCase.viewsCount.let {
+            binding.viewsTv.text = it.toString()
+        }
+        currentCase.commentsCount.let {
+            binding.commentsTv.text = it.toString()
+        }
+
+        currentCase.description.let {
+            binding.caseDescriptionTv.text = it.toString()
+        }
+
+        addKeyboardToggleListener { isShow ->
+            Log.d(TAG, "addKeyboardToggleListener: $isShow")
+            if (isShow) {
+            } else {
+
+            }
+        }
     }
 
     private fun setMainImage() {
@@ -53,9 +84,17 @@ class CaseDetailsActivity : AppCompatActivity() {
         Glide.with(this)
             .load(currentCase.mainImage)
             .placeholder(circularProgressDrawable)
-
-            .placeholder(circularProgressDrawable)
             .into(binding.mainImage)
 
+        Glide.with(this)
+            .load(currentCase.userImage)
+            .placeholder(circularProgressDrawable)
+            .optionalTransform(CircleCrop())
+            .into(binding.profileImage)
+
+    }
+
+    companion object {
+        private const val TAG = "CaseDetailsActivity"
     }
 }

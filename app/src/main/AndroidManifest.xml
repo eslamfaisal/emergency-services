@@ -30,11 +30,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
             android:name=".ui.case_details.CaseDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="com.huawei.hms.client.channel.androidMarket"
@@ -73,7 +75,8 @@
         <activity
             android:name=".ui.edit_case.EditCaseActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
