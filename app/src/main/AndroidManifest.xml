@@ -9,11 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.huawei.appmarket.service.commondata.permission.GET_COMMON_DATA" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 
     <queries>
         <intent>
@@ -35,11 +32,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity
+            android:name=".ui.case_details.CaseDetailsActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.huawei.hms.client.channel.androidMarket"
             android:value="false" />
-
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="106649263" />
@@ -71,12 +70,10 @@
             android:name=".ui.auth.AuthActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.edit_case.EditCaseActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
     </application>
 
 </manifest>

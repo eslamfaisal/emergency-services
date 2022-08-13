@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.home.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentCasesListBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
+import com.bluethunder.tar2.ui.case_details.CaseDetailsActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
@@ -121,11 +123,17 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
         binding.casesListRecyclerView.showSnakeBarError(requireActivity().getErrorMsg(errorBody))
     }
 
-    override fun onCasenClicked(caseModel: CaseModel) {
-
+    override fun onCaseClicked(caseModel: CaseModel) {
+        val intent = Intent(requireActivity(), CaseDetailsActivity::class.java)
+        intent.putExtra(CASE_LIST, caseModel)
+        requireActivity().startActivity(intent)
     }
 
     override fun onCategoryClicked(category: CaseCategoryModel) {
         viewModel.getCasesList(category)
+    }
+
+    companion object {
+        const val CASE_LIST = "case_model"
     }
 }

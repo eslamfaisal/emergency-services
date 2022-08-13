@@ -68,6 +68,10 @@ class CasesListAdapter(
             .placeholder(circularProgressDrawable)
             .optionalTransform(CircleCrop())
             .into(holder.bindingView.profileImage)
+
+        holder.bindingView.root.setOnClickListener {
+            interaction.onCaseClicked(caseModel)
+        }
     }
 
 
@@ -92,7 +96,7 @@ class CasesListAdapter(
     }
 
     interface CasesListInteractions {
-        fun onCasenClicked(caseModel: CaseModel)
+        fun onCaseClicked(caseModel: CaseModel)
     }
 
 }
