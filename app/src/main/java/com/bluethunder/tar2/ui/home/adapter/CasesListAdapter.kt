@@ -38,6 +38,18 @@ class CasesListAdapter(
             holder.bindingView.dateTv.text = timeAgo.getTimeAgo(it)
         }
 
+        caseModel.viewsCount.let {
+            holder.bindingView.viewsTv.text = it.toString()
+        }
+
+        caseModel.commentsCount.let {
+            holder.bindingView.commentsTv.text = it.toString()
+        }
+
+        caseModel.upVotesCount.let {
+            holder.bindingView.upVotesTv.text = it.toString()
+        }
+
         val circularProgressDrawable =
             CircularProgressDrawable(holder.bindingView.mainImageView.context)
         circularProgressDrawable.strokeWidth = 5f
