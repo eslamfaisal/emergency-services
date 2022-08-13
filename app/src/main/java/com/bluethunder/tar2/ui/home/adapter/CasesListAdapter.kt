@@ -38,6 +38,8 @@ class CasesListAdapter(
             holder.bindingView.dateTv.text = timeAgo.getTimeAgo(it)
         }
 
+        caseModel.userName?.let { holder.bindingView.usernameTv.text = it }
+
         caseModel.viewsCount.let {
             holder.bindingView.viewsTv.text = it.toString()
         }
