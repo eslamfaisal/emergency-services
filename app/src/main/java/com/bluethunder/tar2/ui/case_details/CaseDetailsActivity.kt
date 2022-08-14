@@ -97,18 +97,13 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     private fun tryOpenLocationOnMap() {
         try {
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
-            )
+            val uri = Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(intent)
             } else {
-                val gmmIntentUri =
-                    Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                startActivity(mapIntent)
+                intent.setPackage("com.google.android.apps.maps")
+                startActivity(intent)
             }
         } catch (e: Exception) {
             Toast.makeText(
