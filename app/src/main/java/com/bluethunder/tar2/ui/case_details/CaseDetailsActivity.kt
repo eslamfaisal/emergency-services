@@ -19,6 +19,7 @@ import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
+import com.bluethunder.tar2.ui.extentions.hideKeyboard
 import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
 import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
@@ -70,6 +71,7 @@ class CaseDetailsActivity : AppCompatActivity() {
             binding.caseDescriptionTv.text = it.toString()
         }
         binding.sendCommentIv.setOnClickListener {
+            hideKeyboard(this)
             sendComments()
         }
 
@@ -98,6 +100,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         commentModel.userId = SessionConstants.currentLoggedInUserModel!!.id
         commentModel.userName = SessionConstants.currentLoggedInUserModel!!.name
         viewModel.sendComment(currentCase.id!!, commentModel)
+        binding.commentsEt.setText("")
     }
 
     private fun initViewModel() {

@@ -323,7 +323,7 @@
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/poppins_regular"
                         android:paddingEnd="16dp"
-                        android:textColor="@color/colorGreyMedium"
+                        android:textColor="@color/colorGreyDark"
                         android:textSize="@dimen/header2_text_size"
                         android:textStyle="bold"
                         tools:text="I made an accident in the road, so I need help as soon as possible, I made an accident in the road, so I need help as soon as possible

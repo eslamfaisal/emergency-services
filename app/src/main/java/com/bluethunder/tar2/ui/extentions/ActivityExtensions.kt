@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.bluethunder.tar2.ui.ViewModelFactory
 import kotlin.math.roundToInt
@@ -49,3 +50,15 @@ open class KeyboardToggleListener(
 }
 
 fun View.dpToPx(dp: Float) = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).roundToInt()
+
+fun hideKeyboard(activity: Activity) {
+    val imm: InputMethodManager =
+        activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    //Find the currently focused view, so we can grab the correct window token from it.
+    var view = activity.currentFocus
+    //If no view currently has focus, create a new one, just so we can grab a window token from it
+    if (view == null) {
+        view = View(activity)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
