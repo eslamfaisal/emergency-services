@@ -109,4 +109,5 @@
     <string name="request_permission_message">يُرجى قبول إذن الموقع ، فنحن نستخدمه لحساب المسافة بينك وبين كل حالة ، ونشر حالة جديدة وإظهار اتجاهات الحالة.</string>
     <string name="decline">رفض</string>
     <string name="accept">قبول</string>
+    <string name="permission_required">الإذن مطلوب</string>
 </resources>

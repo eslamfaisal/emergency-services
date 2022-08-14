@@ -26,6 +26,8 @@ import com.bluethunder.tar2.ui.home.fragments.MenuFragment
 import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
+import com.bluethunder.tar2.utils.SharedHelper
+import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.github.dhaval2404.imagepicker.ImagePicker.Companion.REQUEST_CODE
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -129,12 +131,17 @@ class MainActivity : AppCompatActivity() {
             binding.menuTabText.visibility = if (position == 3) View.VISIBLE else View.GONE
         }
         // endregion
-        showRequestPermissionDialog()
+        if (!SharedHelper.getBoolean(this, SharedHelperKeys.PERMISSIONS_REQUEST)) {
+            SharedHelper.putBoolean(this, SharedHelperKeys.PERMISSIONS_REQUEST, true)
+            showRequestPermissionDialog()
+        } else {
+            requestLocationPermissions()
+        }
+
     }
 
     fun showRequestPermissionDialog() {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Permission Required")
             .setMessage(resources.getString(R.string.request_permission_message))
             .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
                 // Respond to negative button press
@@ -142,17 +149,22 @@ class MainActivity : AppCompatActivity() {
             }
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
                 // Respond to positive button press
-                myLocationViewModel.checkDeviceLocation(this, true)
-                if (!hasPermissions(this, *RUNTIME_PERMISSIONS)) {
-                    ActivityCompat.requestPermissions(
-                        this,
-                        RUNTIME_PERMISSIONS,
-                        REQUEST_CODE
-                    )
-                }
+                requestLocationPermissions()
                 dialog.dismiss()
             }
             .show()
+    }
+
+    private fun requestLocationPermissions() {
+        myLocationViewModel.checkDeviceLocation(this, true)
+        if (!hasPermissions(this, *RUNTIME_PERMISSIONS)) {
+            ActivityCompat.requestPermissions(
+                this,
+                RUNTIME_PERMISSIONS,
+                REQUEST_CODE
+            )
+        }
+
     }
 
     private fun hasPermissions(context: Context, vararg permissions: String): Boolean {

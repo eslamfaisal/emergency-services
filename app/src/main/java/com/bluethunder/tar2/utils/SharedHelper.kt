@@ -7,6 +7,7 @@ object SharedHelperKeys {
     const val IS_LOGGED_IN = "isLoggedIn"
     const val USER_DATA = "userData"
     const val LANGUAGE_KEY = "languageKey"
+    const val PERMISSIONS_REQUEST = "permissions_request"
 }
 
 object SharedHelper {
