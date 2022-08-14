@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
+import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.case_details.model.CommentModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
@@ -30,6 +31,9 @@ class CaseDetailsViewModel : ViewModel() {
 
     private val _currentCaseDetails = MutableLiveData<CaseModel?>()
     val currentCaseDetails: LiveData<CaseModel?> = _currentCaseDetails
+
+    private val _currentCaseUserDetails = MutableLiveData<UserModel?>()
+    val currentCaseUserDetails: LiveData<UserModel?> = _currentCaseUserDetails
 
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -81,6 +85,20 @@ class CaseDetailsViewModel : ViewModel() {
                 } else {
                     val case = value!!.toObject(CaseModel::class.java)
                     _currentCaseDetails.value = case
+                }
+            }
+    }
+
+    fun listenToCaseUserDetails(caseId: String) {
+        FirebaseFirestore.getInstance()
+            .collection(FirestoreReferences.UsersCollection.value())
+            .document(caseId)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.e(TAG, "listenToComments: ", error)
+                } else {
+                    val case = value!!.toObject(UserModel::class.java)
+                    _currentCaseUserDetails.value = case
                 }
             }
     }

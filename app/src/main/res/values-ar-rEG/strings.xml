@@ -105,4 +105,5 @@
     <string name="weeks_ago">" منذ أسابيع"</string>
     <string name="directions">Directions</string>
     <string name="maps_not_found_msg">يرجى تنزيل تطبيق خرائط لإظهار التنقل إلى موقع هذه الحالة.</string>
+    <string name="write_comment">اكتب تعليق</string>
 </resources>

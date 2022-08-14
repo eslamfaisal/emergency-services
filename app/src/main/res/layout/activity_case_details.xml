@@ -200,6 +200,7 @@
 
                             <com.google.android.material.card.MaterialCardView
                                 android:layout_width="wrap_content"
+                                android:id="@+id/phone_call_btn"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_margin="8dp"
@@ -379,8 +380,8 @@ I made an accident in the road, so I need help as soon as possible" />
                         android:id="@+id/comments_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
                         android:fastScrollEnabled="true"
+                        android:nestedScrollingEnabled="false"
                         android:scrollbarStyle="insideInset"
                         android:scrollbars="vertical"
                         android:splitMotionEvents="false"
@@ -425,8 +426,9 @@ I made an accident in the road, so I need help as soon as possible" />
                         android:layout_weight="1"
                         android:background="@color/colorWhite"
                         android:gravity="center_vertical"
-                        android:hint="Write Comment"
-                        android:paddingStart="8dp" />
+                        android:hint="@string/write_comment"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/send_comment_iv"
@@ -446,8 +448,8 @@ I made an accident in the road, so I need help as soon as possible" />
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
                     android:id="@+id/up_votes_view"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="8dp"
@@ -507,10 +509,10 @@ I made an accident in the road, so I need help as soon as possible" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/location_direction_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:id="@+id/location_direction_view"
                     app:cardBackgroundColor="@color/colorAccent"
                     app:cardCornerRadius="12dp">
 

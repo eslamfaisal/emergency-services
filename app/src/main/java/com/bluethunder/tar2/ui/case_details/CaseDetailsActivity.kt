@@ -15,6 +15,7 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.ActivityCaseDetailsBinding
 import com.bluethunder.tar2.model.Status.SUCCESS
+import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
 import com.bluethunder.tar2.ui.case_details.model.CommentModel
 import com.bluethunder.tar2.ui.case_details.model.CommentType
@@ -37,6 +38,8 @@ class CaseDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCaseDetailsBinding
 
     lateinit var currentCase: CaseModel
+    lateinit var currentCaseUser: CaseModel
+    var currentCaseUserDetails: UserModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,22 +53,9 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     fun initViews() {
-
         setUpCaseDetails()
-
         setUpListeners()
-
         initCommentsView()
-        addKeyboardToggleListener { isShow ->
-            Log.d(TAG, "addKeyboardToggleListener: $isShow")
-            if (isShow) {
-                binding.footerView.visibility = View.GONE
-                binding.sendCommentIv.visibility = View.VISIBLE
-            } else {
-                binding.footerView.visibility = View.VISIBLE
-                binding.sendCommentIv.visibility = View.GONE
-            }
-        }
     }
 
     private fun setUpListeners() {
@@ -81,6 +71,16 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
         binding.locationDirectionView.setOnClickListener {
             tryOpenLocationOnMap()
+        }
+        addKeyboardToggleListener { isShow ->
+            Log.d(TAG, "addKeyboardToggleListener: $isShow")
+            if (isShow) {
+                binding.footerView.visibility = View.GONE
+                binding.sendCommentIv.visibility = View.VISIBLE
+            } else {
+                binding.footerView.visibility = View.VISIBLE
+                binding.sendCommentIv.visibility = View.GONE
+            }
         }
     }
 
@@ -147,6 +147,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         viewModel.getCaseCategory(currentCase.categoryId!!)
         viewModel.listenToComments(currentCase.id!!)
         viewModel.listenToCaseDetails(currentCase.id!!)
+        viewModel.listenToCaseUserDetails(currentCase.userId!!)
 
         viewModel.commentsList.observe(this) { resources ->
             when (resources.status) {
@@ -169,6 +170,30 @@ class CaseDetailsActivity : AppCompatActivity() {
             currentCase?.let {
                 this.currentCase = it
                 setUpCaseDetails()
+            }
+        }
+
+        viewModel.currentCaseUserDetails.observe(this) { currentCase ->
+            currentCase?.let {
+                this.currentCaseUserDetails = it
+                currentCaseUserDetails?.let {
+                    setUpCaseUserDetails()
+                }
+            }
+        }
+
+    }
+
+    private fun setUpCaseUserDetails() {
+        setUserImage()
+        currentCase.userName?.let { binding.usernameTv.text = it }
+        currentCaseUserDetails?.let { userDetails ->
+            binding.phoneCallBtn.setOnClickListener {
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse(
+                    "tel:+${userDetails.phone.trim()}"
+                )
+                startActivity(intent)
             }
         }
 
@@ -201,6 +226,16 @@ class CaseDetailsActivity : AppCompatActivity() {
             .load(currentCase.mainImage)
             .placeholder(circularProgressDrawable)
             .into(binding.mainImage)
+
+    }
+
+    private fun setUserImage() {
+
+        val circularProgressDrawable =
+            CircularProgressDrawable(this)
+        circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.centerRadius = 30f
+        circularProgressDrawable.start()
 
         Glide.with(this)
             .load(currentCase.userImage)
