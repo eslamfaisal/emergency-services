@@ -110,4 +110,5 @@
     <string name="decline">رفض</string>
     <string name="accept">قبول</string>
     <string name="permission_required">الإذن مطلوب</string>
+    <string name="share_case">مشاركه الحالة</string>
 </resources>

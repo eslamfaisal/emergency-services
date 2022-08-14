@@ -84,6 +84,7 @@ dependencies {
     implementation "com.huawei.agconnect:agconnect-auth-huawei:1.7.0.300"
     implementation 'com.huawei.agconnect:agconnect-crash:1.7.0.300'
     implementation 'com.huawei.agconnect:agconnect-appmessaging:1.7.0.300'
+    implementation 'com.huawei.agconnect:agconnect-applinking:1.7.1.300'
     implementation 'com.huawei.hms:push:6.5.0.300'
     implementation "com.huawei.agconnect:agconnect-storage:1.5.0.100"
     implementation 'com.huawei.hms:maps:6.5.0.301'
