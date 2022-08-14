@@ -47,14 +47,33 @@ class CaseDetailsViewModel : ViewModel() {
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.e(TAG, "listenToComments: ", error)
+                    setCommentsValue(Resource.error(error.message))
                 } else {
                     val list: MutableList<CommentModel> = ArrayList()
                     value!!.documentChanges.forEach { document ->
                         val comment = document.document.toObject(CommentModel::class.java)
                         list.add(comment)
                     }
+                    setCommentsValue(Resource.success(list))
                 }
             }
     }
 
+    fun setCommentsValue(value: Resource<List<CommentModel>>) {
+        _commentsList.value = value
+    }
+
+    fun sendComment(caseId: String, comment: CommentModel) {
+        FirebaseFirestore.getInstance().collection("cases")
+            .document(caseId)
+            .collection("comments")
+            .add(comment)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Log.d(TAG, "sendComment: success")
+                } else {
+                    Log.e(TAG, "sendComment: ", it.exception)
+                }
+            }
+    }
 }

@@ -5,18 +5,26 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.ActivityCaseDetailsBinding
+import com.bluethunder.tar2.model.Status.SUCCESS
 import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
+import com.bluethunder.tar2.ui.case_details.model.CommentModel
+import com.bluethunder.tar2.ui.case_details.model.CommentType
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
-import com.bluethunder.tar2.ui.home.adapter.CasesListAdapter
 import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
 import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
 
 
 class CaseDetailsActivity : AppCompatActivity() {
@@ -35,14 +43,6 @@ class CaseDetailsActivity : AppCompatActivity() {
 
         initViews()
         initViewModel()
-    }
-
-    private fun initViewModel() {
-        viewModel.listenToComments(currentCase.id!!)
-    }
-
-    private fun getCaseCategory() {
-
     }
 
     fun initViews() {
@@ -69,6 +69,9 @@ class CaseDetailsActivity : AppCompatActivity() {
         currentCase.description.let {
             binding.caseDescriptionTv.text = it.toString()
         }
+        binding.sendCommentIv.setOnClickListener {
+            sendComments()
+        }
 
         initCommentsView()
         addKeyboardToggleListener { isShow ->
@@ -83,9 +86,48 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun sendComments() {
+        val commentModel = CommentModel()
+        commentModel.id = FirebaseFirestore.getInstance()
+            .collection("cases").document().id
+        commentModel.comment = binding.commentsEt.text.toString()
+        commentModel.createdAt = Date()
+        commentModel.type = CommentType.Text.name
+        commentModel.caseId = currentCase.id
+        commentModel.userImage = SessionConstants.currentLoggedInUserModel!!.imageUrl
+        commentModel.userId = SessionConstants.currentLoggedInUserModel!!.id
+        commentModel.userName = SessionConstants.currentLoggedInUserModel!!.name
+        viewModel.sendComment(currentCase.id!!, commentModel)
+    }
+
+    private fun initViewModel() {
+        viewModel.listenToComments(currentCase.id!!)
+        viewModel.commentsList.observe(this) { resources ->
+            when (resources.status) {
+                SUCCESS -> {
+                    binding.commentsProgressBar.visibility = View.GONE
+                    commentsAdapter.addNewData(resources.data!!)
+                }
+                else -> {
+                    binding.commentsProgressBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
     lateinit var commentsAdapter: CommentsAdapter
     private fun initCommentsView() {
-
+        commentsAdapter = CommentsAdapter()
+        binding.commentsRecyclerView.apply {
+            adapter = commentsAdapter
+            layoutManager = LinearLayoutManager(this@CaseDetailsActivity)
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@CaseDetailsActivity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
     }
 
     private fun setMainImage() {
@@ -105,6 +147,7 @@ class CaseDetailsActivity : AppCompatActivity() {
             .load(currentCase.userImage)
             .placeholder(circularProgressDrawable)
             .optionalTransform(CircleCrop())
+            .error(R.drawable.ic_small_profile_image_place_holder)
             .into(binding.profileImage)
 
     }

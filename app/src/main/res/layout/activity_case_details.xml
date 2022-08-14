@@ -140,6 +140,8 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
                 android:clipToPadding="false"
+                android:isScrollContainer="true"
+                android:measureAllChildren="true"
                 android:padding="8dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -366,10 +368,24 @@ I made an accident in the road, so I need help as soon as possible" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/comments_progress_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="true"
+                        android:padding="8dp" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/comments_recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:fastScrollEnabled="true"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:splitMotionEvents="false"
+                        android:verticalScrollbarPosition="right"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
@@ -388,12 +404,12 @@ I made an accident in the road, so I need help as soon as possible" />
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="2dp"
-                app:cardCornerRadius="8dp"
-                android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
-                android:layout_weight="1">
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="8dp">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -407,17 +423,17 @@ I made an accident in the road, so I need help as soon as possible" />
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:paddingStart="8dp"
                         android:background="@color/colorWhite"
                         android:gravity="center_vertical"
-                        android:hint="Write Comment" />
+                        android:hint="Write Comment"
+                        android:paddingStart="8dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:visibility="gone"
                         android:id="@+id/send_comment_iv"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:padding="16dp"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/ic_send_message" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </com.google.android.material.card.MaterialCardView>
@@ -488,6 +504,7 @@ I made an accident in the road, so I need help as soon as possible" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </com.google.android.material.card.MaterialCardView>
+
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
