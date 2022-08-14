@@ -509,6 +509,7 @@ I made an accident in the road, so I need help as soon as possible" />
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:id="@+id/location_direction_view"
                     app:cardBackgroundColor="@color/colorAccent"
                     app:cardCornerRadius="12dp">
 

@@ -1,5 +1,7 @@
 package com.bluethunder.tar2.ui.case_details
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -73,6 +75,14 @@ class CaseDetailsActivity : AppCompatActivity() {
         binding.sendCommentIv.setOnClickListener {
             hideKeyboard(this)
             sendComments()
+        }
+
+        binding.locationDirectionView.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
+            )
+            startActivity(intent)
         }
 
         initCommentsView()
