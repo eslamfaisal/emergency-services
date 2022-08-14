@@ -32,7 +32,7 @@ class MyLocationViewModel : ViewModel() {
     val lastLocation: LiveData<Resource<Location>> = _lastLocation
 
 
-    fun checkDeviceLocation(activity: Activity) {
+    fun checkDeviceLocation(activity: Activity, oneTimeRequest: Boolean = false) {
         val settingsClient = LocationServices.getSettingsClient(activity)
         val builder = LocationSettingsRequest.Builder()
         val mLocationRequest = getLocationRequest()
@@ -41,7 +41,7 @@ class MyLocationViewModel : ViewModel() {
         val locationSettingsRequest = builder.build()
         settingsClient.checkLocationSettings(locationSettingsRequest)
             .addOnSuccessListener {
-                requestLastLocation(activity)
+                requestLastLocation(activity, oneTimeRequest)
             }.addOnFailureListener { e ->
                 when ((e as ApiException).statusCode) {
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
@@ -62,7 +62,7 @@ class MyLocationViewModel : ViewModel() {
     }
 
 
-    fun requestLastLocation(activity: Activity) {
+    fun requestLastLocation(activity: Activity, oneTime: Boolean = false) {
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
 //        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
 //            if (location != null) {
@@ -71,22 +71,25 @@ class MyLocationViewModel : ViewModel() {
 //            }
 //        }
 
+        val callBack = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                if (oneTime)
+                    fusedLocationProviderClient.removeLocationUpdates(this)
+                locationResult.lastLocation?.let {
+                    setLastLocationValue(Resource.success(it))
+                    getLocationName(it, activity)
+
+                }
+            }
+        }
         fusedLocationProviderClient
             .requestLocationUpdates(
                 getLocationRequest(),
-                object : LocationCallback() {
-                    override fun onLocationResult(locationResult: LocationResult) {
-                        locationResult.lastLocation?.let {
-                            setLastLocationValue(Resource.success(it))
-                            getLocationName(it, activity)
-                        }
-                    }
-                },
+                callBack,
                 Looper.getMainLooper()
             ).addOnSuccessListener {
                 Log.d(TAG, "requestLastLocation: onSuccess")
             }
-
     }
 
     fun getLocationName(location: Location, activity: Activity) {

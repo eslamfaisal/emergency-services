@@ -15,7 +15,7 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.SessionConstants.myCurrentLocation
 import com.bluethunder.tar2.databinding.ActivityCaseDetailsBinding
-import com.bluethunder.tar2.model.Status.SUCCESS
+import com.bluethunder.tar2.model.Status.*
 import com.bluethunder.tar2.ui.MyLocationViewModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
@@ -161,7 +161,7 @@ class CaseDetailsActivity : AppCompatActivity() {
                 currentCase.longitude!!.toDouble()
             )
         } ?: kotlin.run {
-            myLocationViewModel.checkDeviceLocation(this)
+            myLocationViewModel.checkDeviceLocation(this, oneTimeRequest = true)
             myLocationViewModel.lastLocation.observe(this) { locationResource ->
                 locationResource?.let {
                     it.data?.let { location ->
@@ -176,16 +176,31 @@ class CaseDetailsActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.caseLocationDistance.observe(this) {
-            try {
-                it?.let {
+        viewModel.caseLocationDistance.observe(this) { resources ->
+            when (resources.status) {
+                SUCCESS -> {
                     binding.distanceProgressBar.visibility = View.GONE
-                    binding.distanceTv.text =
-                        it.routes[0].paths[0].distanceText!!.toString().capitalized()
+                    try {
+                        resources.data?.let {
+                            binding.distanceTv.text =
+                                it.routes[0].paths[0].distanceText!!.toString().capitalized()
+                        }
+                    } catch (e: Exception) {
+                        Log.d(TAG, "initViewModel: ${e.message}")
+                    }
                 }
-            } catch (e: Exception) {
-                Log.d(TAG, "initViewModel: ${e.message}")
+                ERROR -> {
+                    binding.distanceProgressBar.visibility = View.GONE
+                    calculateDistance()
+                }
+                LOADING -> {
+                    binding.distanceProgressBar.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.distanceProgressBar.visibility = View.GONE
+                }
             }
+
 
         }
 
@@ -226,11 +241,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     fun String.capitalized(): String {
-        return this.replaceFirstChar {
-            if (it.isLowerCase())
-                it.titlecase(Locale.getDefault())
-            else it.toString()
-        }
+        return this.toUpperCase()
     }
 
     private fun setUpCaseUserDetails() {

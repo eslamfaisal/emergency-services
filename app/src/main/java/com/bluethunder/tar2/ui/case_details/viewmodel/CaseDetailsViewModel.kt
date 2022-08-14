@@ -39,8 +39,8 @@ class CaseDetailsViewModel : ViewModel() {
     private val _currentCaseUserDetails = MutableLiveData<UserModel?>()
     val currentCaseUserDetails: LiveData<UserModel?> = _currentCaseUserDetails
 
-    private val _caseLocationDistance = MutableLiveData<LocationDistanceModel?>()
-    val caseLocationDistance: LiveData<LocationDistanceModel?> = _caseLocationDistance
+    private val _caseLocationDistance = MutableLiveData<Resource<LocationDistanceModel?>>()
+    val caseLocationDistance: LiveData<Resource<LocationDistanceModel?>> = _caseLocationDistance
 
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -188,6 +188,7 @@ class CaseDetailsViewModel : ViewModel() {
     }
 
     fun getCaseLocationDistance(latitude: Double, longitude: Double) {
+        setCaseLocationDistance(Resource.loading())
         val body = LocationDistanceRequestBody(
             origin = Origin(
                 lat = SessionConstants.myCurrentLocation!!.latitude,
@@ -205,17 +206,24 @@ class CaseDetailsViewModel : ViewModel() {
                     response: Response<LocationDistanceModel>
                 ) {
                     if (response.isSuccessful) {
-                        _caseLocationDistance.value = response.body()
+                        setCaseLocationDistance(Resource.success(response.body()))
                         Log.d(TAG, "getCaseLocationDistance: success")
                     } else {
                         Log.e(TAG, "getCaseLocationDistance:  err ")
+                        setCaseLocationDistance(Resource.error(response.message()))
                     }
                 }
 
                 override fun onFailure(call: Call<LocationDistanceModel>, t: Throwable) {
                     Log.e(TAG, "getCaseLocationDistance: ", t)
+                    setCaseLocationDistance(Resource.error(t.message))
                 }
             })
     }
+
+    fun setCaseLocationDistance(value: Resource<LocationDistanceModel?>) {
+        _caseLocationDistance.value = value
+    }
+
 
 }
