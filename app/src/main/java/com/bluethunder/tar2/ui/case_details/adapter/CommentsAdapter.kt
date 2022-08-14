@@ -63,7 +63,7 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     }
 
     fun addNewData(comments: List<CommentModel>) {
-        this.commentsList.addAll(comments)
+        this.commentsList.addAll(0, comments)
         notifyDataSetChanged()
     }
 

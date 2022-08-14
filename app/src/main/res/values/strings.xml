@@ -103,5 +103,5 @@
     <string name="week_ago">" week ago"</string>
     <string name="weeks_ago">" weeks ago"</string>
     <string name="directions">Directions</string>
-    <string name="maps_not_found_msg">Please Download petal maps app to show the navigation to this case location</string>
+    <string name="maps_not_found_msg">Please Download maps app to show the navigation to this case location</string>
 </resources>

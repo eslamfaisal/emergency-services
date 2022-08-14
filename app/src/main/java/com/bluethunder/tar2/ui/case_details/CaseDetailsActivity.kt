@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -78,11 +79,21 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
 
         binding.locationDirectionView.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
-            )
-            startActivity(intent)
+            try {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
+                )
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, getString(R.string.maps_not_found_msg), Toast.LENGTH_LONG)
+                        .show()
+                }
+            } catch (e: Exception) {
+
+            }
+
         }
 
         initCommentsView()
