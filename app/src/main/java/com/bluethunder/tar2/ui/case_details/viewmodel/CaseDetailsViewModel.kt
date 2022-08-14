@@ -8,13 +8,17 @@ import androidx.lifecycle.viewModelScope
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
+import com.bluethunder.tar2.networking.RetrofitClient
 import com.bluethunder.tar2.ui.auth.model.UserModel
-import com.bluethunder.tar2.ui.case_details.model.CommentModel
+import com.bluethunder.tar2.ui.case_details.model.*
 import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class CaseDetailsViewModel : ViewModel() {
@@ -34,6 +38,9 @@ class CaseDetailsViewModel : ViewModel() {
 
     private val _currentCaseUserDetails = MutableLiveData<UserModel?>()
     val currentCaseUserDetails: LiveData<UserModel?> = _currentCaseUserDetails
+
+    private val _caseLocationDistance = MutableLiveData<LocationDistanceModel?>()
+    val caseLocationDistance: LiveData<LocationDistanceModel?> = _caseLocationDistance
 
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -160,5 +167,55 @@ class CaseDetailsViewModel : ViewModel() {
             }
     }
 
+    fun sendView(caseId: String) {
+        FirebaseFirestore.getInstance().collection("cases")
+            .document(caseId)
+            .collection("views")
+            .document(SessionConstants.currentLoggedInUserModel!!.id)
+            .set(
+                hashMapOf(
+                    "userId" to SessionConstants.currentLoggedInUserModel!!.id,
+                    "caseId" to caseId
+                )
+            )
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Log.d(TAG, "sendUpVote: success")
+                } else {
+                    Log.e(TAG, "sendUpVote: ", it.exception)
+                }
+            }
+    }
+
+    fun getCaseLocationDistance(latitude: Double, longitude: Double) {
+        val body = LocationDistanceRequestBody(
+            origin = Origin(
+                lat = SessionConstants.myCurrentLocation!!.latitude,
+                lng = SessionConstants.myCurrentLocation!!.longitude,
+            ),
+            destination = Destination(
+                lat = latitude,
+                lng = longitude,
+            )
+        )
+        RetrofitClient.retrofit.getCaseDistance(body)
+            .enqueue(object : Callback<LocationDistanceModel> {
+                override fun onResponse(
+                    call: Call<LocationDistanceModel>,
+                    response: Response<LocationDistanceModel>
+                ) {
+                    if (response.isSuccessful) {
+                        _caseLocationDistance.value = response.body()
+                        Log.d(TAG, "getCaseLocationDistance: success")
+                    } else {
+                        Log.e(TAG, "getCaseLocationDistance:  err ")
+                    }
+                }
+
+                override fun onFailure(call: Call<LocationDistanceModel>, t: Throwable) {
+                    Log.e(TAG, "getCaseLocationDistance: ", t)
+                }
+            })
+    }
 
 }

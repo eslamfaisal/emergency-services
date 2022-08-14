@@ -199,8 +199,8 @@
                                 android:layout_weight="1" />
 
                             <com.google.android.material.card.MaterialCardView
-                                android:layout_width="wrap_content"
                                 android:id="@+id/phone_call_btn"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_margin="8dp"
@@ -303,15 +303,26 @@
                             app:cardBackgroundColor="@color/color_published"
                             app:cardCornerRadius="12dp">
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/distance_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <LinearLayout
                                 android:padding="8dp"
-                                android:text="50KM"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="16sp" />
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/distance_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:textSize="16sp" />
+
+                                <ProgressBar
+                                    android:id="@+id/distance_progress_bar"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp" />
+                            </LinearLayout>
+
 
                         </com.google.android.material.card.MaterialCardView>
                     </androidx.appcompat.widget.LinearLayoutCompat>

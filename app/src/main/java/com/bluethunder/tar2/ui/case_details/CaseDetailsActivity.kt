@@ -1,7 +1,6 @@
 package com.bluethunder.tar2.ui.case_details
 
 import android.content.Intent
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -14,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
+import com.bluethunder.tar2.SessionConstants.myCurrentLocation
 import com.bluethunder.tar2.databinding.ActivityCaseDetailsBinding
 import com.bluethunder.tar2.model.Status.SUCCESS
+import com.bluethunder.tar2.ui.MyLocationViewModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
 import com.bluethunder.tar2.ui.case_details.model.CommentModel
@@ -31,11 +32,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.hms.maps.common.util.DistanceCalculator
+import com.huawei.hms.maps.model.LatLng
 import java.util.*
 
 
 class CaseDetailsActivity : AppCompatActivity() {
 
+    private val myLocationViewModel by viewModels<MyLocationViewModel> { getViewModelFactory() }
     private val viewModel by viewModels<CaseDetailsViewModel> { getViewModelFactory() }
     private lateinit var binding: ActivityCaseDetailsBinding
 
@@ -58,6 +61,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         setUpCaseDetails()
         setUpListeners()
         initCommentsView()
+//        calculateDistance()
     }
 
     private fun setUpListeners() {
@@ -151,6 +155,40 @@ class CaseDetailsActivity : AppCompatActivity() {
         viewModel.listenToCaseDetails(currentCase.id!!)
         viewModel.listenToCaseUserDetails(currentCase.userId!!)
 
+        myCurrentLocation?.let {
+            viewModel.getCaseLocationDistance(
+                currentCase.latitude!!.toDouble(),
+                currentCase.longitude!!.toDouble()
+            )
+        } ?: kotlin.run {
+            myLocationViewModel.checkDeviceLocation(this)
+            myLocationViewModel.lastLocation.observe(this) { locationResource ->
+                locationResource?.let {
+                    it.data?.let { location ->
+                        myCurrentLocation = LatLng(location.latitude, location.longitude)
+                        Log.d(TAG, "initViewModel:myCurrentLocation = $myCurrentLocation")
+                        viewModel.getCaseLocationDistance(
+                            currentCase.latitude!!.toDouble(),
+                            currentCase.longitude!!.toDouble()
+                        )
+                    }
+                }
+            }
+        }
+
+        viewModel.caseLocationDistance.observe(this) {
+            try {
+                it?.let {
+                    binding.distanceProgressBar.visibility = View.GONE
+                    binding.distanceTv.text =
+                        it.routes[0].paths[0].distanceText!!.toString().capitalized()
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, "initViewModel: ${e.message}")
+            }
+
+        }
+
         viewModel.commentsList.observe(this) { resources ->
             when (resources.status) {
                 SUCCESS -> {
@@ -162,6 +200,7 @@ class CaseDetailsActivity : AppCompatActivity() {
                 }
             }
         }
+
         viewModel.caseCategory.observe(this) { category ->
             category?.let {
                 binding.categoryTv.text =
@@ -184,6 +223,14 @@ class CaseDetailsActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    fun String.capitalized(): String {
+        return this.replaceFirstChar {
+            if (it.isLowerCase())
+                it.titlecase(Locale.getDefault())
+            else it.toString()
+        }
     }
 
     private fun setUpCaseUserDetails() {
@@ -248,18 +295,28 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     }
 
-    fun calculateDistance(){
-//        DistanceCalculator.computeDistanceBetween()
-        val startPoint = Location("locationA")
-        startPoint.setLatitude(17.372102)
-        startPoint.setLongitude(78.484196)
+    fun calculateDistance() {
+        myCurrentLocation?.let {
+            val distance = DistanceCalculator.computeDistanceBetween(
+                it,
+                LatLng(
+                    currentCase.latitude!!.toDouble(),
+                    currentCase.longitude!!.toDouble()
+                )
+            )
 
-        val endPoint = Location("locationA")
-        endPoint.setLatitude(17.375775)
-        endPoint.setLongitude(78.469218)
+            val number2digits: Double = String.format("%.2f", distance / 1000).toDouble()
+            Log.d(TAG, "calculateDistance: $distance")
+            Log.d(TAG, "calculateDistance: $number2digits")
+        }
 
-        val distance: Float = startPoint.distanceTo(endPoint)
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.sendView(currentCase.id!!)
+    }
+
     companion object {
         private const val TAG = "CaseDetailsActivity"
     }
