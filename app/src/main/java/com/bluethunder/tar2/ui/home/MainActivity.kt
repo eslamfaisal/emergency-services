@@ -1,18 +1,20 @@
 package com.bluethunder.tar2.ui.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
-import com.bluethunder.tar2.SessionConstants.myCurrentLocation
 import com.bluethunder.tar2.databinding.ActivityMainBinding
 import com.bluethunder.tar2.ui.MyLocationViewModel
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
@@ -24,15 +26,22 @@ import com.bluethunder.tar2.ui.home.fragments.MenuFragment
 import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
-import com.huawei.hms.maps.model.LatLng
+import com.github.dhaval2404.imagepicker.ImagePicker.Companion.REQUEST_CODE
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
+        private val RUNTIME_PERMISSIONS = arrayOf(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET
+        )
     }
 
+    private val myLocationViewModel by viewModels<MyLocationViewModel> { getViewModelFactory() }
     private val viewModel by viewModels<HomeViewModel> { getViewModelFactory() }
     private val notificationViewModel by viewModels<NotificationsViewModel> { getViewModelFactory() }
 
@@ -120,7 +129,46 @@ class MainActivity : AppCompatActivity() {
             binding.menuTabText.visibility = if (position == 3) View.VISIBLE else View.GONE
         }
         // endregion
-
+        showRequestPermissionDialog()
     }
+
+    fun showRequestPermissionDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Permission Required")
+            .setMessage(resources.getString(R.string.request_permission_message))
+            .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
+                // Respond to negative button press
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                // Respond to positive button press
+                myLocationViewModel.checkDeviceLocation(this, true)
+                if (!hasPermissions(this, *RUNTIME_PERMISSIONS)) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        RUNTIME_PERMISSIONS,
+                        REQUEST_CODE
+                    )
+                }
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun hasPermissions(context: Context, vararg permissions: String): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && permissions != null) {
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
 
 }

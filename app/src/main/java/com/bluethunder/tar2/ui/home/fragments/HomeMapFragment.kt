@@ -52,10 +52,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!hasPermissions(requireActivity(), *RUNTIME_PERMISSIONS)) {
-            ActivityCompat.requestPermissions(requireActivity(), RUNTIME_PERMISSIONS, REQUEST_CODE)
-        }
-
         initViews()
     }
 
@@ -103,31 +99,11 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         super.onLowMemory()
     }
 
-
-    private fun hasPermissions(context: Context, vararg permissions: String): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && permissions != null) {
-            for (permission in permissions) {
-                if (ActivityCompat.checkSelfPermission(
-                        context,
-                        permission
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-
     companion object {
         private const val TAG = "MapViewDemoActivity"
         private const val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
         private const val REQUEST_CODE = 100
         private val LAT_LNG = LatLng(30.2567239, 31.1561441)
-        private val RUNTIME_PERMISSIONS = arrayOf(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET
-        )
+
     }
 }

@@ -105,4 +105,7 @@
     <string name="directions">Directions</string>
     <string name="maps_not_found_msg">Please Download maps app to show the navigation to this case location</string>
     <string name="write_comment">Write Comment</string>
+    <string name="request_permission_message">Please accept location permission, We use it to Calculate the distance between you and each case, Publish new case and Show case directions.</string>
+    <string name="decline">Decline</string>
+    <string name="accept">Accept</string>
 </resources>

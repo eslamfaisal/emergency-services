@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.case_details
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
 import com.bluethunder.tar2.ui.case_details.model.CommentModel
 import com.bluethunder.tar2.ui.case_details.model.CommentType
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
+import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
@@ -34,7 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.hms.maps.common.util.DistanceCalculator
 import com.huawei.hms.maps.model.LatLng
 import java.util.*
-
 
 class CaseDetailsActivity : AppCompatActivity() {
 
@@ -155,26 +156,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         viewModel.listenToCaseDetails(currentCase.id!!)
         viewModel.listenToCaseUserDetails(currentCase.userId!!)
 
-        myCurrentLocation?.let {
-            viewModel.getCaseLocationDistance(
-                currentCase.latitude!!.toDouble(),
-                currentCase.longitude!!.toDouble()
-            )
-        } ?: kotlin.run {
-            myLocationViewModel.checkDeviceLocation(this, oneTimeRequest = true)
-            myLocationViewModel.lastLocation.observe(this) { locationResource ->
-                locationResource?.let {
-                    it.data?.let { location ->
-                        myCurrentLocation = LatLng(location.latitude, location.longitude)
-                        Log.d(TAG, "initViewModel:myCurrentLocation = $myCurrentLocation")
-                        viewModel.getCaseLocationDistance(
-                            currentCase.latitude!!.toDouble(),
-                            currentCase.longitude!!.toDouble()
-                        )
-                    }
-                }
-            }
-        }
+        calculateDistance()
 
         viewModel.caseLocationDistance.observe(this) { resources ->
             when (resources.status) {
@@ -190,8 +172,7 @@ class CaseDetailsActivity : AppCompatActivity() {
                     }
                 }
                 ERROR -> {
-                    binding.distanceProgressBar.visibility = View.GONE
-                    calculateDistance()
+                    binding.caseDistanceView.visibility = View.GONE
                 }
                 LOADING -> {
                     binding.distanceProgressBar.visibility = View.VISIBLE
@@ -240,8 +221,31 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     }
 
+    private fun calculateDistance() {
+        myCurrentLocation?.let {
+            viewModel.getCaseLocationDistance(
+                currentCase.latitude!!.toDouble(),
+                currentCase.longitude!!.toDouble()
+            )
+        } ?: kotlin.run {
+            myLocationViewModel.checkDeviceLocation(this, oneTimeRequest = true)
+            myLocationViewModel.lastLocation.observe(this) { locationResource ->
+                locationResource?.let {
+                    it.data?.let { location ->
+                        myCurrentLocation = LatLng(location.latitude, location.longitude)
+                        Log.d(TAG, "initViewModel:myCurrentLocation = $myCurrentLocation")
+                        viewModel.getCaseLocationDistance(
+                            currentCase.latitude!!.toDouble(),
+                            currentCase.longitude!!.toDouble()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun String.capitalized(): String {
-        return this.toUpperCase()
+        return this.uppercase(Locale.getDefault())
     }
 
     private fun setUpCaseUserDetails() {
@@ -306,7 +310,7 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     }
 
-    fun calculateDistance() {
+    fun calculateFixedDistance() {
         myCurrentLocation?.let {
             val distance = DistanceCalculator.computeDistanceBetween(
                 it,
@@ -321,6 +325,19 @@ class CaseDetailsActivity : AppCompatActivity() {
             Log.d(TAG, "calculateDistance: $number2digits")
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            EditCaseActivity.REQUEST_DEVICE_SETTINGS -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    calculateDistance()
+                } else {
+                    Log.i(TAG, "User denied request")
+                }
+            }
+        }
     }
 
     override fun onResume() {
