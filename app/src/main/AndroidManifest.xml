@@ -33,6 +33,7 @@
 
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+
         <activity
             android:name=".ui.case_details.CaseDetailsActivity"
             android:exported="false"
@@ -63,11 +64,25 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.home.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Set android:host to the prefix of your App Linking deep link or Android deep link. Set android:scheme to a custom scheme. -->
+                <data
+                    android:host="tar2.xyz"
+                    android:scheme="https" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false"

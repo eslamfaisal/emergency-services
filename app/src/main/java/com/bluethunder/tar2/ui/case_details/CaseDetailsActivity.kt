@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.agconnect.applinking.AppLinking
+import com.huawei.agconnect.applinking.ShortAppLinking
 import com.huawei.hms.maps.common.util.DistanceCalculator
 import com.huawei.hms.maps.model.LatLng
 import java.util.*
@@ -81,7 +82,7 @@ class CaseDetailsActivity : AppCompatActivity() {
             tryOpenLocationOnMap()
         }
         binding.shareBtn.setOnClickListener {
-            createShortLink()
+            createAppLinking()
         }
         addKeyboardToggleListener { isShow ->
             Log.d(TAG, "addKeyboardToggleListener: $isShow")
@@ -331,15 +332,11 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     }
 
-    fun createShortLink() {
-        val builder = AppLinking.newBuilder()
-            .setUriPrefix("https://tar2.dra.agconnect.link/${currentCase.id}")
-            .setDeepLink(Uri.parse("https://tar2.bluethunder.com/${currentCase.id}"))
-            .setAndroidLinkInfo(
-                AppLinking.AndroidLinkInfo.newBuilder()
-                    .setAndroidDeepLink("agckit://tar2.bluethunder.com/${currentCase.id}")
-                    .build()
-            )
+    private fun createAppLinking() {
+        val builder = AppLinking.Builder()
+            .setUriPrefix("https://tar2.dra.agconnect.link")
+            .setDeepLink(Uri.parse("https://tar2.xyz/${currentCase.id}"))
+            .setAndroidLinkInfo(AppLinking.AndroidLinkInfo.Builder().build())
             .setSocialCardInfo(
                 AppLinking.SocialCardInfo.newBuilder()
                     .setTitle(currentCase.title)
@@ -348,23 +345,27 @@ class CaseDetailsActivity : AppCompatActivity() {
                     .build()
             )
             .setIsShowPreview(true)
-            .setPreviewType(AppLinking.LinkingPreviewType.AppInfo)
+        builder.buildShortAppLinking(ShortAppLinking.LENGTH.SHORT)
+            .addOnSuccessListener { shortAppLinking: ShortAppLinking ->
+                shareAppLink(shortAppLinking.shortUrl.toString()) }
+            .addOnFailureListener { e: Exception -> showError(e.message) }
 
-        builder.buildShortAppLinking().addOnCompleteListener {
-            if (it.isSuccessful) {
-                Log.d(TAG, "createShortLink: ${it.result?.shortUrl}")
-                shareAppLink(it.result?.shortUrl!!)
-            } else {
-                Log.d(TAG, "createShortLink: ${it.exception?.message}")
-            }
-        }
     }
 
-    private fun shareAppLink(shortUrl: Uri) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_case))
-        intent.putExtra(Intent.EXTRA_TEXT, shortUrl)
-        startActivity(Intent.createChooser(intent, getString(R.string.share_case)))
+    private fun showError(msg: String?) {
+        Log.d(TAG, "showError: $msg")
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
+    private fun shareAppLink(shortUrl: String?) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, shortUrl)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
