@@ -79,21 +79,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
 
         binding.locationDirectionView.setOnClickListener {
-            try {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
-                )
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, getString(R.string.maps_not_found_msg), Toast.LENGTH_LONG)
-                        .show()
-                }
-            } catch (e: Exception) {
-
-            }
-
+            tryOpenLocationOnMap()
         }
 
         initCommentsView()
@@ -106,6 +92,30 @@ class CaseDetailsActivity : AppCompatActivity() {
                 binding.footerView.visibility = View.VISIBLE
                 binding.sendCommentIv.visibility = View.GONE
             }
+        }
+    }
+
+    private fun tryOpenLocationOnMap() {
+        try {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
+            )
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            } else {
+                val gmmIntentUri =
+                    Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+        } catch (e: Exception) {
+            Toast.makeText(
+                this,
+                getString(R.string.maps_not_found_msg),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
