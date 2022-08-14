@@ -7,10 +7,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.databinding.ActivityCaseDetailsBinding
+import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
+import com.bluethunder.tar2.ui.home.adapter.CasesListAdapter
 import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
 import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
@@ -36,7 +38,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel.listenToComments()
+        viewModel.listenToComments(currentCase.id!!)
     }
 
     private fun getCaseCategory() {
@@ -68,6 +70,7 @@ class CaseDetailsActivity : AppCompatActivity() {
             binding.caseDescriptionTv.text = it.toString()
         }
 
+        initCommentsView()
         addKeyboardToggleListener { isShow ->
             Log.d(TAG, "addKeyboardToggleListener: $isShow")
             if (isShow) {
@@ -78,6 +81,11 @@ class CaseDetailsActivity : AppCompatActivity() {
                 binding.sendCommentIv.visibility = View.GONE
             }
         }
+    }
+
+    lateinit var commentsAdapter: CommentsAdapter
+    private fun initCommentsView() {
+
     }
 
     private fun setMainImage() {
