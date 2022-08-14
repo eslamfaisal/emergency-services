@@ -62,4 +62,40 @@ class CaseModel : Serializable {
                 ", createdAt='" + createdAt + '\'' +
                 '}'
     }
+
+    override fun equals(other: Any?): Boolean {
+        other?.let {
+            if (it is CaseModel) {
+                return it.id == id
+            } else return false
+        } ?: return false
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + (userId?.hashCode() ?: 0)
+        result = 31 * result + (userName?.hashCode() ?: 0)
+        result = 31 * result + (userImage?.hashCode() ?: 0)
+        result = 31 * result + (categoryId?.hashCode() ?: 0)
+        result = 31 * result + (title?.hashCode() ?: 0)
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + (images?.hashCode() ?: 0)
+        result = 31 * result + (mainImage?.hashCode() ?: 0)
+        result = 31 * result + (latitude?.hashCode() ?: 0)
+        result = 31 * result + (longitude?.hashCode() ?: 0)
+        result = 31 * result + showUserData.hashCode()
+        result = 31 * result + hasChatMessages.hashCode()
+        result = 31 * result + hasPhoneCall.hashCode()
+        result = 31 * result + hasOnlineCall.hashCode()
+        result = 31 * result + hasVideoCall.hashCode()
+        result = 31 * result + (locationName?.hashCode() ?: 0)
+        result = 31 * result + (address?.hashCode() ?: 0)
+        result = 31 * result + (countryCode?.hashCode() ?: 0)
+        result = 31 * result + status.hashCode()
+        result = 31 * result + upVotesCount
+        result = 31 * result + viewsCount
+        result = 31 * result + commentsCount
+        result = 31 * result + createdAt.hashCode()
+        return result
+    }
 }

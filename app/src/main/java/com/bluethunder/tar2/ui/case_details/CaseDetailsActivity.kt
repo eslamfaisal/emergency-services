@@ -50,37 +50,10 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     fun initViews() {
-        binding.backBtn.setOnClickListener {
-            onBackPressed()
-        }
 
-        setMainImage()
-        currentCase.createdAt.let {
-            val timeAgo = TimeAgo()
-            timeAgo.locale(binding.root.context)
-            binding.dateTv.text = timeAgo.getTimeAgo(it)
-        }
-        currentCase.userName?.let { binding.usernameTv.text = it }
-        currentCase.title?.let { binding.caseTitleTv.text = it }
+        setUpCaseDetails()
 
-        currentCase.viewsCount.let {
-            binding.viewsTv.text = it.toString()
-        }
-        currentCase.commentsCount.let {
-            binding.commentsTv.text = it.toString()
-        }
-
-        currentCase.description.let {
-            binding.caseDescriptionTv.text = it.toString()
-        }
-        binding.sendCommentIv.setOnClickListener {
-            hideKeyboard(this)
-            sendComments()
-        }
-
-        binding.locationDirectionView.setOnClickListener {
-            tryOpenLocationOnMap()
-        }
+        setUpListeners()
 
         initCommentsView()
         addKeyboardToggleListener { isShow ->
@@ -93,6 +66,47 @@ class CaseDetailsActivity : AppCompatActivity() {
                 binding.sendCommentIv.visibility = View.GONE
             }
         }
+    }
+
+    private fun setUpListeners() {
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
+        binding.sendCommentIv.setOnClickListener {
+            hideKeyboard(this)
+            sendComments()
+        }
+        binding.upVotesView.setOnClickListener {
+            sendUpVote()
+        }
+        binding.locationDirectionView.setOnClickListener {
+            tryOpenLocationOnMap()
+        }
+    }
+
+    private fun setUpCaseDetails() {
+        setMainImage()
+        currentCase.createdAt.let {
+            val timeAgo = TimeAgo()
+            timeAgo.locale(binding.root.context)
+            binding.dateTv.text = timeAgo.getTimeAgo(it)
+        }
+        currentCase.userName?.let { binding.usernameTv.text = it }
+        currentCase.title?.let { binding.caseTitleTv.text = it }
+        currentCase.upVotesCount.let { binding.upVotesTv.text = it.toString() }
+        currentCase.viewsCount.let {
+            binding.viewsTv.text = it.toString()
+        }
+        currentCase.commentsCount.let {
+            binding.commentsTv.text = it.toString()
+        }
+        currentCase.description.let {
+            binding.caseDescriptionTv.text = it.toString()
+        }
+    }
+
+    private fun sendUpVote() {
+        viewModel.sendUpVote(currentCase.id!!)
     }
 
     private fun tryOpenLocationOnMap() {
@@ -130,8 +144,10 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel.listenToComments(currentCase.id!!)
         viewModel.getCaseCategory(currentCase.categoryId!!)
+        viewModel.listenToComments(currentCase.id!!)
+        viewModel.listenToCaseDetails(currentCase.id!!)
+
         viewModel.commentsList.observe(this) { resources ->
             when (resources.status) {
                 SUCCESS -> {
@@ -147,6 +163,12 @@ class CaseDetailsActivity : AppCompatActivity() {
             category?.let {
                 binding.categoryTv.text =
                     if (SessionConstants.currentLanguage == "ar") it.nameAr else it.nameEn
+            }
+        }
+        viewModel.currentCaseDetails.observe(this) { currentCase ->
+            currentCase?.let {
+                this.currentCase = it
+                setUpCaseDetails()
             }
         }
 

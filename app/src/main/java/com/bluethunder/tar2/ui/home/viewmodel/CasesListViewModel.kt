@@ -78,12 +78,11 @@ class CasesListViewModel : ViewModel() {
         if (category.reference != "ALL")
             query = query.whereEqualTo(FirestoreReferences.CaseCategoryId.value(), category.id)
 
-
-        query.get().addOnSuccessListener { querySnapShot ->
+        query.addSnapshotListener { querySnapShot, error ->
             try {
                 val casesList = ArrayList<CaseModel>()
-                querySnapShot.documents.forEach { document ->
-                    casesList.add(document.toObject(CaseModel::class.java)!!)
+                querySnapShot!!.documentChanges.forEach { document ->
+                    casesList.add(document.document.toObject(CaseModel::class.java))
                 }
                 Log.d(TAG, "caseewModel: get my ce  ${casesList.size}")
 
@@ -93,9 +92,6 @@ class CasesListViewModel : ViewModel() {
                 Log.d(TAG, "caseList: exception $e")
                 setCasesValue(Resource.error(e.message!!))
             }
-        }.addOnFailureListener {
-            Log.d(TAG, "caseList: exception ${it.message!!}")
-            setCasesValue(Resource.error(it.message!!))
         }
     }
 

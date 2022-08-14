@@ -86,6 +86,7 @@ class CasesListAdapter(
     }
 
     fun addNewData(notificationsList: MutableList<CaseModel>) {
+        this.myCases.removeAll(notificationsList)
         this.myCases.addAll(notificationsList)
         notifyDataSetChanged()
     }
