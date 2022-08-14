@@ -1,6 +1,7 @@
 package com.bluethunder.tar2.ui.case_details
 
 import android.content.Intent
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,7 @@ import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.firestore.FirebaseFirestore
+import com.huawei.hms.maps.common.util.DistanceCalculator
 import java.util.*
 
 
@@ -246,6 +248,18 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     }
 
+    fun calculateDistance(){
+//        DistanceCalculator.computeDistanceBetween()
+        val startPoint = Location("locationA")
+        startPoint.setLatitude(17.372102)
+        startPoint.setLongitude(78.484196)
+
+        val endPoint = Location("locationA")
+        endPoint.setLatitude(17.375775)
+        endPoint.setLongitude(78.469218)
+
+        val distance: Float = startPoint.distanceTo(endPoint)
+    }
     companion object {
         private const val TAG = "CaseDetailsActivity"
     }

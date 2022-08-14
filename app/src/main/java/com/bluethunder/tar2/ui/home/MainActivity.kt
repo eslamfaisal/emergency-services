@@ -6,20 +6,25 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants.myCurrentLocation
 import com.bluethunder.tar2.databinding.ActivityMainBinding
+import com.bluethunder.tar2.ui.MyLocationViewModel
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.ViewPagerFragmentAdapter
-import com.bluethunder.tar2.ui.home.fragments.*
+import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
+import com.bluethunder.tar2.ui.home.fragments.HomeMapFragment
+import com.bluethunder.tar2.ui.home.fragments.MenuFragment
+import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
+import com.huawei.location.lite.common.util.coordinateconverter.LatLon
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 
+    private val myLocationViewModel by viewModels<MyLocationViewModel> { getViewModelFactory() }
     private val viewModel by viewModels<HomeViewModel> { getViewModelFactory() }
     private val notificationViewModel by viewModels<NotificationsViewModel> { getViewModelFactory() }
 
@@ -45,7 +51,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun Activity.setTransparentStatusBar() {
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = Color.TRANSPARENT
         }
@@ -78,9 +85,22 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initViewModel() {
+        myLocationViewModel.checkDeviceLocation(this)
+        myLocationViewModel.lastLocation.observe(this) { locationResource ->
+            locationResource?.let {
+                it.data?.let { location ->
+                    val latLon = LatLon()
+                    latLon.latitude = location.latitude
+                    latLon.longitude = location.longitude
+                    myCurrentLocation = latLon
+                    Log.d(TAG, "initViewModel:myCurrentLocation = $myCurrentLocation")
+                }
+            }
+
+        }
         notificationViewModel.getToken()
         // region tab layout
-        viewModel. onSelectedTabIndex.observe(this) { position ->
+        viewModel.onSelectedTabIndex.observe(this) { position ->
             binding.homeTabViewPager.currentItem = position
 
             binding.mapTabIcon.setImageDrawable(

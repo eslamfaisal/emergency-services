@@ -43,6 +43,8 @@ class ViewModelFactory constructor(
                 CasesListViewModel()
             isAssignableFrom(CaseDetailsViewModel::class.java) ->
                 CaseDetailsViewModel()
+            isAssignableFrom(MyLocationViewModel::class.java) ->
+                MyLocationViewModel()
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
