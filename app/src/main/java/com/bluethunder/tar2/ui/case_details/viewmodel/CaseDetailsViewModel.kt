@@ -5,9 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.case_details.model.CommentModel
+import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.launch
 
 
@@ -19,6 +22,9 @@ class CaseDetailsViewModel : ViewModel() {
 
     private val _onSelectedTabIndex = MutableLiveData(0)
     val onSelectedTabIndex: LiveData<Int> = _onSelectedTabIndex
+
+    private val _caseCategory = MutableLiveData<CaseCategoryModel?>()
+    val caseCategory: LiveData<CaseCategoryModel?> = _caseCategory
 
     private val _dataLoading = MutableLiveData(false)
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -41,9 +47,10 @@ class CaseDetailsViewModel : ViewModel() {
     }
 
     fun listenToComments(caseId: String) {
-        FirebaseFirestore.getInstance().collection("cases")
+        FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
             .document(caseId)
-            .collection("comments")
+            .collection(FirestoreReferences.CommentsCollection.value())
+            .orderBy(FirestoreReferences.CreatedAtField.value(), Query.Direction.DESCENDING)
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     Log.e(TAG, "listenToComments: ", error)
@@ -56,6 +63,25 @@ class CaseDetailsViewModel : ViewModel() {
                     }
                     setCommentsValue(Resource.success(list))
                 }
+            }
+    }
+
+    fun getCaseCategory(categoryId: String) {
+        FirebaseFirestore.getInstance()
+            .collection(FirestoreReferences.CaseCategoriesCollection.value())
+            .document(categoryId)
+            .get().addOnCompleteListener {
+                try {
+                    if (it.isSuccessful) {
+                        val category = it.result.toObject(CaseCategoryModel::class.java)
+                        _caseCategory.value = category
+                    } else {
+                        Log.e(TAG, "getCaseCategory: ", it.exception)
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "getCaseCategory: ", e)
+                }
+
             }
     }
 
@@ -76,4 +102,6 @@ class CaseDetailsViewModel : ViewModel() {
                 }
             }
     }
+
+
 }

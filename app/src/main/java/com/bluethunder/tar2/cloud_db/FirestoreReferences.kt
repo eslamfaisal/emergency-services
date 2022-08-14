@@ -6,6 +6,7 @@ enum class FirestoreReferences(val value: String) {
     UsersCollection("users"),
     CaseCategoriesCollection("case_categories"),
     CasesCollection("cases"),
+    CommentsCollection("comments"),
     // endregion
 
     // region documents references

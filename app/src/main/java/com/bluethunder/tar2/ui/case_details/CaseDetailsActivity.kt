@@ -102,6 +102,7 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel.listenToComments(currentCase.id!!)
+        viewModel.getCaseCategory(currentCase.categoryId!!)
         viewModel.commentsList.observe(this) { resources ->
             when (resources.status) {
                 SUCCESS -> {
@@ -113,6 +114,13 @@ class CaseDetailsActivity : AppCompatActivity() {
                 }
             }
         }
+        viewModel.caseCategory.observe(this) { category ->
+            category?.let {
+                binding.categoryTv.text =
+                    if (SessionConstants.currentLanguage == "ar") it.nameAr else it.nameEn
+            }
+        }
+
     }
 
     lateinit var commentsAdapter: CommentsAdapter
