@@ -36,4 +36,8 @@ class CaseDetailsViewModel : ViewModel() {
 
     }
 
+    fun listenToComments() {
+
+    }
+
 }

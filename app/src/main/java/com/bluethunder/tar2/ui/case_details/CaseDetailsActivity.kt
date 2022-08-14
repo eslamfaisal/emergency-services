@@ -2,9 +2,9 @@ package com.bluethunder.tar2.ui.case_details
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.databinding.ActivityCaseDetailsBinding
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
@@ -30,9 +30,13 @@ class CaseDetailsActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         setContentView(binding.root)
         currentCase = intent.getSerializableExtra(CasesListFragment.CASE_LIST) as CaseModel
-        getCaseCategory()
+
         initViews()
-//        setTransparentStatusBar()
+        initViewModel()
+    }
+
+    private fun initViewModel() {
+        viewModel.listenToComments()
     }
 
     private fun getCaseCategory() {
@@ -67,8 +71,11 @@ class CaseDetailsActivity : AppCompatActivity() {
         addKeyboardToggleListener { isShow ->
             Log.d(TAG, "addKeyboardToggleListener: $isShow")
             if (isShow) {
+                binding.footerView.visibility = View.GONE
+                binding.sendCommentIv.visibility = View.VISIBLE
             } else {
-
+                binding.footerView.visibility = View.VISIBLE
+                binding.sendCommentIv.visibility = View.GONE
             }
         }
     }
