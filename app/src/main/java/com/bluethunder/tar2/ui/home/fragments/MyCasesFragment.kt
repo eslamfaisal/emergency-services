@@ -1,6 +1,6 @@
 package com.bluethunder.tar2.ui.home.fragments
 
-import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,9 +13,9 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentMyCasesBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
+import com.bluethunder.tar2.ui.case_details.CaseDetailsActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
-import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.adapter.MyCasesAdapter
 import com.bluethunder.tar2.ui.home.viewmodel.MyCasesViewModel
@@ -95,9 +95,10 @@ class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
         binding.myCasesRecyclerView.showSnakeBarError(requireActivity().getErrorMsg(errorBody))
     }
 
-    override fun onNotificationClicked(caseModel: CaseModel) {
-
-
+    override fun onMyCaseClicked(caseModel: CaseModel) {
+        val intent = Intent(requireActivity(), CaseDetailsActivity::class.java)
+        intent.putExtra(CasesListFragment.CASE_LIST, caseModel)
+        requireActivity().startActivity(intent)
     }
 
     companion object {

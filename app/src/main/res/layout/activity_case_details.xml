@@ -152,6 +152,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/case_user_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -454,109 +455,164 @@ I made an accident in the road, so I need help as soon as possible" />
             </com.google.android.material.card.MaterialCardView>
 
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <FrameLayout
                 android:id="@+id/footer_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/up_votes_view"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/case_actions_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="8dp"
-                    app:cardBackgroundColor="@color/dark_red"
-                    app:cardCornerRadius="12dp">
+                    android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/up_votes_view"
                         android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:gravity="center"
-                        android:minWidth="70dp"
-                        android:orientation="vertical"
-                        android:padding="4dp">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_case_details_up_vote"
-                            app:tint="@color/colorWhite" />
-
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="8dp"
+                        app:cardBackgroundColor="@color/dark_red"
+                        app:cardCornerRadius="12dp">
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_height="70dp"
                             android:gravity="center"
-                            android:orientation="horizontal">
+                            android:minWidth="70dp"
+                            android:orientation="vertical"
+                            android:padding="4dp">
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/up_votes_tv"
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:layout_marginEnd="4dp"
-                                android:fontFamily="@font/poppins_regular"
+                                app:srcCompat="@drawable/ic_case_details_up_vote"
+                                app:tint="@color/colorWhite" />
+
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:gravity="center"
-                                android:text="0"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/up_votes_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:text="@string/up_votes"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/location_direction_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="12dp">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="70dp"
+                            android:gravity="center"
+                            android:minWidth="70dp"
+                            android:orientation="vertical"
+                            android:padding="4dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/ic_directions" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:fontFamily="@font/poppins_regular"
                                 android:gravity="center"
-                                android:text="@string/up_votes"
+                                android:text="@string/directions"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/location_direction_view"
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/case_status_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:cardBackgroundColor="@color/colorAccent"
-                    app:cardCornerRadius="12dp">
+                    android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/case_published"
                         android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:gravity="center"
-                        android:minWidth="70dp"
-                        android:orientation="vertical"
-                        android:padding="4dp">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="8dp"
+                        app:cardBackgroundColor="@color/color_published"
+                        app:cardCornerRadius="12dp">
 
-                        <androidx.appcompat.widget.AppCompatImageView
+                        <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_directions" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="@font/poppins_regular"
+                            android:layout_height="70dp"
                             android:gravity="center"
-                            android:text="@string/directions"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:minWidth="70dp"
+                            android:orientation="vertical"
+                            android:padding="4dp">
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/case_status_icon"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                app:srcCompat="@drawable/ic_published" />
 
-                </com.google.android.material.card.MaterialCardView>
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_marginTop="8dp"
+                                android:id="@+id/case_status_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_regular"
+                                android:gravity="center"
+                                android:text="@string/published"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </FrameLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>

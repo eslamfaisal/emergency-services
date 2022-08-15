@@ -75,6 +75,10 @@ class MyCasesAdapter(
             .load(myCases[holder.absoluteAdapterPosition].mainImage)
             .override(200, 200)
             .into(holder.bindingView.mainImageView)
+
+        holder.bindingView.root.setOnClickListener {
+            interaction.onMyCaseClicked(caseModel)
+        }
     }
 
     private fun setCardColor(holder: ViewHolder, color: Int = R.color.colorPrimary) {
@@ -109,7 +113,7 @@ class MyCasesAdapter(
     }
 
     interface MyCasesInteractions {
-        fun onNotificationClicked(caseModel: CaseModel)
+        fun onMyCaseClicked(caseModel: CaseModel)
     }
 
 }

@@ -29,6 +29,7 @@ import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.extentions.hideKeyboard
 import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
+import com.bluethunder.tar2.ui.home.model.CaseStatus
 import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -46,6 +47,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCaseDetailsBinding
 
     lateinit var currentCase: CaseModel
+    var myCase = false
     var currentCaseUserDetails: UserModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,10 +55,16 @@ class CaseDetailsActivity : AppCompatActivity() {
         binding = ActivityCaseDetailsBinding.inflate(layoutInflater)
         binding.viewmodel = viewModel
         setContentView(binding.root)
-        currentCase = intent.getSerializableExtra(CasesListFragment.CASE_LIST) as CaseModel
+
+        getExtraData()
 
         initViews()
         initViewModel()
+    }
+
+    private fun getExtraData() {
+        currentCase = intent.getSerializableExtra(CasesListFragment.CASE_LIST) as CaseModel
+        myCase = currentCase.userId == SessionConstants.currentLoggedInUserModel!!.id
     }
 
     fun initViews() {
@@ -96,6 +104,15 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun setUpCaseDetails() {
+        if (myCase) {
+            binding.caseStatusView.visibility = View.VISIBLE
+            binding.caseActionsView.visibility = View.GONE
+            setupCaseStatus()
+        } else {
+            binding.caseActionsView.visibility = View.VISIBLE
+            binding.caseUserView.visibility = View.GONE
+            binding.caseStatusView.visibility = View.GONE
+        }
         setMainImage()
         currentCase.createdAt.let {
             val timeAgo = TimeAgo()
@@ -114,6 +131,31 @@ class CaseDetailsActivity : AppCompatActivity() {
         currentCase.description.let {
             binding.caseDescriptionTv.text = it.toString()
         }
+
+    }
+
+    private fun setupCaseStatus() {
+        when (currentCase.status) {
+            CaseStatus.Published.name -> {
+                binding.caseStatusName.text = getString(R.string.published)
+                binding.caseStatusName.setTextColor(resources.getColor(R.color.color_published))
+            }
+            CaseStatus.Saved.name -> {
+                binding.caseStatusName.text = getString(R.string.saved)
+                binding.caseStatusName.setTextColor(resources.getColor(R.color.greenDarkColor))
+            }
+            CaseStatus.UnPublished.name -> {
+                binding.caseStatusName.text = getString(R.string.un_published)
+                binding.caseStatusName.setTextColor(resources.getColor(R.color.color_unpublished))
+            }
+        }
+        binding.caseStatusView.setOnClickListener {
+            showCaseStatusBottomSheet()
+        }
+    }
+
+    private fun showCaseStatusBottomSheet() {
+
     }
 
     private fun sendUpVote() {
@@ -158,7 +200,9 @@ class CaseDetailsActivity : AppCompatActivity() {
         viewModel.getCaseCategory(currentCase.categoryId!!)
         viewModel.listenToComments(currentCase.id!!)
         viewModel.listenToCaseDetails(currentCase.id!!)
-        viewModel.listenToCaseUserDetails(currentCase.userId!!)
+
+        if (!myCase)
+            viewModel.listenToCaseUserDetails(currentCase.userId!!)
 
         calculateDistance()
 
