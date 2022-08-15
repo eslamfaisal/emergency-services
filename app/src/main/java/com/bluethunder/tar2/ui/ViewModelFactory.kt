@@ -10,6 +10,7 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.*
+import com.bluethunder.tar2.ui.splash.viewmodel.SplashViewModel
 
 /**
  * Factory for all ViewModels.
@@ -45,6 +46,8 @@ class ViewModelFactory constructor(
                 CaseDetailsViewModel()
             isAssignableFrom(MyLocationViewModel::class.java) ->
                 MyLocationViewModel()
+            isAssignableFrom(SplashViewModel::class.java) ->
+                SplashViewModel()
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

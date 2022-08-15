@@ -60,15 +60,8 @@ class MainActivity : AppCompatActivity() {
         initViews()
         initViewModel()
 //        setTransparentStatusBar()
-        getDeepLink()
     }
 
-    private fun getDeepLink() {
-        AGConnectAppLinking.getInstance().getAppLinking(this).addOnSuccessListener {
-            val deepLink = it.deepLink
-            Log.d(TAG, "getDeepLink: ${deepLink.toString()}")
-        }
-    }
 
     fun Activity.setTransparentStatusBar() {
         window.decorView.systemUiVisibility =

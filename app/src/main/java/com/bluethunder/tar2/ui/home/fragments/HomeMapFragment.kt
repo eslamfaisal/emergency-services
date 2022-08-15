@@ -1,16 +1,11 @@
 package com.bluethunder.tar2.ui.home.fragments
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -93,10 +88,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             )
         )
         mCircle?.fillColor = Color.TRANSPARENT
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
     }
 
     companion object {
