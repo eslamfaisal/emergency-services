@@ -46,7 +46,6 @@ class CaseDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCaseDetailsBinding
 
     lateinit var currentCase: CaseModel
-    lateinit var currentCaseUser: CaseModel
     var currentCaseUserDetails: UserModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +68,7 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     private fun setUpListeners() {
         binding.backBtn.setOnClickListener {
-            onBackPressed()
+            finish()
         }
         binding.sendCommentIv.setOnClickListener {
             hideKeyboard(this)
