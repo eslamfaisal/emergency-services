@@ -346,7 +346,8 @@ class CaseDetailsActivity : AppCompatActivity() {
             .setIsShowPreview(true)
         builder.buildShortAppLinking(ShortAppLinking.LENGTH.SHORT)
             .addOnSuccessListener { shortAppLinking: ShortAppLinking ->
-                shareAppLink(shortAppLinking.shortUrl.toString()) }
+                shareAppLink(shortAppLinking.shortUrl.toString())
+            }
             .addOnFailureListener { e: Exception -> showError(e.message) }
 
     }
