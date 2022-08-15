@@ -110,4 +110,6 @@
     <string name="accept">Accept</string>
     <string name="permission_required">Permission Required</string>
     <string name="share_case">Share case</string>
+    <string name="downlad_map_app">Download maps app</string>
+    <string name="open_on_web">Open on web</string>
 </resources>

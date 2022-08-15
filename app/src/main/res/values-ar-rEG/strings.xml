@@ -111,4 +111,6 @@
     <string name="accept">قبول</string>
     <string name="permission_required">الإذن مطلوب</string>
     <string name="share_case">مشاركه الحالة</string>
+    <string name="downlad_map_app">Download maps app</string>
+    <string name="open_on_web">Open on web</string>
 </resources>

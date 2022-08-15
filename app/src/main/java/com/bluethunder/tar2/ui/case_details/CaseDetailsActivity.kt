@@ -1,6 +1,7 @@
 package com.bluethunder.tar2.ui.case_details
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,7 +9,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -39,6 +43,7 @@ import com.huawei.agconnect.applinking.ShortAppLinking
 import com.huawei.hms.maps.common.util.DistanceCalculator
 import com.huawei.hms.maps.model.LatLng
 import java.util.*
+
 
 class CaseDetailsActivity : AppCompatActivity() {
 
@@ -173,12 +178,42 @@ class CaseDetailsActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         } catch (e: Exception) {
-            Toast.makeText(
-                this,
-                getString(R.string.maps_not_found_msg),
-                Toast.LENGTH_LONG
-            ).show()
+            showDownloadMapDialog()
         }
+    }
+
+    private fun showDownloadMapDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(getString(R.string.maps_not_found_msg))
+        builder.setPositiveButton(getString(R.string.downlad_map_app)) { dialog, which ->
+            startHuaweiAppGallery()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton(getString(R.string.open_on_web)) { dialog, which ->
+            openWebPage()
+            dialog.dismiss()
+        }
+        builder.show()
+    }
+
+    private fun startHuaweiAppGallery() {
+        intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://appgallery.huawei.com/app/C102457337")
+        )
+        startActivity(intent)
+    }
+
+    fun openWebPage() {
+        val url =
+            "https://www.google.com/maps/search/?api=1&query=${currentCase.latitude},${currentCase.longitude}"
+        val builder = CustomTabsIntent.Builder()
+        val defaultColors = CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(resources.getColor(R.color.colorPrimary))
+            .build()
+        builder.setDefaultColorSchemeParams(defaultColors)
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(url))
     }
 
     private fun sendComments() {
