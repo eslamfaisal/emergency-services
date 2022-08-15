@@ -90,18 +90,24 @@ class SplashActivity : AppCompatActivity() {
     private fun getDeepLink() {
         AGConnectAppLinking.getInstance()
             .getAppLinking(this).addOnSuccessListener {
-                val deepLink = it.deepLink
-                if (deepLink != null) {
-                    Log.d(TAG, "getDeepLink: deepLink = $deepLink")
-                    openDeepLinkActivity(deepLink)
-                } else
+                try {
+                    val deepLink = it.deepLink
+                    if (deepLink != null) {
+                        Log.d(TAG, "getDeepLink: deepLink = $deepLink")
+                        openDeepLinkActivity(deepLink)
+                    } else
+                        finish()
+                } catch (e: Exception) {
+                    Log.e(TAG, "getDeepLink: error", e)
                     finish()
+                }
             }.addOnFailureListener { e ->
                 Log.e(TAG, "getDeepLink: error = ${e.message}")
                 finish()
             }
     }
 
+    @Throws(Exception::class)
     private fun openDeepLinkActivity(deepLink: Uri) {
         Log.d(TAG, "openDeepLinkActivity: deepLink = $deepLink")
         val caseId = deepLink.toString().split("/").last()
