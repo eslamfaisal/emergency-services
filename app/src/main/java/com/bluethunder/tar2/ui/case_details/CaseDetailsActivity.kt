@@ -1,7 +1,7 @@
 package com.bluethunder.tar2.ui.case_details
 
 import android.app.Activity
-import android.content.ComponentName
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -32,6 +33,7 @@ import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.extentions.hideKeyboard
+import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
 import com.bluethunder.tar2.ui.home.model.CaseStatus
 import com.bluethunder.tar2.utils.TimeAgo
@@ -42,6 +44,7 @@ import com.huawei.agconnect.applinking.AppLinking
 import com.huawei.agconnect.applinking.ShortAppLinking
 import com.huawei.hms.maps.common.util.DistanceCalculator
 import com.huawei.hms.maps.model.LatLng
+import java.lang.reflect.Field
 import java.util.*
 
 
@@ -50,6 +53,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     private val myLocationViewModel by viewModels<MyLocationViewModel> { getViewModelFactory() }
     private val viewModel by viewModels<CaseDetailsViewModel> { getViewModelFactory() }
     private lateinit var binding: ActivityCaseDetailsBinding
+    private lateinit var progressDialog: Dialog
 
     lateinit var currentCase: CaseModel
     var myCase = false
@@ -73,9 +77,11 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     fun initViews() {
+        progressDialog = showLoadingDialog()
         setUpCaseDetails()
         setUpListeners()
         initCommentsView()
+        checkMenuBtn()
 //        calculateDistance()
     }
 
@@ -93,9 +99,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         binding.locationDirectionView.setOnClickListener {
             tryOpenLocationOnMap()
         }
-        binding.shareBtn.setOnClickListener {
-            createAppLinking()
-        }
+
         addKeyboardToggleListener { isShow ->
             Log.d(TAG, "addKeyboardToggleListener: $isShow")
             if (isShow) {
@@ -106,6 +110,48 @@ class CaseDetailsActivity : AppCompatActivity() {
                 binding.sendCommentIv.visibility = View.GONE
             }
         }
+    }
+
+    private fun checkMenuBtn() {
+        if (myCase) {
+            binding.menuImage.setImageDrawable(resources.getDrawable(R.drawable.ic_more))
+        } else {
+            binding.menuImage.setImageDrawable(resources.getDrawable(R.drawable.ic_share_case))
+        }
+        binding.menuBtn.setOnClickListener {
+            if (myCase) {
+                showMenuPopup(it)
+            } else {
+                createAppLinking()
+            }
+        }
+
+    }
+
+    private fun showMenuPopup(v: View) {
+        val popup = PopupMenu(this, v)
+        popup.menuInflater.inflate(R.menu.case_menu, popup.menu)
+
+        val menuHelper: Any
+        val argTypes: Array<Class<*>?>
+        try {
+            val fMenuHelper: Field = PopupMenu::class.java.getDeclaredField("mPopup")
+            fMenuHelper.isAccessible = true
+            menuHelper = fMenuHelper.get(popup)
+            argTypes = arrayOf(Boolean::class.javaPrimitiveType)
+            menuHelper.javaClass.getDeclaredMethod("setForceShowIcon", *argTypes)
+                .invoke(menuHelper, true)
+        } catch (e: java.lang.Exception) {
+        }
+        popup.setOnMenuItemClickListener { item ->
+            when (item!!.itemId) {
+                R.id.share_case -> {}
+                R.id.edit_case -> {}
+            }
+            true
+        }
+
+        popup.show()
     }
 
     private fun setUpCaseDetails() {
@@ -411,6 +457,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun createAppLinking() {
+        progressDialog.show()
         val builder = AppLinking.Builder()
             .setUriPrefix("https://tar2.dra.agconnect.link")
             .setDeepLink(Uri.parse("https://tar2.xyz/${currentCase.id}"))
@@ -423,11 +470,16 @@ class CaseDetailsActivity : AppCompatActivity() {
                     .build()
             )
             .setIsShowPreview(true)
+
         builder.buildShortAppLinking(ShortAppLinking.LENGTH.SHORT)
             .addOnSuccessListener { shortAppLinking: ShortAppLinking ->
                 shareAppLink(shortAppLinking.shortUrl.toString())
+                progressDialog.dismiss()
             }
-            .addOnFailureListener { e: Exception -> showError(e.message) }
+            .addOnFailureListener { e: Exception ->
+                showError(e.message)
+                progressDialog.dismiss()
+            }
 
     }
 

@@ -117,15 +117,16 @@
                             android:layout_weight="1" />
 
                         <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/share_btn"
+                            android:id="@+id/menu_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:cardBackgroundColor="@color/colorGreyVeryLight">
 
                             <ImageView
+                                android:id="@+id/menu_image"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:padding="12dp"
+                                android:padding="10dp"
                                 android:src="@drawable/ic_share_case" />
 
                         </com.google.android.material.card.MaterialCardView>

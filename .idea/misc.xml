@@ -42,6 +42,8 @@
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_my_cases.xml" value="0.25" />
         <entry key="app/src/main/res/layout/my_cases_item.xml" value="0.34479166666666666" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.246875" />
+        <entry key="app/src/main/res/menu/case_menu.xml" value="0.16458333333333333" />
       </map>
     </option>
   </component>
