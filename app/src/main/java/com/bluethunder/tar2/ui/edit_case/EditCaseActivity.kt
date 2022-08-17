@@ -46,6 +46,8 @@ class EditCaseActivity : AppCompatActivity() {
             mCurrentCase.userId = currentLoggedInUserModel!!.id
             mCurrentCase.userName = currentLoggedInUserModel!!.name
             mCurrentCase.userImage = currentLoggedInUserModel!!.imageUrl
+        } else {
+            mCurrentCase = intent.getSerializableExtra(EXTRA_CASE) as CaseModel
         }
         viewModel.setCurrentCase(mCurrentCase)
     }
@@ -148,6 +150,7 @@ class EditCaseActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_IS_NEW_CASE = "com.bluethunder.tar2.ui.edit_case.EXTRA_IS_NEW_CASE"
+        const val EXTRA_CASE = "com.bluethunder.tar2.ui.edit_case.EXTRA_CASE"
         const val REQUEST_DEVICE_SETTINGS = 123
         const val REQUEST_LOCATION_PERMISSION = 124
         private const val TAG = "EditCaseActivity"

@@ -145,13 +145,25 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
         popup.setOnMenuItemClickListener { item ->
             when (item!!.itemId) {
-                R.id.share_case -> {}
-                R.id.edit_case -> {}
+                R.id.share_case -> {
+                    createAppLinking()
+                }
+                R.id.edit_case -> {
+                    editCase()
+                }
             }
             true
         }
 
         popup.show()
+    }
+
+    private fun editCase() {
+        val intent = Intent(this, EditCaseActivity::class.java)
+        intent.putExtra(EditCaseActivity.EXTRA_IS_NEW_CASE, false)
+        intent.putExtra(EditCaseActivity.EXTRA_CASE, currentCase)
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     private fun setUpCaseDetails() {
