@@ -85,6 +85,8 @@ class CasePersonalDataFragment : BaseFragment() {
     }
 
     private fun validateCaseData() {
+
+        Log.d(TAG, "setImageSelected: ${viewModel.imageUploaded}")
         if (viewModel.imageUploaded) {
             createNewCase()
         } else {

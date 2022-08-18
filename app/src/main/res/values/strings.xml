@@ -113,4 +113,5 @@
     <string name="downlad_map_app">Download maps app</string>
     <string name="open_on_web">Open on web</string>
     <string name="edit_case">Edit Case</string>
+    <string name="case_updated_successfully">Case updated successfully</string>
 </resources>

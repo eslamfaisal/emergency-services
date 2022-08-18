@@ -14,7 +14,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants.currentLanguage
 import com.bluethunder.tar2.databinding.FragmentCaseDetailsBinding
@@ -105,7 +104,9 @@ class CaseDetailsFragment : BaseFragment() {
             binding.caseCategoryInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
         } else {
-            viewModel.setCaseCategory(selectedCategoryModel!!.id)
+            selectedCategoryModel?.let {
+                viewModel.setCaseCategory(it.id)
+            }
         }
 
 
@@ -130,13 +131,19 @@ class CaseDetailsFragment : BaseFragment() {
     }
 
     private fun moveToPersonalDataPage() {
-        try {
-            findNavController().navigate(
-                R.id.action_caseDetailsFragment_to_casePersonalDataFragment
-            )
-            viewModel.setSelectedFragmentIndex(1)
-        } catch (e: Exception) {
+        if (viewModel.imageUploaded) {
+            viewModel.saveCase()
+        } else {
+            viewModel.uploadMainCaseImage()
         }
+
+//        try {
+//            findNavController().navigate(
+//                R.id.action_caseDetailsFragment_to_casePersonalDataFragment
+//            )
+//            viewModel.setSelectedFragmentIndex(1)
+//        } catch (e: Exception) {
+//        }
 
     }
 
@@ -155,13 +162,37 @@ class CaseDetailsFragment : BaseFragment() {
 
     private fun initObservers() {
         initObserveCaseDetails()
-
         initObserveLocationAddress()
-
         initObserveCategories()
-
+        observeUploadImage()
+        observeSaveCase()
     }
 
+    private fun observeSaveCase() {
+        viewModel.savingCaseModel.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    Toast.makeText(
+                        requireContext(),
+                        if (viewModel.isNewCase) getString(R.string.case_created_succ_msg)
+                        else getString(
+                            R.string.case_updated_successfully
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    requireActivity().finish()
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    progressDialog.dismiss()
+                }
+                else -> {}
+            }
+        }
+    }
 
     private fun initObserveCategories() {
         viewModel.categories.observe(viewLifecycleOwner) { resource ->
@@ -184,6 +215,33 @@ class CaseDetailsFragment : BaseFragment() {
                     progressDialog.dismiss()
                     Log.e("EditCaseActivity", "Unknown error")
                 }
+            }
+        }
+
+        if (!viewModel.isNewCase) {
+            viewModel.caseCategory.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    binding.caseCategoryInput.setText(if (currentLanguage == "en") it.nameEn else it.nameAr)
+                    selectedCategoryModel = it
+                }
+            }
+        }
+    }
+
+    private fun observeUploadImage() {
+        viewModel.uploadingImage.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+                Status.SUCCESS -> {
+                    viewModel.saveCase()
+                    progressDialog.dismiss()
+                }
+                Status.ERROR -> {
+                    progressDialog.dismiss()
+                }
+                else -> {}
             }
         }
     }

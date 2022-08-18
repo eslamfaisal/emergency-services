@@ -24,11 +24,12 @@ class EditCaseActivity : AppCompatActivity() {
     val viewModel by viewModels<EditCaseViewModel> { getViewModelFactory() }
 
     private lateinit var binding: ActivityEditCaseBinding
-    var isNewCase = false
     lateinit var mCurrentCase: CaseModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.isNewCase = intent.getBooleanExtra(EXTRA_IS_NEW_CASE, false)
+
         binding = ActivityEditCaseBinding.inflate(layoutInflater)
         binding.viewmodel = viewModel
         setContentView(binding.root)
@@ -39,8 +40,7 @@ class EditCaseActivity : AppCompatActivity() {
     }
 
     private fun initIntentExtra() {
-        isNewCase = intent.getBooleanExtra(EXTRA_IS_NEW_CASE, false)
-        if (isNewCase) {
+        if (viewModel.isNewCase) {
             mCurrentCase = CaseModel()
             mCurrentCase.id = FirebaseFirestore.getInstance().collection("cases").document().id
             mCurrentCase.userId = currentLoggedInUserModel!!.id
@@ -60,7 +60,12 @@ class EditCaseActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         initObservers()
-        viewModel.checkDeviceLocation(this)
+        if (viewModel.isNewCase)
+            viewModel.checkDeviceLocation(this)
+
+        if (!viewModel.isNewCase)
+            viewModel.getCaseCategory()
+
         viewModel.selectedFragmentIndex.observe(this) {
             binding.caseDetailsTv.textSize = if (it == 0) 18f else 14f
             binding.personalDataTv.textSize = if (it == 1) 18f else 14f
@@ -75,6 +80,8 @@ class EditCaseActivity : AppCompatActivity() {
                 )
             )
         }
+
+
     }
 
     private fun initObservers() {

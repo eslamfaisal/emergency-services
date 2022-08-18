@@ -29,6 +29,8 @@ class EditCaseViewModel : ViewModel() {
         private val TAG = EditCaseViewModel::class.java.simpleName
     }
 
+    var isNewCase: Boolean = true
+
     private val _selectedFragmentIndex = MutableLiveData(0)
     val selectedFragmentIndex: LiveData<Int> = _selectedFragmentIndex
 
@@ -75,6 +77,25 @@ class EditCaseViewModel : ViewModel() {
                         setDeviceLocationCheckValue(Resource.error("Unable to resolve location settings: ${sie.message}"))
                     }
                 }
+            }
+    }
+
+    private val _caseCategory = MutableLiveData<CaseCategoryModel?>()
+    val caseCategory: LiveData<CaseCategoryModel?> = _caseCategory
+    fun getCaseCategory() {
+        FirebaseFirestore.getInstance()
+            .collection(FirestoreReferences.CaseCategoriesCollection.value())
+            .document(currentCaseModel.value?.categoryId!!)
+            .get().addOnCompleteListener {
+                try {
+                    if (it.isSuccessful) {
+                        val category = it.result.toObject(CaseCategoryModel::class.java)
+                        _caseCategory.value = category
+                    } else {
+                    }
+                } catch (e: Exception) {
+                }
+
             }
     }
 
@@ -225,8 +246,8 @@ class EditCaseViewModel : ViewModel() {
         imageSelected = selected
         if (!imageSelected) {
             profileImageUrl = ""
-            imageUploaded = false
         }
+        imageUploaded = false
     }
 
     fun removeImage() {
