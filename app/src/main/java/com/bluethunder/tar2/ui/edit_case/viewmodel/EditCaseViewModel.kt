@@ -307,9 +307,9 @@ class EditCaseViewModel : ViewModel() {
 
     fun saveCaseGeoLocation() {
         try {
-            val lat = currentCaseModel.value!!.latitude!!
-            val lng = currentCaseModel.value!!.longitude!!
-            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat.toDouble(), lng.toDouble()))
+            val lat = currentCaseModel.value!!.latitude!!.toDouble()
+            val lng = currentCaseModel.value!!.longitude!!.toDouble()
+            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
 
             val updates: MutableMap<String, Any> = HashMap()
             updates["geohash"] = hash

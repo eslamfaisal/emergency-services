@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
+import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.databinding.FragmentHomeMapBinding
 import com.bluethunder.tar2.model.Status.SUCCESS
 import com.bluethunder.tar2.ui.MyLocationViewModel
@@ -24,7 +25,15 @@ import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.huawei.hms.maps.CameraUpdateFactory
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapsInitializer
@@ -95,6 +104,50 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         Log.d(TAG, "onViewCreated: getMapAsync ")
         // get map by async method
         binding.mapView.getMapAsync(this)
+
+        getGeoCases()
+    }
+
+    fun getGeoCases() {
+
+        val center = GeoLocation(
+            SessionConstants.myCurrentLocation!!.latitude,
+            SessionConstants.myCurrentLocation!!.longitude
+        )
+        val radiusInM = (50 * 1000).toDouble()
+
+
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
+        val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
+        for (b in bounds) {
+            val q: Query = FirebaseFirestore.getInstance()
+                .collection(FirestoreReferences.CasesCollection.value())
+                .orderBy("geohash")
+                .startAt(b.startHash)
+                .endAt(b.endHash)
+            tasks.add(q.get())
+        }
+
+        Tasks.whenAllComplete(tasks)
+            .addOnCompleteListener {
+                val matchingDocs: MutableList<DocumentSnapshot> = ArrayList()
+                for (task in tasks) {
+                    val snap: QuerySnapshot = task.result
+                    for (doc in snap.documents) {
+                        val lat = doc.getDouble("lat")!!
+                        val lng = doc.getDouble("lng")!!
+
+                        // We have to filter out a few false positives due to GeoHash
+                        // accuracy, but most will match
+                        val docLocation = GeoLocation(lat, lng)
+                        val distanceInM =
+                            GeoFireUtils.getDistanceBetween(docLocation, center)
+                        if (distanceInM <= radiusInM) {
+                            matchingDocs.add(doc)
+                        }
+                    }
+                }
+            }
     }
 
     fun showRequestPermissionDialog() {
