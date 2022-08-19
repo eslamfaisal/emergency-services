@@ -15,6 +15,8 @@ import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
@@ -293,12 +295,36 @@ class EditCaseViewModel : ViewModel() {
         FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
             .document(currentCaseModel.value!!.id!!).set(currentCaseModel.value!!)
             .addOnSuccessListener {
+                saveCaseGeoLocation()
                 Log.d(TAG, "saveCase: onSuccess")
                 setSavingCaseModelValue(Resource.success(true))
+
             }.addOnFailureListener {
                 Log.d(TAG, "saveCase: onFailure")
                 setSavingCaseModelValue(Resource.error(it.message))
             }
+    }
+
+    fun saveCaseGeoLocation() {
+        try {
+            val lat = currentCaseModel.value!!.latitude!!
+            val lng = currentCaseModel.value!!.longitude!!
+            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat.toDouble(), lng.toDouble()))
+
+            val updates: MutableMap<String, Any> = HashMap()
+            updates["geohash"] = hash
+            updates["lat"] = lat
+            updates["lng"] = lng
+
+            FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
+                .document(currentCaseModel.value!!.id!!).update(updates)
+                .addOnCompleteListener {
+                    Log.d(TAG, "saveCase: onSuccess")
+                }
+        }catch (e: Exception) {
+            Log.d(TAG, "saveCase: onFailure")
+        }
+
     }
 
     fun setCaseTitle(toString: String) {

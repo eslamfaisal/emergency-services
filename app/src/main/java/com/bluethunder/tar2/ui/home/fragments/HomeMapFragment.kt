@@ -57,7 +57,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // endregion
         if (!SharedHelper.getBoolean(requireActivity(), SharedHelperKeys.PERMISSIONS_REQUEST)) {
             SharedHelper.putBoolean(requireActivity(), SharedHelperKeys.PERMISSIONS_REQUEST, true)
             showRequestPermissionDialog()
@@ -85,7 +84,11 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    var isMapReady = false
     private fun initMapView() {
+        if (isMapReady) return
+
+        isMapReady = true
         MapsInitializer.setApiKey("DAEDADPF5OJAG21jxCnUWAX0InV9vW76SXWUaSMiIv81YAXW8bfCDMkAKKZ3lMU9mC2GCv78cYTZgeOIZ8OJkKXPg4ynC/CyrCUuvQ==")
         binding.mapView.onCreate(Bundle())
 
