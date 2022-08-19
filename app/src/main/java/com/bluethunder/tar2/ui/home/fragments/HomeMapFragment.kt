@@ -3,7 +3,9 @@ package com.bluethunder.tar2.ui.home.fragments
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Color
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -134,32 +136,45 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                 for (task in tasks) {
                     val snap: QuerySnapshot = task.result
                     for (doc in snap.documents) {
-                        val lat = doc.getDouble("lat")!!
-                        val lng = doc.getDouble("lng")!!
+                        try {
+                            val lat = doc.getDouble("lat")!!
+                            val lng = doc.getDouble("lng")!!
 
+                            addMArkerToMAp(lat, lng)
 
-                       val LAT_LNG = LatLng(lat, lng)
-                        // mark can be add by HuaweiMap
-                        mMarker = hmap.addMarker(
-                            MarkerOptions().position(LAT_LNG)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_emergency_case_red))
-                                .anchorMarker(0.5f, 0.5f)
-                                .clusterable(true)
-                        )
-                        mMarker?.showInfoWindow()
-
-                        // We have to filter out a few false positives due to GeoHash
-                        // accuracy, but most will match
-                        val docLocation = GeoLocation(lat, lng)
-                        val distanceInM =
-                            GeoFireUtils.getDistanceBetween(docLocation, center)
-                        if (distanceInM <= radiusInM) {
-                            matchingDocs.add(doc)
+                            val docLocation = GeoLocation(lat, lng)
+                            val distanceInM =
+                                GeoFireUtils.getDistanceBetween(docLocation, center)
+                            if (distanceInM <= radiusInM) {
+                                matchingDocs.add(doc)
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "getGeoCases: ${e.message}")
                         }
                     }
                 }
 
             }
+    }
+
+    @Throws(Exception::class)
+    private fun addMArkerToMAp(lat: Double, lng: Double) {
+        val LAT_LNG = LatLng(lat, lng)
+        // mark can be add by HuaweiMap
+
+        val height = 100
+        val width = 100
+        val b = BitmapFactory.decodeResource(resources, R.drawable.ic_emergency_case_red)
+        val smallMarker = Bitmap.createScaledBitmap(b, width, height, false)
+        val smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker)
+
+        mMarker = hmap.addMarker(
+            MarkerOptions().position(LAT_LNG)
+                .icon(smallMarkerIcon)
+                .anchorMarker(0.5f, 0.5f)
+                .clusterable(true)
+        )
+        mMarker?.showInfoWindow()
     }
 
     fun showRequestPermissionDialog() {
@@ -218,11 +233,12 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         hmap.isMyLocationEnabled = true
 
         // move camera by CameraPosition param ,latlag and zoom params can set here
-        val build = CameraPosition.Builder().target(SessionConstants.myCurrentLocation!!).zoom(5f).build()
+        val build =
+            CameraPosition.Builder().target(SessionConstants.myCurrentLocation!!).zoom(5f).build()
         val cameraUpdate = CameraUpdateFactory.newCameraPosition(build)
         hmap.animateCamera(cameraUpdate)
 
-        hmap.setOnMarkerClickListener { marker->
+        hmap.setOnMarkerClickListener { marker ->
             Log.d(TAG, "onMapReady: marker clicked")
             true
         }
