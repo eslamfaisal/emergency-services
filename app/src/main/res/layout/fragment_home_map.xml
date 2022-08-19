@@ -12,12 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
+        <com.huawei.hms.maps.MapView
             android:id="@+id/map_view"
-            android:name="com.huawei.hms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="match_parent"/>
     </RelativeLayout>
 
 </layout>

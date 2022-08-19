@@ -42,9 +42,6 @@
         <meta-data
             android:name="com.huawei.hms.client.channel.androidMarket"
             android:value="false" />
-        <meta-data
-            android:name="com.huawei.hms.client.appid"
-            android:value="106649263" />
 
         <service
             android:name=".services.HmsPushService"
@@ -90,6 +87,10 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="appid=appid" />
     </application>
 
 </manifest>

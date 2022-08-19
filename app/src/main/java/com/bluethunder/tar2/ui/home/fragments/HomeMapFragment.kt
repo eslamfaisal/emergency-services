@@ -15,8 +15,8 @@ import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
 import com.huawei.hms.maps.CameraUpdateFactory
 import com.huawei.hms.maps.HuaweiMap
+import com.huawei.hms.maps.MapsInitializer
 import com.huawei.hms.maps.OnMapReadyCallback
-import com.huawei.hms.maps.SupportMapFragment
 import com.huawei.hms.maps.model.*
 
 
@@ -28,9 +28,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var hmap: HuaweiMap
     private var mMarker: Marker? = null
     private var mCircle: Circle? = null
-
-
-    private var mSupportMapFragment: SupportMapFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,17 +44,33 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViews()
+        var mapViewBundle: Bundle? = null
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
+        }
+        // please replace "Your API key" with api_key field value in
+        // agconnect-services.json if the field is null.
+        MapsInitializer.setApiKey("DAEDADPF5OJAG21jxCnUWAX0InV9vW76SXWUaSMiIv81YAXW8bfCDMkAKKZ3lMU9mC2GCv78cYTZgeOIZ8OJkKXPg4ynC/CyrCUuvQ==")
+        binding.mapView.onCreate(mapViewBundle)
+
+        Log.d(TAG, "onViewCreated: getMapAsync ")
+        // get map by async method
+        binding.mapView.getMapAsync(this)
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.mapView.onStart()
+    }
 
-    private fun initViews() {
-        val mapFragment =
-            childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment?
-        if (mapFragment is SupportMapFragment) {
-            mSupportMapFragment = mapFragment
-            mSupportMapFragment?.getMapAsync(this)
-        }
+    override fun onStop() {
+        super.onStop()
+        binding.mapView.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.mapView.onDestroy()
     }
 
     override fun onMapReady(map: HuaweiMap) {
