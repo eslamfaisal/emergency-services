@@ -21,6 +21,7 @@ import com.huawei.hms.maps.MapsInitializer
 class Tar2Application : Application() {
     override fun onCreate() {
         super.onCreate()
+        MapsInitializer.initialize(this)
         MapsInitializer.setApiKey("DAEDADPF5OJAG21jxCnUWAX0InV9vW76SXWUaSMiIv81YAXW8bfCDMkAKKZ3lMU9mC2GCv78cYTZgeOIZ8OJkKXPg4ynC/CyrCUuvQ==");
     }
 

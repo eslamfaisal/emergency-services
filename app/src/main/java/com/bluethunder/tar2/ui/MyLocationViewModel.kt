@@ -28,8 +28,8 @@ class MyLocationViewModel : ViewModel() {
     private val _locationAddress = MutableLiveData<Resource<String>>()
     val locationAddress: LiveData<Resource<String>> = _locationAddress
 
-    private val _lastLocation = MutableLiveData<Resource<Location>>()
-    val lastLocation: LiveData<Resource<Location>> = _lastLocation
+    private val _lastLocation = MutableLiveData<Resource<Location?>>(Resource.empty())
+    val lastLocation: LiveData<Resource<Location?>> = _lastLocation
 
 
     fun checkDeviceLocation(activity: Activity, oneTimeRequest: Boolean = false) {
@@ -113,7 +113,7 @@ class MyLocationViewModel : ViewModel() {
         return mLocationRequest
     }
 
-    private fun setLastLocationValue(success: Resource<Location>) {
+    private fun setLastLocationValue(success: Resource<Location?>) {
         _lastLocation.value = success
     }
 
