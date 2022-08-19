@@ -30,10 +30,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-
         <activity
             android:name=".ui.case_details.CaseDetailsActivity"
             android:exported="false"
@@ -61,7 +59,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -76,8 +73,7 @@
         <activity
             android:name=".ui.home.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false"

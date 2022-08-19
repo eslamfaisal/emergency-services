@@ -19,31 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
--ignorewarnings
--keepattributes *Annotation*
--keepattributes Exceptions
--keepattributes InnerClasses
--keepattributes Signature
--keepattributes SourceFile,LineNumberTable
--keep class com.huawei.hianalytics.**{*;}
--keep class com.huawei.updatesdk.**{*;}
--keep class com.huawei.hms.**{*;}
-
--keep class * extends com.huawei.hms.core.aidl.IMessageEntity{ *; }
--keep public class com.huawei.location.nlp.network.** {*; }
--keep class com.huawei.wisesecurity.ucs.**{*;}
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep class * extends com.bumptech.glide.module.AppGlideModule {
- <init>(...);
-}
--keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
--keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
-  *** rewind();
-}
-
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule

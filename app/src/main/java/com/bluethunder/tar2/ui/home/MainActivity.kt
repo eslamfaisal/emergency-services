@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +30,6 @@ import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.github.dhaval2404.imagepicker.ImagePicker.Companion.REQUEST_CODE
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.huawei.agconnect.applinking.AGConnectAppLinking
 
 
 class MainActivity : AppCompatActivity() {
