@@ -137,6 +137,17 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                         val lat = doc.getDouble("lat")!!
                         val lng = doc.getDouble("lng")!!
 
+
+                       val LAT_LNG = LatLng(lat, lng)
+                        // mark can be add by HuaweiMap
+                        mMarker = hmap.addMarker(
+                            MarkerOptions().position(LAT_LNG)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_emergency_case_red))
+                                .anchorMarker(0.5f, 0.5f)
+                                .clusterable(true)
+                        )
+                        mMarker?.showInfoWindow()
+
                         // We have to filter out a few false positives due to GeoHash
                         // accuracy, but most will match
                         val docLocation = GeoLocation(lat, lng)
@@ -147,6 +158,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                         }
                     }
                 }
+
             }
     }
 
@@ -206,26 +218,14 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         hmap.isMyLocationEnabled = true
 
         // move camera by CameraPosition param ,latlag and zoom params can set here
-        val build = CameraPosition.Builder().target(LatLng(60.0, 60.0)).zoom(5f).build()
+        val build = CameraPosition.Builder().target(SessionConstants.myCurrentLocation!!).zoom(5f).build()
         val cameraUpdate = CameraUpdateFactory.newCameraPosition(build)
         hmap.animateCamera(cameraUpdate)
 
-        // mark can be add by HuaweiMap
-        mMarker = hmap.addMarker(
-            MarkerOptions().position(LAT_LNG)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_emergency_case_red))
-                .anchorMarker(0.5f, 0.5f)
-                .clusterable(true)
-        )
-        mMarker?.showInfoWindow()
-
-        // circle can be add by HuaweiMap
-        mCircle = hmap.addCircle(
-            CircleOptions().center(LatLng(60.0, 60.0)).radius(5000.0).fillColor(
-                Color.GREEN
-            )
-        )
-        mCircle?.fillColor = Color.TRANSPARENT
+        hmap.setOnMarkerClickListener { marker->
+            Log.d(TAG, "onMapReady: marker clicked")
+            true
+        }
 
         binding.progressBar.visibility = View.GONE
     }
