@@ -65,4 +65,24 @@
     <style name="CustomProgressBarTheme">
         <item name="colorAccent">@color/colorPrimaryDark</item>
     </style>
+
+    <style name="CardViewTheme" parent="CardView">
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="UCrop" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowActivityTransitions" tools:ignore="NewApi">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
 </resources>

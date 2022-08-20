@@ -6,20 +6,28 @@
         <entry key="../../../../../../../layout/custom_preview.xml" value="0.15353260869565216" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable-v24/rounded_dialog.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable-v24/splash_screen_background.xml" value="0.1575" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/bg_gradient_soft.xml" value="0.1055" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_add.xml" value="0.174" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_emergency_case_red.xml" value="0.156" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1575" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_seekbar_progress_me.xml" value="0.1055" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_seekbar_progress_you.xml" value="0.1055" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_seekbar_thumb.xml" value="0.1055" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/main_btn_bg.xml" value="0.17" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/sec_btn_bg.xml" value="0.17" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/shadow.xml" value="0.1055" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/splash_screen_background.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_auth.xml" value="0.3076923076923077" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_case_details.xml" value="0.22407407407407406" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_chat.xml" value="0.2" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_edit_case.xml" value="0.2734375" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_map.xml" value="0.39947916666666666" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/activity_splash.xml" value="0.3902564102564103" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/custom_info_window.xml" value="0.176" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/custom_player_me.xml" value="0.3490740740740741" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/custom_player_you.xml" value="0.23072916666666668" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_case_details.xml" value="0.2" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_case_personal_data.xml" value="0.2" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_categorized_emergency_case_list.xml" value="0.3902564102564103" />
@@ -30,8 +38,11 @@
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_notification_center.xml" value="0.31296296296296294" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_register.xml" value="0.264" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/fragment_verify_phone.xml" value="0.264" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/item_chat_me.xml" value="0.1527777777777778" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/item_chat_you.xml" value="0.13425925925925927" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/loading_layout.xml" value="0.2" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/maps_layout.xml" value="0.22760416666666666" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/recording_layout.xml" value="0.15925925925925927" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/menu/bottom_nav_menu.xml" value="0.39947916666666666" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1575" />

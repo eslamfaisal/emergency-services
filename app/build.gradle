@@ -94,6 +94,7 @@ dependencies {
     //firebase
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-storage'
     implementation 'com.firebase:geofire-android-common:3.1.0'
 
     //third party
@@ -111,6 +112,10 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
     implementation "androidx.browser:browser:1.4.0"
-
-
+    implementation 'com.github.yalantis:ucrop:2.2.6'
+    implementation 'id.zelory:compressor:2.1.0'
+    implementation 'com.github.esafirm.android-image-picker:imagepicker:2.1.0'
+    implementation 'com.github.rygelouv:android-audio-sensei:0.1.2'
+    implementation 'com.facebook.fresco:fresco:2.6.0'
+    implementation 'com.github.stfalcon:frescoimageviewer:0.5.0'
 }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyt_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/spacing_middle"
+    android:paddingTop="@dimen/spacing_xsmall"
+    android:paddingRight="@dimen/spacing_middle"
+    android:paddingBottom="@dimen/spacing_xsmall">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end|right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/spacing_medium"
+            android:text="02:30 AM"
+            android:textColor="@color/grey_40"
+            android:textSize="12sp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/message_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="32dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/spacing_large"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingRight="@dimen/spacing_large"
+                android:paddingBottom="@dimen/spacing_medium">
+
+                <TextView
+                    android:id="@+id/text_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Message content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@android:color/white"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.rygelouv.audiosensei.player.AudioSenseiPlayerView
+            android:id="@+id/audio_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:visibility="visible"
+            app:custom_layout="@layout/custom_player_me" />
+
+        <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/message_image"
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:maxHeight="500dp"
+            fresco:backgroundImage="@color/colorPrimary"
+            fresco:roundBottomLeft="true"
+            fresco:roundBottomRight="true"
+            fresco:roundedCornerRadius="16dp"
+            fresco:roundingBorderColor="@color/colorPrimaryDark"
+            fresco:roundingBorderWidth="1dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="@dimen/spacing_medium"
+        android:layout_height="0dp" />
+
+
+</LinearLayout>

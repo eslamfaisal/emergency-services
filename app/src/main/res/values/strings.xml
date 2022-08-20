@@ -115,4 +115,6 @@
     <string name="edit_case">Edit Case</string>
     <string name="case_updated_successfully">Case updated successfully</string>
     <string name="get_direction">Get Directions</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="slide_to_cancel">Slide to cancel</string>
 </resources>
