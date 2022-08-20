@@ -30,6 +30,8 @@ class CaseModel : Serializable {
     var upVotesCount: Int = 0
     var viewsCount: Int = 0
     var commentsCount: Int = 0
+    var lat: Double = 0.0
+    var lng: Double = 0.0
 
     @ServerTimestamp
     var createdAt: Date = Date()

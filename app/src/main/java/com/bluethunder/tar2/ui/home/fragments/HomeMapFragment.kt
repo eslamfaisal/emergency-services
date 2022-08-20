@@ -1,46 +1,59 @@
 package com.bluethunder.tar2.ui.home.fragments
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.databinding.FragmentHomeMapBinding
+import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.model.Status.SUCCESS
+import com.bluethunder.tar2.networking.RetrofitClient
 import com.bluethunder.tar2.ui.MyLocationViewModel
+import com.bluethunder.tar2.ui.case_details.CaseDetailsActivity
+import com.bluethunder.tar2.ui.case_details.model.Destination
+import com.bluethunder.tar2.ui.case_details.model.LocationDistanceModel
+import com.bluethunder.tar2.ui.case_details.model.LocationDistanceRequestBody
+import com.bluethunder.tar2.ui.case_details.model.Origin
+import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
+import com.bluethunder.tar2.ui.home.adapter.CustomInfoWindowAdapter
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
+import com.bluethunder.tar2.utils.TimeAgo
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import com.huawei.hms.maps.CameraUpdateFactory
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapsInitializer
 import com.huawei.hms.maps.OnMapReadyCallback
 import com.huawei.hms.maps.model.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class HomeMapFragment : Fragment(), OnMapReadyCallback {
@@ -106,8 +119,35 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         Log.d(TAG, "onViewCreated: getMapAsync ")
         // get map by async method
         binding.mapView.getMapAsync(this)
+    }
 
-        getGeoCases()
+
+    val casesList = ArrayList<CaseModel>()
+    private fun listenToCases() {
+        viewModel.listenToCases()
+        viewModel.casesList.observe(viewLifecycleOwner) { resources ->
+            when (resources.status) {
+                SUCCESS -> {
+                    resources.data!!.forEach { document ->
+                        if (document.type == DocumentChange.Type.ADDED) {
+                            try {
+                                val case = document.document.toObject(CaseModel::class.java)
+                                addMArkerToMAp(case)
+                                casesList.remove(case)
+                                casesList.add(case)
+                            } catch (e: Exception) {
+                                Log.d(TAG, "listenToCases: ${e.message}")
+                            }
+                        }
+                    }
+                    binding.progressBar.visibility = View.GONE
+                }
+                else -> {
+
+                }
+            }
+        }
+
     }
 
     fun getGeoCases() {
@@ -140,7 +180,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                             val lat = doc.getDouble("lat")!!
                             val lng = doc.getDouble("lng")!!
 
-                            addMArkerToMAp(lat, lng)
+//                            addMArkerToMAp(lat, lng)
 
                             val docLocation = GeoLocation(lat, lng)
                             val distanceInM =
@@ -157,24 +197,52 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             }
     }
 
+
+    override fun onMapReady(map: HuaweiMap) {
+
+        Log.d(TAG, "onMapReady: map is ready")
+        // after call getMapAsync method ,we can get HuaweiMap instance in this call back method
+        hmap = map
+        hmap.isMyLocationEnabled = true
+
+        // move camera by CameraPosition param ,latlag and zoom params can set here
+        val build =
+            CameraPosition.Builder().target(SessionConstants.myCurrentLocation!!).zoom(5f).build()
+        val cameraUpdate = CameraUpdateFactory.newCameraPosition(build)
+        hmap.animateCamera(cameraUpdate)
+
+        hmap.setOnMarkerClickListener { marker ->
+            val isInfoWindowShown: Boolean = marker.isInfoWindowShown
+            when {
+                isInfoWindowShown -> {
+                    marker.hideInfoWindow()
+                }
+                else -> {
+                    marker.showInfoWindow()
+                }
+            }
+            true
+        }
+
+        listenToCases()
+//        getGeoCases()
+    }
+
     @Throws(Exception::class)
-    private fun addMArkerToMAp(lat: Double, lng: Double) {
-        val LAT_LNG = LatLng(lat, lng)
-        // mark can be add by HuaweiMap
+    private fun addMArkerToMAp(case: CaseModel) {
 
-        val height = 100
-        val width = 100
-        val b = BitmapFactory.decodeResource(resources, R.drawable.ic_emergency_case_red)
-        val smallMarker = Bitmap.createScaledBitmap(b, width, height, false)
-        val smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker)
+        val options = MarkerOptions()
+        options.position(LatLng(case.lat, case.lng))
+        options.title(case.title)
+        options.draggable(false)
+        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_emergency_case_red))
+        options.clusterable(false)
 
-        mMarker = hmap.addMarker(
-            MarkerOptions().position(LAT_LNG)
-                .icon(smallMarkerIcon)
-                .anchorMarker(0.5f, 0.5f)
-                .clusterable(true)
-        )
-        mMarker?.showInfoWindow()
+        val customInfoWindow = context?.let { ctx -> CustomInfoWindowAdapter(ctx) }
+        hmap.setInfoWindowAdapter(customInfoWindow)
+        val marker = hmap.addMarker(options)
+        marker.tag = case
+
     }
 
     fun showRequestPermissionDialog() {
@@ -224,28 +292,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         }
         return true
     }
-
-    override fun onMapReady(map: HuaweiMap) {
-
-        Log.d(TAG, "onMapReady: map is ready")
-        // after call getMapAsync method ,we can get HuaweiMap instance in this call back method
-        hmap = map
-        hmap.isMyLocationEnabled = true
-
-        // move camera by CameraPosition param ,latlag and zoom params can set here
-        val build =
-            CameraPosition.Builder().target(SessionConstants.myCurrentLocation!!).zoom(5f).build()
-        val cameraUpdate = CameraUpdateFactory.newCameraPosition(build)
-        hmap.animateCamera(cameraUpdate)
-
-        hmap.setOnMarkerClickListener { marker ->
-            Log.d(TAG, "onMapReady: marker clicked")
-            true
-        }
-
-        binding.progressBar.visibility = View.GONE
-    }
-
 
     override fun onStart() {
         super.onStart()

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="@color/colorGreyVeryLight"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/profile_image"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                app:srcCompat="@drawable/ic_small_profile_image_place_holder" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/username_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorGreyDark"
+                    android:textSize="14sp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/case_distance_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/color_published"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/distance_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp" />
+
+                    <ProgressBar
+                        android:id="@+id/distance_progress_bar"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:id="@+id/infoTile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/infoAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:maxLines="3"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/location_direction_view"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="@color/colorAccent"
+                app:cardCornerRadius="12dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_directions" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/goToDetails"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="@color/colorBlack"
+                app:cardCornerRadius="12dp">
+
+                <TextView
+                    android:id="@+id/infoGetDirections"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="end"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:text="@string/case_details"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

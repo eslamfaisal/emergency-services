@@ -115,4 +115,5 @@
     <string name="open_on_web">Open on web</string>
     <string name="edit_case">Edit Case</string>
     <string name="case_updated_successfully">Case updated successfully</string>
+    <string name="get_direction">Get Directions</string>
 </resources>
