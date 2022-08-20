@@ -34,7 +34,7 @@ class SplashViewModel : ViewModel() {
     @Throws(Exception::class)
     private fun openCaseDetails(context: Activity, caseDetails: CaseModel) {
         val intent = Intent(context, CaseDetailsActivity::class.java)
-        intent.putExtra(CasesListFragment.CASE_LIST, caseDetails)
+        intent.putExtra(CasesListFragment.EXTRA_CASE_MODEL, caseDetails)
         context.startActivity(intent)
     }
 

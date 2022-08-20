@@ -72,7 +72,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun getExtraData() {
-        currentCase = intent.getSerializableExtra(CasesListFragment.CASE_LIST) as CaseModel
+        currentCase = intent.getSerializableExtra(CasesListFragment.EXTRA_CASE_MODEL) as CaseModel
         myCase = currentCase.userId == SessionConstants.currentLoggedInUserModel!!.id
     }
 
@@ -255,7 +255,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun startHuaweiAppGallery() {
-        intent = Intent(
+       val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse("https://appgallery.huawei.com/app/C102457337")
         )

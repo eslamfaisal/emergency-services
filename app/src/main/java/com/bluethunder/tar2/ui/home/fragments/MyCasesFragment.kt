@@ -97,7 +97,7 @@ class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
 
     override fun onMyCaseClicked(caseModel: CaseModel) {
         val intent = Intent(requireActivity(), CaseDetailsActivity::class.java)
-        intent.putExtra(CasesListFragment.CASE_LIST, caseModel)
+        intent.putExtra(CasesListFragment.EXTRA_CASE_MODEL, caseModel)
         requireActivity().startActivity(intent)
     }
 

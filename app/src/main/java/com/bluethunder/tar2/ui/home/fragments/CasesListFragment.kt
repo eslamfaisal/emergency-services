@@ -125,7 +125,7 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
 
     override fun onCaseClicked(caseModel: CaseModel) {
         val intent = Intent(requireActivity(), CaseDetailsActivity::class.java)
-        intent.putExtra(CASE_LIST, caseModel)
+        intent.putExtra(EXTRA_CASE_MODEL, caseModel)
         requireActivity().startActivity(intent)
     }
 
@@ -134,6 +134,6 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
     }
 
     companion object {
-        const val CASE_LIST = "case_model"
+        const val EXTRA_CASE_MODEL = "extra_case_model"
     }
 }

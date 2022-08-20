@@ -2,19 +2,26 @@ package com.bluethunder.tar2.ui.home.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.networking.RetrofitClient
+import com.bluethunder.tar2.ui.case_details.CaseDetailsActivity
 import com.bluethunder.tar2.ui.case_details.model.Destination
 import com.bluethunder.tar2.ui.case_details.model.LocationDistanceModel
 import com.bluethunder.tar2.ui.case_details.model.LocationDistanceRequestBody
 import com.bluethunder.tar2.ui.case_details.model.Origin
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
+import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
 import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -24,7 +31,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CustomInfoWindowAdapter(val context: Context) : HuaweiMap.InfoWindowAdapter {
+class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapter {
 
     companion object {
         private const val TAG = "CustomInfoWindowAdapter"
@@ -32,28 +39,39 @@ class CustomInfoWindowAdapter(val context: Context) : HuaweiMap.InfoWindowAdapte
 
     override fun getInfoWindow(marker: Marker?): View {
 
-        val mInfoView =
-            (context as Activity).layoutInflater.inflate(R.layout.custom_info_window, null)
+        val mInfoView = context.layoutInflater.inflate(R.layout.custom_info_window, null)
         try {
             Log.d(TAG, "getInfoWindow: ${marker?.title}")
-            val mInfoWindow: CaseModel? = marker?.tag as CaseModel?
+            val caseModel: CaseModel? = marker?.tag as CaseModel?
             val timeAgo = TimeAgo()
             timeAgo.locale(context)
             mInfoView.findViewById<TextView>(R.id.date_tv).text =
-                timeAgo.getTimeAgo(mInfoWindow?.createdAt!!)
-            mInfoView.findViewById<TextView>(R.id.username_tv).text = mInfoWindow.userName
-            mInfoView.findViewById<TextView>(R.id.infoTile).text = mInfoWindow.title
-            mInfoView.findViewById<TextView>(R.id.infoAddress).text = mInfoWindow.description
+                timeAgo.getTimeAgo(caseModel?.createdAt!!)
+            mInfoView.findViewById<TextView>(R.id.username_tv).text = caseModel.userName
+            mInfoView.findViewById<TextView>(R.id.infoTile).text = caseModel.title
+            mInfoView.findViewById<TextView>(R.id.infoAddress).text = caseModel.description
             setUserImage(
                 mInfoView.findViewById(R.id.profile_image),
-                mInfoWindow.userImage!!
+                caseModel.userImage!!
             )
             getCaseLocationDistance(
                 mInfoView.findViewById(R.id.distance_progress_bar),
                 mInfoView.findViewById(R.id.distance_tv),
-                mInfoWindow.lat,
-                mInfoWindow.lng,
+                caseModel.lat,
+                caseModel.lng,
             )
+
+            mInfoView.findViewById<View>(R.id.location_direction_view).setOnClickListener {
+                Log.d(TAG, "getInfoWindow: directions ${caseModel.lat} ${caseModel.lng}")
+                tryOpenLocationOnMap(context, caseModel)
+            }
+
+            mInfoView.findViewById<View>(R.id.goToDetails).setOnClickListener {
+                val intent = Intent(context, CaseDetailsActivity::class.java)
+                intent.putExtra(CasesListFragment.EXTRA_CASE_MODEL, caseModel)
+                context.startActivity(intent)
+            }
+
         } catch (e: Exception) {
             Log.d(TAG, "getInfoWindow: ${e.message}")
         }
@@ -119,6 +137,57 @@ class CustomInfoWindowAdapter(val context: Context) : HuaweiMap.InfoWindowAdapte
                 }
             })
     }
+
+
+    private fun tryOpenLocationOnMap(context: Context, currentCase: CaseModel) {
+        try {
+            val uri = Uri.parse("geo:0,0?q=${currentCase.latitude},${currentCase.longitude}")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            } else {
+                intent.setPackage("com.google.android.apps.maps")
+                context.startActivity(intent)
+            }
+        } catch (e: Exception) {
+            showDownloadMapDialog(context, currentCase)
+        }
+    }
+
+    private fun showDownloadMapDialog(context: Context, currentCase: CaseModel) {
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage(context.getString(R.string.maps_not_found_msg))
+        builder.setPositiveButton(context.getString(R.string.downlad_map_app)) { dialog, which ->
+            startHuaweiAppGallery(context)
+            dialog.dismiss()
+        }
+        builder.setNegativeButton(context.getString(R.string.open_on_web)) { dialog, which ->
+            openWebPage(context, currentCase)
+            dialog.dismiss()
+        }
+        builder.show()
+    }
+
+    private fun startHuaweiAppGallery(context: Context) {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://appgallery.huawei.com/app/C102457337")
+        )
+        context.startActivity(intent)
+    }
+
+    fun openWebPage(context: Context, currentCase: CaseModel) {
+        val url =
+            "https://www.google.com/maps/search/?api=1&query=${currentCase.latitude},${currentCase.longitude}"
+        val builder = CustomTabsIntent.Builder()
+        val defaultColors = CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(context.resources.getColor(R.color.colorPrimary))
+            .build()
+        builder.setDefaultColorSchemeParams(defaultColors)
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(context, Uri.parse(url))
+    }
+
 
     override fun getInfoContents(marker: Marker): View? {
         return null

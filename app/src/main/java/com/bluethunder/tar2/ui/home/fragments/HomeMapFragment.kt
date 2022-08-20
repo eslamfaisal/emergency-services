@@ -238,7 +238,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_emergency_case_red))
         options.clusterable(false)
 
-        val customInfoWindow = context?.let { ctx -> CustomInfoWindowAdapter(ctx) }
+        val customInfoWindow = CustomInfoWindowAdapter(requireActivity())
         hmap.setInfoWindowAdapter(customInfoWindow)
         val marker = hmap.addMarker(options)
         marker.tag = case
