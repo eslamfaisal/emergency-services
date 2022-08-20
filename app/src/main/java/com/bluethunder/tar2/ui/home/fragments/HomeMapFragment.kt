@@ -213,7 +213,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
 //        getGeoCases()
     }
 
-    private fun animateCameraToPosision(posision: LatLng, zoom: Float = 15f) {
+    private fun animateCameraToPosision(posision: LatLng, zoom: Float = 16f) {
         // move camera by CameraPosition param ,latlag and zoom params can set here
         val build = CameraPosition.Builder().target(posision).zoom(zoom).build()
         val cameraUpdate = CameraUpdateFactory.newCameraPosition(build)
