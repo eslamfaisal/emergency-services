@@ -241,10 +241,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
     fun showRequestPermissionDialog() {
         MaterialAlertDialogBuilder(requireActivity())
             .setMessage(resources.getString(R.string.request_permission_message))
-            .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
-                // Respond to negative button press
-                dialog.dismiss()
-            }
+            .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
                 // Respond to positive button press
                 requestLocationPermissions()
