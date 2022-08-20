@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -118,4 +119,17 @@ class MainActivity : AppCompatActivity() {
             binding.menuTabText.visibility = if (position == 3) View.VISIBLE else View.GONE
         }
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            EditCaseActivity.REQUEST_DEVICE_SETTINGS -> {
+//                recreate()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+        }
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.bluethunder.tar2.ui.home.fragments
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -20,6 +22,7 @@ import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.databinding.FragmentHomeMapBinding
 import com.bluethunder.tar2.model.Status.SUCCESS
 import com.bluethunder.tar2.ui.MyLocationViewModel
+import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.CustomInfoWindowAdapter
@@ -268,6 +271,17 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            EditCaseActivity.REQUEST_DEVICE_SETTINGS -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    requestLocationPermissions()
+                } else {
+                    Log.i(TAG, "User denied request")
+                }
+            }
+        }
+    }
     private fun hasPermissions(context: Context, vararg permissions: String): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (permission in permissions) {
