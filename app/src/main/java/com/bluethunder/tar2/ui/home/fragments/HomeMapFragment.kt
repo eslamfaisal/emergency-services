@@ -229,10 +229,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         options.title(case.title)
         options.draggable(false)
         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_emergency_case_red))
-        options.clusterable(true)
-        options.anchorMarker(0.5f, 0.5f)
-
-
+        options.clusterable(false)
 
         val customInfoWindow = CustomInfoWindowAdapter(requireActivity())
         hmap.setInfoWindowAdapter(customInfoWindow)
