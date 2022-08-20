@@ -204,8 +204,11 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                     marker.showInfoWindow()
                     try {
                         val case = (marker.tag as CaseModel)
-                        animateCameraToPosision(LatLng(case.lat, case.lng), zoom = hmap.cameraPosition.zoom)
-                    }catch (e:Exception){
+                        animateCameraToPosision(
+                            LatLng(case.lat, case.lng),
+                            zoom = hmap.cameraPosition.zoom
+                        )
+                    } catch (e: Exception) {
                         Log.d(TAG, "onMapReady: ${e.message}")
                     }
                 }
@@ -256,7 +259,19 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
-        requestLocationPermissions()
+        var allAccepted = true
+        result.forEach {
+            if (it.value) {
+                Log.d(TAG, "onActivityResult: permission granted")
+            } else {
+                Log.d(TAG, "onActivityResult: permission denied")
+                allAccepted = false
+            }
+        }
+        if (allAccepted)
+            requestLocationPermissions()
+        else
+            showRequestPermissionDialog()
     }
 
 
@@ -282,6 +297,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             }
         }
     }
+
     private fun hasPermissions(context: Context, vararg permissions: String): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (permission in permissions) {
