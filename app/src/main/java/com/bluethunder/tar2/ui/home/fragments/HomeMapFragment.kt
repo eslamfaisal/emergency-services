@@ -1,7 +1,6 @@
 package com.bluethunder.tar2.ui.home.fragments
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -10,36 +9,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.databinding.FragmentHomeMapBinding
-import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.model.Status.SUCCESS
-import com.bluethunder.tar2.networking.RetrofitClient
 import com.bluethunder.tar2.ui.MyLocationViewModel
-import com.bluethunder.tar2.ui.case_details.CaseDetailsActivity
-import com.bluethunder.tar2.ui.case_details.model.Destination
-import com.bluethunder.tar2.ui.case_details.model.LocationDistanceModel
-import com.bluethunder.tar2.ui.case_details.model.LocationDistanceRequestBody
-import com.bluethunder.tar2.ui.case_details.model.Origin
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.CustomInfoWindowAdapter
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
-import com.bluethunder.tar2.utils.TimeAgo
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
@@ -51,9 +37,6 @@ import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapsInitializer
 import com.huawei.hms.maps.OnMapReadyCallback
 import com.huawei.hms.maps.model.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class HomeMapFragment : Fragment(), OnMapReadyCallback {
@@ -205,11 +188,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         hmap = map
         hmap.isMyLocationEnabled = true
 
-        // move camera by CameraPosition param ,latlag and zoom params can set here
-        val build =
-            CameraPosition.Builder().target(SessionConstants.myCurrentLocation!!).zoom(5f).build()
-        val cameraUpdate = CameraUpdateFactory.newCameraPosition(build)
-        hmap.animateCamera(cameraUpdate)
+        animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 5f)
 
         hmap.setOnMarkerClickListener { marker ->
             val isInfoWindowShown: Boolean = marker.isInfoWindowShown
@@ -219,6 +198,12 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                 }
                 else -> {
                     marker.showInfoWindow()
+                    try {
+                        val case = (marker.tag as CaseModel)
+                        animateCameraToPosision(LatLng(case.lat, case.lng))
+                    }catch (e:Exception){
+                        Log.d(TAG, "onMapReady: ${e.message}")
+                    }
                 }
             }
             true
@@ -226,6 +211,13 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
 
         listenToCases()
 //        getGeoCases()
+    }
+
+    private fun animateCameraToPosision(posision: LatLng, zoom: Float = 15f) {
+        // move camera by CameraPosition param ,latlag and zoom params can set here
+        val build = CameraPosition.Builder().target(posision).zoom(zoom).build()
+        val cameraUpdate = CameraUpdateFactory.newCameraPosition(build)
+        hmap.animateCamera(cameraUpdate)
     }
 
     @Throws(Exception::class)
