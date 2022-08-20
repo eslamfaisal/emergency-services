@@ -40,11 +40,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -199,7 +196,7 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     }
 
     private void getMessages() {
-        
+
         colRefMessages.document(AGConnectAuth.getInstance().getCurrentUser().getUid())
                 .collection(Enums.Messages.name())
                 .orderBy(Enums.date.name(), Query.Direction.ASCENDING).addSnapshotListener((snapshots, e) -> {
@@ -207,14 +204,14 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
                         Log.w(TAG, "listen:error", e);
                         return;
                     }
-    
+
                     for (DocumentChange dc : snapshots.getDocumentChanges()) {
                         switch (dc.getType()) {
                             case ADDED:
                                 Message message = dc.getDocument().toObject(Message.class);
                                 adapter.insertItem(message);
                                 recycler_view.scrollToPosition(adapter.getItemCount() - 1);
-    
+
                                 break;
                             case MODIFIED:
                                 Log.d(TAG, "Modified city: " + dc.getDocument().getData());
@@ -224,7 +221,7 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
                                 break;
                         }
                     }
-    
+
                 });
 
 

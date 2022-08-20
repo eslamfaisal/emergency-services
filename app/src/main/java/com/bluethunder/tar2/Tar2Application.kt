@@ -16,6 +16,7 @@
 package com.bluethunder.tar2
 
 import android.app.Application
+import com.facebook.drawee.backends.pipeline.Fresco
 import com.huawei.hms.maps.MapsInitializer
 
 class Tar2Application : Application() {
@@ -23,6 +24,7 @@ class Tar2Application : Application() {
         super.onCreate()
         MapsInitializer.initialize(this)
         MapsInitializer.setApiKey("DAEDADPF5OJAG21jxCnUWAX0InV9vW76SXWUaSMiIv81YAXW8bfCDMkAKKZ3lMU9mC2GCv78cYTZgeOIZ8OJkKXPg4ynC/CyrCUuvQ==");
+        Fresco.initialize(this)
     }
 
 }

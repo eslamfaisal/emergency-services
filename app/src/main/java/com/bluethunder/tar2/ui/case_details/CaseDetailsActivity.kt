@@ -28,6 +28,7 @@ import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
 import com.bluethunder.tar2.ui.case_details.model.CommentModel
 import com.bluethunder.tar2.ui.case_details.model.CommentType
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
+import com.bluethunder.tar2.ui.chat.ChatActivity
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
@@ -98,6 +99,12 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
         binding.locationDirectionView.setOnClickListener {
             tryOpenLocationOnMap()
+        }
+        binding.chatBtn.setOnClickListener {
+
+            startActivity(Intent(this, ChatActivity::class.java).apply {
+//                putExtra(ChatActivity.EXTRA_CASE_ID, currentCase.id)
+            })
         }
 
         addKeyboardToggleListener { isShow ->
@@ -170,10 +177,10 @@ class CaseDetailsActivity : AppCompatActivity() {
         if (myCase) {
             binding.caseStatusView.visibility = View.VISIBLE
             binding.caseActionsView.visibility = View.GONE
+            binding.caseUserView.visibility = View.GONE
             setupCaseStatus()
         } else {
             binding.caseActionsView.visibility = View.VISIBLE
-            binding.caseUserView.visibility = View.GONE
             binding.caseStatusView.visibility = View.GONE
         }
         setMainImage()
