@@ -188,6 +188,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         hmap = map
         hmap.isMyLocationEnabled = true
 
+
         animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 10f)
 
         hmap.setOnMarkerClickListener { marker ->
@@ -200,7 +201,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                     marker.showInfoWindow()
                     try {
                         val case = (marker.tag as CaseModel)
-                        animateCameraToPosision(LatLng(case.lat, case.lng))
+                        animateCameraToPosision(LatLng(case.lat, case.lng), zoom = hmap.cameraPosition.zoom)
                     }catch (e:Exception){
                         Log.d(TAG, "onMapReady: ${e.message}")
                     }
@@ -228,7 +229,10 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         options.title(case.title)
         options.draggable(false)
         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_emergency_case_red))
-        options.clusterable(false)
+        options.clusterable(true)
+        options.anchorMarker(0.5f, 0.5f)
+
+
 
         val customInfoWindow = CustomInfoWindowAdapter(requireActivity())
         hmap.setInfoWindowAdapter(customInfoWindow)
