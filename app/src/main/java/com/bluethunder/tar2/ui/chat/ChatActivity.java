@@ -192,7 +192,7 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
                 .collection(FirestoreReferences.ChatHeadsCollection.value())
                 .document(chatHead.getId())
                 .collection(FirestoreReferences.MessagesCollection.value())
-                .orderBy(FirestoreReferences.LastMessageAtField.value(), Query.Direction.ASCENDING)
+                .orderBy(FirestoreReferences.DateField.value(), Query.Direction.ASCENDING)
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
                         Log.w(TAG, "listen:error", e);

@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bluethunder.tar2.R;
 
 import java.text.SimpleDateFormat;
@@ -49,7 +50,7 @@ public class AudioRecordView extends FrameLayout {
     private int audioTotalTime;
     private TimerTask timerTask;
     private Timer audioTimer;
-    private SimpleDateFormat timeFormatter = new SimpleDateFormat("m:ss", Locale.getDefault());
+    private final SimpleDateFormat timeFormatter = new SimpleDateFormat("m:ss", Locale.getDefault());
     private float lastX, lastY;
     private float firstX, firstY;
     private float directionOffset, cancelOffset, lockOffset;
@@ -62,6 +63,7 @@ public class AudioRecordView extends FrameLayout {
         super(context, attrs, defStyle);
         initView();
     }
+
     public AudioRecordView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
@@ -570,4 +572,5 @@ public class AudioRecordView extends FrameLayout {
 
     }
 }
+
 
