@@ -18,10 +18,6 @@ public class Message implements Serializable {
 
     private String messageFrom;
 
-    private String messageImage;
-
-    private String recordUri;
-
     private boolean showTime = true;
 
     public Message() {
@@ -30,15 +26,12 @@ public class Message implements Serializable {
 
     public Message(String id, String type, Date date,
                    String content, String messageFrom,
-                   String messageImage, String recordUri,
                    boolean showTime) {
         this.id = id;
         this.type = type;
         this.date = date;
         this.content = content;
         this.messageFrom = messageFrom;
-        this.messageImage = messageImage;
-        this.recordUri = recordUri;
         this.showTime = showTime;
     }
 
@@ -72,22 +65,6 @@ public class Message implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getMessageImage() {
-        return messageImage;
-    }
-
-    public void setMessageImage(String messageImage) {
-        this.messageImage = messageImage;
-    }
-
-    public String getRecordUri() {
-        return recordUri;
-    }
-
-    public void setRecordUri(String recordUri) {
-        this.recordUri = recordUri;
     }
 
     public boolean isShowTime() {

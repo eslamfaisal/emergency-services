@@ -162,14 +162,11 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
         adapter = new ChatAdapter(this);
         recycler_view.setAdapter(adapter);
 
-        audioRecordView.getSendView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String msg = audioRecordView.getMessageView().getText().toString();
-                if (msg.isEmpty()) return;
-                sendTextMessage(msg);
-                audioRecordView.getMessageView().setText("");
-            }
+        audioRecordView.getSendView().setOnClickListener(view -> {
+            final String msg = audioRecordView.getMessageView().getText().toString();
+            if (msg.isEmpty()) return;
+            sendTextMessage(msg);
+            audioRecordView.getMessageView().setText("");
         });
 
         audioRecordView.getAttachmentView().setOnClickListener(v -> {
@@ -182,12 +179,7 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
 
 //        audioRecordView.getMessageView().addTextChangedListener(contentWatcher);
 
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showToolBarChooseDialog();
-            }
-        });
+        toolbar.setOnClickListener(v -> showToolBarChooseDialog());
     }
 
     private void showToolBarChooseDialog() {
@@ -258,13 +250,12 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     }
 
     private void updateChatHead(String content) {
+        chatHead.setLastMessage(content);
+        chatHead.setLastMessageAt(new Date());
         FirebaseFirestore.getInstance()
                 .collection(FirestoreReferences.ChatHeadsCollection.value())
                 .document(chatHead.getId())
-                .update(
-                        FirestoreReferences.LastMessageField.value(), content,
-                        FirestoreReferences.LastMessageAtField.value(), new Date()
-                )
+                .set(chatHead)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "onComplete: success ");
@@ -373,8 +364,6 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
                 new Date(),
                 content,
                 SessionConstants.INSTANCE.getCurrentLoggedInUserModel().getId(),
-                content,
-                content,
                 adapter.getItemCount() % 5 == 0
         );
     }

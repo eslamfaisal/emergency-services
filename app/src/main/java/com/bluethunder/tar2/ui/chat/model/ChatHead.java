@@ -106,4 +106,5 @@ public class ChatHead implements Serializable {
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
     }
+
 }

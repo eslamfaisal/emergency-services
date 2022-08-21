@@ -11,10 +11,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bluethunder.tar2.R;
+import com.bluethunder.tar2.SessionConstants;
 import com.bluethunder.tar2.ui.chat.model.Message;
-import com.bluethunder.tar2.utils.Enums;
+import com.bluethunder.tar2.ui.chat.model.MessageType;
 import com.bluethunder.tar2.utils.TimeAgo;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.common.base.Enums;
 import com.rygelouv.audiosensei.player.AudioSenseiPlayerView;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
@@ -72,31 +74,31 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-            if (m.getType().equals(Enums.Image.name())) {
+            if (m.getType().equals(MessageType.Image.name())) {
 
-                vItem.image.setImageURI(m.getMessageImage());
+                vItem.image.setImageURI(m.getContent());
                 vItem.image.setVisibility(View.VISIBLE);
 
                 vItem.player.setVisibility(View.GONE);
                 vItem.text.setVisibility(View.GONE);
                 int po = imagesList.indexOf(m);
                 vItem.image.setOnClickListener(v -> new ImageViewer.Builder<>(ctx, imagesList)
-                        .setFormatter(Message::getMessageImage)
+                        .setFormatter(Message::getContent)
                         .setStartPosition(po)
                         .hideStatusBar(true)
                         .allowZooming(true)
                         .allowSwipeToDismiss(true)
                         .show());
-            } else if (m.getType().equals(Enums.Records.name())) {
+            } else if (m.getType().equals(MessageType.Records.name())) {
 
                 vItem.player.setVisibility(View.VISIBLE);
-                vItem.player.setAudioTarget(m.getRecordUri());
+                vItem.player.setAudioTarget(m.getContent());
                 vItem.player.commitClickEvents();
 
                 vItem.image.setVisibility(View.GONE);
                 vItem.text.setVisibility(View.GONE);
 
-            } else if (m.getType().equals(Enums.Text.name())) {
+            } else if (m.getType().equals(MessageType.Text.name())) {
 
                 vItem.text.setVisibility(View.VISIBLE);
                 vItem.text_content.setText(m.getContent());
@@ -137,7 +139,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return items.get(position).getMessageFrom().equals(Enums.USER.name()) ? CHAT_ME : CHAT_YOU;
+        return items.get(position).getMessageFrom().equals(SessionConstants.INSTANCE.getCurrentLoggedInUserModel().getId()) ? CHAT_ME : CHAT_YOU;
     }
 
     public void insertItem(Message item) {
@@ -145,7 +147,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyItemInserted(getItemCount());
         if (getItemCount() > 1) notifyItemChanged(getItemCount() - 2);
 
-        if (item.getType().equals(Enums.Image.name()))
+        if (item.getType().equals(MessageType.Image.name()))
             imagesList.add(item);
     }
 
