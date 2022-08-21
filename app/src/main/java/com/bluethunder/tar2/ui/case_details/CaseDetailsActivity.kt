@@ -129,7 +129,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         chatHead.caseImage = currentCase.mainImage
         chatHead.caseUserId = currentCase.userId
         chatHead.chatSenderId = SessionConstants.currentLoggedInUserModel!!.id
-        chatHead.users = arrayOf(SessionConstants.currentLoggedInUserModel!!.id, currentCase.id!!)
+        chatHead.users = arrayOf(SessionConstants.currentLoggedInUserModel!!.id, currentCase.id!!).toMutableList()
         return chatHead
     }
 

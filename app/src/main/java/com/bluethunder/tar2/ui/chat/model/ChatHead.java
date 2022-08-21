@@ -4,13 +4,14 @@ import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class ChatHead implements Serializable {
 
     private String id;
     private String caseTitle;
     private String caseDescription;
-    private String[] users;
+    private List<String> users;
     @ServerTimestamp
     private Date lastMessageAt;
     private String caseUserId;
@@ -22,7 +23,7 @@ public class ChatHead implements Serializable {
     }
 
     public ChatHead(String id, String caseTitle, String caseDescription, String caseImage,
-                    String[] users, Date lastMessageAt, String caseUserId,
+                    List<String> users, Date lastMessageAt, String caseUserId,
                     String chatSenderId, String lastMessage) {
         this.id = id;
         this.caseTitle = caseTitle;
@@ -67,11 +68,11 @@ public class ChatHead implements Serializable {
         this.caseDescription = caseDescription;
     }
 
-    public String[] getUsers() {
+    public List<String> getUsers() {
         return users;
     }
 
-    public void setUsers(String[] users) {
+    public void setUsers(List<String> users) {
         this.users = users;
     }
 
