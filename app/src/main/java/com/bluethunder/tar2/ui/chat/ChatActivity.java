@@ -5,7 +5,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,25 +27,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bluethunder.tar2.R;
 import com.bluethunder.tar2.SessionConstants;
+import com.bluethunder.tar2.cloud_db.FirestoreReferences;
+import com.bluethunder.tar2.cloud_db.StorageReferences;
 import com.bluethunder.tar2.ui.chat.adapter.ChatAdapter;
 import com.bluethunder.tar2.ui.chat.model.ChatHead;
 import com.bluethunder.tar2.ui.chat.model.Message;
-import com.bluethunder.tar2.utils.Enums;
+import com.bluethunder.tar2.ui.chat.model.MessageType;
+import com.bluethunder.tar2.ui.edit_case.model.CaseModel;
 import com.bluethunder.tar2.views.AudioRecordView;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.huawei.agconnect.auth.AGConnectAuth;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
@@ -58,10 +55,14 @@ import id.zelory.compressor.Compressor;
 
 public class ChatActivity extends AppCompatActivity implements AudioRecordView.RecordingListener {
 
-
+    public static final String USER_ID_EXTRA_KEY = "user_id_extra_key";
+    public static final String CASE_EXTRA_KEY = "case_extra_key";
+    public static final String CHAT_HEAD_EXTRA_KEY = "chat_head_extra_key";
+    private static final String TAG = "ChatActivity";
     public static boolean insideChat = false;
     private static String mFileName = null;
-    private final String TAG = "ChatActivity";
+    private CaseModel caseModel;
+    private ChatHead chatHead;
     private String token;
     private long startTimeRecording;
     private ChatAdapter adapter;
@@ -73,24 +74,28 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     private UCrop.Options options;
     private Bitmap thumbBitmap = null;
     private byte[] imageBytes;
-    // firebase
-    private FirebaseFirestore db;
-    private CollectionReference colRefMessages;
     private MediaRecorder mRecorder = null;
-    private MediaPlayer mPlayer = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        getCaseData();
+
         getTokenID();
 
         initToolbar();
         iniComponent();
-        initFireStore();
 
         getMessages();
+    }
+
+    private void getCaseData() {
+        Intent intent = getIntent();
+        caseModel = (CaseModel) intent.getSerializableExtra(CASE_EXTRA_KEY);
+        chatHead = (ChatHead) intent.getSerializableExtra(CHAT_HEAD_EXTRA_KEY);
     }
 
     public void getTokenID() {
@@ -125,12 +130,6 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     protected void onPause() {
         super.onPause();
         insideChat = false;
-    }
-
-    private void initFireStore() {
-        db = FirebaseFirestore.getInstance();
-        colRefMessages = db.collection(Enums.Messages.name());
-
     }
 
     public void initToolbar() {
@@ -197,9 +196,12 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
 
     private void getMessages() {
 
-        colRefMessages.document(AGConnectAuth.getInstance().getCurrentUser().getUid())
-                .collection(Enums.Messages.name())
-                .orderBy(Enums.date.name(), Query.Direction.ASCENDING).addSnapshotListener((snapshots, e) -> {
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreReferences.ChatHeadsCollection.value())
+                .document(chatHead.getId())
+                .collection(FirestoreReferences.MessagesCollection.value())
+                .orderBy(FirestoreReferences.LastMessageAtField.value(), Query.Direction.ASCENDING)
+                .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
                         Log.w(TAG, "listen:error", e);
                         return;
@@ -227,108 +229,57 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
 
     }
 
+    private String generateMessageID() {
+        return FirebaseFirestore.getInstance()
+                .collection(FirestoreReferences.ChatHeadsCollection.value())
+                .document(chatHead.getId())
+                .collection(FirestoreReferences.MessagesCollection.value())
+                .document().getId();
+    }
+
     private void sendTextMessage(String content) {
-        String headId = AGConnectAuth.getInstance().getCurrentUser().getUid();
-        String messageID = colRefMessages.document(headId).collection(Enums.Messages.name()).document().getId();
+        sendMessage(getNewMessage(MessageType.Text, content));
+        updateChatHead(content);
+        sendNotification(content);
+    }
 
-        Message message = new Message(
-                messageID,
-                Enums.Text.name(),
-                new Date(),
-                content,
-                Enums.USER.name(),
-                Enums.Text.name(),
-                Enums.Text.name(),
-                adapter.getItemCount() % 5 == 0
-        );
+    private void sendMessage(Message message) {
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreReferences.ChatHeadsCollection.value())
+                .document(chatHead.getId())
+                .collection(FirestoreReferences.MessagesCollection.value())
+                .document(message.getId())
+                .set(message)
+                .addOnCompleteListener((OnCompleteListener<Void>) task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "onComplete: success ");
+                    }
+                });
+    }
 
-        ChatHead chatHead = new ChatHead(
-                headId,
-                AGConnectAuth.getInstance().getCurrentUser().getUid(),
-                message,
-                SessionConstants.INSTANCE.getCurrentLoggedInUserModel().getName(),
-                new Date(),
-                token,
-                false
-        );
-
-        colRefMessages.document(headId)
-                .set(chatHead)
+    private void updateChatHead(String content) {
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreReferences.ChatHeadsCollection.value())
+                .document(chatHead.getId())
+                .update(
+                        FirestoreReferences.LastMessageField.value(), content,
+                        FirestoreReferences.LastMessageAtField.value(), new Date()
+                )
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "onComplete: success ");
                     }
                 });
-
-        colRefMessages.document(headId)
-                .collection(Enums.Messages.name())
-                .document(messageID)
-                .set(message)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: success ");
-                        }
-                    }
-                });
-
-        sendNotification(content);
-
     }
 
     private void sendRecordMessage(String recordUri) {
-
-        String headId = AGConnectAuth.getInstance().getCurrentUser().getUid();
-        String messageID = colRefMessages.document(headId).collection(Enums.Messages.name()).document().getId();
-
-        Message message = new Message(
-                messageID,
-                Enums.Records.name(),
-                new Date(),
-                Enums.Records.name(),
-                Enums.USER.name(),
-                Enums.Records.name(),
-                recordUri,
-                adapter.getItemCount() % 5 == 0
-        );
-
-        ChatHead chatHead = new ChatHead(
-                headId,
-                headId,
-                message,
-                SessionConstants.INSTANCE.getCurrentLoggedInUserModel().getName(),
-                new Date(),
-                token,
-                false
-        );
-        colRefMessages.document(headId)
-                .set(chatHead)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: success ");
-                        }
-                    }
-                });
-
-        colRefMessages.document(headId)
-                .collection(Enums.Messages.name())
-                .document(messageID)
-                .set(message)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "onComplete: success ");
-                    }
-                });
-
-        sendNotification(Enums.Records.name());
-
+        sendMessage(getNewMessage(MessageType.Records, recordUri));
+        updateChatHead(MessageType.Records.name());
+        sendNotification(MessageType.Records.name());
     }
 
     private void sendNotification(String content) {
-//        FirebaseFirestore.getInstance().collection(Enums.AdminTokens.name())
+//        FirebaseFirestore.getInstance().collection(MessageType.AdminTokens.name())
 //                .addSnapshotListener((snapshots, e) -> {
 //                    if (e != null) {
 //                        Log.w(TAG, "listen:error", e);
@@ -356,7 +307,7 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
 
         Log.d(TAG, "sendRecordMessage: try send ");
         final StorageReference thumbFilePathRef = FirebaseStorage.getInstance().getReference().
-                child(Enums.Records.name()).child(mFileName);
+                child(MessageType.Records.name()).child(mFileName);
 
         thumbFilePathRef.putFile(Uri.fromFile(new File(mFileName).getAbsoluteFile()))
                 .addOnSuccessListener(taskSnapshot -> thumbFilePathRef.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -398,85 +349,34 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     //upload thumb image
     private void uploadThumbImage(byte[] thumbByte) {
         final StorageReference thumbFilePathRef = FirebaseStorage.getInstance().getReference().
-                child(Enums.ChatImages.name()).child(System.currentTimeMillis() + ".jpg");
-        thumbFilePathRef.putBytes(thumbByte).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                thumbFilePathRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(final Uri thumbUri) {
-                        sendImageMessage(thumbUri);
-
-                    }
-                });
-            }
-        });
+                child(StorageReferences.ChatImagesFolder.value())
+                .child(System.currentTimeMillis() + ".jpg");
+        thumbFilePathRef.putBytes(thumbByte)
+                .addOnSuccessListener(taskSnapshot ->
+                        thumbFilePathRef.getDownloadUrl().addOnSuccessListener(thumbUri ->
+                                sendImageMessage(thumbUri)
+                        )
+                );
     }
 
     private void sendImageMessage(Uri uri) {
+        sendMessage(getNewMessage(MessageType.Image, uri.toString()));
+        updateChatHead(MessageType.Image.name());
+        sendNotification(MessageType.Image.name());
+    }
 
-        String headId = AGConnectAuth.getInstance().getCurrentUser().getUid();
-        String messageID = colRefMessages.document(headId).collection(Enums.Messages.name()).document().getId();
-
-        Message message = new Message(
-                messageID,
-                Enums.Image.name(),
+    @NonNull
+    private Message getNewMessage(MessageType type, String content) {
+        return new Message(
+                generateMessageID(),
+                type.name(),
                 new Date(),
-                Enums.Image.name(),
-                Enums.USER.name(),
-                uri.toString(),
-                Enums.Image.name(),
+                content,
+                SessionConstants.INSTANCE.getCurrentLoggedInUserModel().getId(),
+                content,
+                content,
                 adapter.getItemCount() % 5 == 0
         );
-
-
-        ChatHead chatHead = new ChatHead(
-                headId,
-                headId,
-                message,
-                SessionConstants.INSTANCE.getCurrentLoggedInUserModel().getName(),
-                new Date(),
-                token,
-                false
-        );
-
-        colRefMessages.document(headId)
-                .set(chatHead)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: success ");
-                        }
-                    }
-                });
-
-        colRefMessages.document(headId)
-                .set(message)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: success ");
-                        }
-                    }
-                });
-
-        colRefMessages.document(headId)
-                .collection(Enums.Messages.name())
-                .document(messageID)
-                .set(message)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: success ");
-                        }
-                    }
-                });
-
-        sendNotification(Enums.Image.name());
     }
 
     private void CropImage(Image image, Uri res_url) {

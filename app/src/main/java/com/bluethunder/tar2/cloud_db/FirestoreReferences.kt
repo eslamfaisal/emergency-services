@@ -7,6 +7,8 @@ enum class FirestoreReferences(val value: String) {
     CaseCategoriesCollection("case_categories"),
     CasesCollection("cases"),
     CommentsCollection("comments"),
+    ChatHeadsCollection("chat_heads"),
+    MessagesCollection("messages"),
     // endregion
 
     // region documents references
@@ -16,6 +18,8 @@ enum class FirestoreReferences(val value: String) {
     // region fields references
     CaseCategoryId("categoryId"),
     CreatedAtField("createdAt"),
+    LastMessageField("lastMessage"),
+    LastMessageAtField("lastMessageAt"),
     UserIdField("userId");
     // endregion
 

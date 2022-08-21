@@ -29,6 +29,8 @@ import com.bluethunder.tar2.ui.case_details.model.CommentModel
 import com.bluethunder.tar2.ui.case_details.model.CommentType
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.chat.ChatActivity
+import com.bluethunder.tar2.ui.chat.ChatActivity.*
+import com.bluethunder.tar2.ui.chat.model.ChatHead
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.addKeyboardToggleListener
@@ -101,9 +103,9 @@ class CaseDetailsActivity : AppCompatActivity() {
             tryOpenLocationOnMap()
         }
         binding.chatBtn.setOnClickListener {
-
             startActivity(Intent(this, ChatActivity::class.java).apply {
-//                putExtra(ChatActivity.EXTRA_CASE_ID, currentCase.id)
+                putExtra(CASE_EXTRA_KEY, currentCase)
+                putExtra(CHAT_HEAD_EXTRA_KEY, getChatHead())
             })
         }
 
@@ -117,6 +119,18 @@ class CaseDetailsActivity : AppCompatActivity() {
                 binding.sendCommentIv.visibility = View.GONE
             }
         }
+    }
+
+    private fun getChatHead(): ChatHead {
+        val chatHead = ChatHead()
+        chatHead.id = SessionConstants.currentLoggedInUserModel!!.id + currentCase.id!!
+        chatHead.caseTitle = currentCase.title
+        chatHead.caseDescription = currentCase.description
+        chatHead.caseImage = currentCase.mainImage
+        chatHead.caseUserId = currentCase.userId
+        chatHead.chatSenderId = SessionConstants.currentLoggedInUserModel!!.id
+        chatHead.users = arrayOf(SessionConstants.currentLoggedInUserModel!!.id, currentCase.id!!)
+        return chatHead
     }
 
     private fun checkMenuBtn() {
@@ -262,7 +276,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun startHuaweiAppGallery() {
-       val intent = Intent(
+        val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse("https://appgallery.huawei.com/app/C102457337")
         )

@@ -22,8 +22,6 @@ public class Message implements Serializable {
 
     private String recordUri;
 
-    private boolean read;
-
     private boolean showTime = true;
 
     public Message() {
@@ -42,14 +40,6 @@ public class Message implements Serializable {
         this.messageImage = messageImage;
         this.recordUri = recordUri;
         this.showTime = showTime;
-    }
-
-    public boolean isRead() {
-        return read;
-    }
-
-    public void setRead(boolean read) {
-        this.read = read;
     }
 
     public String getId() {
