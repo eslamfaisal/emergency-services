@@ -20,63 +20,72 @@ public final class UserModel implements Serializable {
 
     private String countryCode;
 
-    public UserModel() {
-    }
+    private int unReadChatCount = 0;
 
-    public void setId(String id) {
-        this.id = id;
+    public UserModel() {
     }
 
     public String getId() {
         return id;
     }
 
-    public void setPushToken(String pushToken) {
-        this.pushToken = pushToken;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPushToken() {
         return pushToken;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPushToken(String pushToken) {
+        this.pushToken = pushToken;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getCountryCode() {
         return countryCode;
     }
 
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public int getUnReadChatCount() {
+        return unReadChatCount;
+    }
+
+    public void setUnReadChatCount(int unReadChatCount) {
+        this.unReadChatCount = unReadChatCount;
+    }
 }

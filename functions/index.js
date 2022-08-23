@@ -82,26 +82,26 @@ exports.newMessageCound = functions.firestore
                 anotherUserId = users[1];
             }
             return updateUSerCount(anotherUserId, true).then(
-                (document) =>{
+                (document) => {
                     console.log("document updated succ");
                     return updateUSerCount(firstMessageSenderID, false).then(
-                        (document) =>{
+                        (document) => {
                             console.log("document updated succ");
                         }
                     );
                 }
             );
+        } else {
+            return db.collection("users").doc(lastMessageSenderID)
+                .get().then((document) => {
+                    const newCount = document.data().unReadChatCount += 1;
+                    return db.collection("users").doc(lastMessageSenderID)
+                        .update({"unReadChatCount": newCount})
+                        .then((ds) => {
+                            console.log("document updated succ");
+                        });
+                });
         }
 
-        db.collection("users").doc(firstMessageSenderID)
 
-        return db.collection("users").doc(lastMessageSenderID)
-            .get().then((document) => {
-                const newCount = document.data().unReadChatCount += 1;
-                db.collection("users").doc(lastMessageSenderID)
-                    .update({"unReadChatCount": newCount})
-                    .then((ds) => {
-                        console.log("document updated succ");
-                    });
-            });
     });
