@@ -21,7 +21,6 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Caption"
             app:subtitleTextColor="@color/grey_10"
-            app:title="Chat"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
             app:titleTextColor="@android:color/white" />
 
@@ -55,9 +54,7 @@
 
         </RelativeLayout>
 
-
     </LinearLayout>
-
 
     <com.bluethunder.tar2.views.AudioRecordView
         android:id="@+id/recordingView"

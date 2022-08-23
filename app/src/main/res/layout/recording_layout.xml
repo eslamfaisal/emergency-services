@@ -82,7 +82,10 @@
             android:id="@+id/imageAudio"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/record_audio_ic" />
+            android:background="@color/colorPrimaryDark"
+            android:padding="8dp"
+            android:src="@drawable/ic_mic"
+            app:tint="@color/colorWhite" />
 
     </androidx.cardview.widget.CardView>
 

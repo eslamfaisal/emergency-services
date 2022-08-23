@@ -135,16 +135,12 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     public void initToolbar() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 //        Tools.setSystemBarColorInt(this, Color.parseColor("#006ACF"));
+        toolbar.setTitle(chatHead.getCaseTitle());
     }
 
     public void iniComponent() {
