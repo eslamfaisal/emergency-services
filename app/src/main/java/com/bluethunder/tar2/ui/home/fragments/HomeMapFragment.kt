@@ -22,6 +22,7 @@ import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.databinding.FragmentHomeMapBinding
 import com.bluethunder.tar2.model.Status.SUCCESS
 import com.bluethunder.tar2.ui.MyLocationViewModel
+import com.bluethunder.tar2.ui.chat.ChatHeadsActivity
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
@@ -91,6 +92,15 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
 
                 }
             }
+        }
+
+        binding.messages.setOnClickListener {
+            requireActivity().startActivity(
+                Intent(
+                    requireActivity(),
+                    ChatHeadsActivity::class.java
+                )
+            )
         }
     }
 

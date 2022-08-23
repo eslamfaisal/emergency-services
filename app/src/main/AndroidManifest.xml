@@ -34,10 +34,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+
         <activity
+            android:screenOrientation="portrait"
+            android:name=".ui.chat.ChatHeadsActivity"
+            android:exported="false" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".ui.chat.ChatActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.case_details.CaseDetailsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
@@ -91,6 +98,7 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="appid=appid" />
