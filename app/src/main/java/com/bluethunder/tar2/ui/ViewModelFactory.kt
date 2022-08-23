@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
+import com.bluethunder.tar2.ui.chat.viewmodel.ChatHeadViewModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.*
 import com.bluethunder.tar2.ui.splash.viewmodel.SplashViewModel
@@ -48,6 +49,8 @@ class ViewModelFactory constructor(
                 MyLocationViewModel()
             isAssignableFrom(SplashViewModel::class.java) ->
                 SplashViewModel()
+            isAssignableFrom(ChatHeadViewModel::class.java) ->
+                ChatHeadViewModel()
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

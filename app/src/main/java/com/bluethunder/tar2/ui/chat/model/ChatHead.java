@@ -18,6 +18,7 @@ public class ChatHead implements Serializable {
     private String chatSenderId;
     private String caseImage;
     private String lastMessage;
+    private String lastMessageSenderID;
 
     public ChatHead() {
     }
@@ -34,6 +35,7 @@ public class ChatHead implements Serializable {
         this.caseUserId = caseUserId;
         this.chatSenderId = chatSenderId;
         this.lastMessage = lastMessage;
+        this.lastMessageSenderID = lastMessageSenderID;
     }
 
     public String getCaseImage() {
@@ -108,4 +110,11 @@ public class ChatHead implements Serializable {
         this.lastMessage = lastMessage;
     }
 
+    public String getLastMessageSenderID() {
+        return lastMessageSenderID;
+    }
+
+    public void setLastMessageSenderID(String lastMessageSenderID) {
+        this.lastMessageSenderID = lastMessageSenderID;
+    }
 }

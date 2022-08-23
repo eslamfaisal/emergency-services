@@ -45,7 +45,7 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
         super.onViewCreated(view, savedInstanceState)
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
-        this.setupRefreshLayout(binding.refreshLayout)
+        requireActivity().setupRefreshLayout(binding.refreshLayout)
         initViews()
         initViewModel()
     }

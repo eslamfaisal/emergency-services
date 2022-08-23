@@ -118,4 +118,5 @@
     <string name="get_direction">Get Directions</string>
     <string name="type_a_message">Type a message</string>
     <string name="slide_to_cancel">Slide to cancel</string>
+    <string name="chats">Chats</string>
 </resources>

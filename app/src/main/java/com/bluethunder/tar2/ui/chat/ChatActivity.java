@@ -248,6 +248,8 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     private void updateChatHead(String content) {
         chatHead.setLastMessage(content);
         chatHead.setLastMessageAt(new Date());
+        chatHead.setLastMessageSenderID(SessionConstants.INSTANCE
+                .getCurrentLoggedInUserModel().getId());
         FirebaseFirestore.getInstance()
                 .collection(FirestoreReferences.ChatHeadsCollection.value())
                 .document(chatHead.getId())

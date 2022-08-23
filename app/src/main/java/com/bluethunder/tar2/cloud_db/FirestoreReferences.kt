@@ -20,7 +20,8 @@ enum class FirestoreReferences(val value: String) {
     CreatedAtField("createdAt"),
     LastMessageField("lastMessage"),
     LastMessageAtField("lastMessageAt"),
-   DateField("date"),
+    DateField("date"),
+    UsersField("users"),
     UserIdField("userId");
     // endregion
 
