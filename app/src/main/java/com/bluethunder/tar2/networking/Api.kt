@@ -25,10 +25,10 @@ interface Api {
     ): Response<HMSAccessTokenResponse>
 
 
-    @FormUrlEncoded
-    @POST("v1/106842921/messages:send")
+    @POST("v1/106649263/messages:send")
     suspend fun sendNotification(
-      @Body body: NotificationRequestBody
+        @Header("Authorization") authorization: String,
+        @Body body: NotificationRequestBody
     ): Response<HMSAccessTokenResponse>
 
 

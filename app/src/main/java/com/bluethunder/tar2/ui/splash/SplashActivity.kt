@@ -72,11 +72,15 @@ class SplashActivity : AppCompatActivity() {
             )
             Log.d(TAG, "checkLogin: userId = ${currentLoggedInUserModel?.id}")
             openHomeActivity()
-            getDeepLink()
+            checkOpenFrom()
 
         } else {
             openAuthActivity()
         }
+    }
+
+    private fun checkOpenFrom() {
+        getDeepLink()
     }
 
     private fun openHomeActivity() {
@@ -84,7 +88,6 @@ class SplashActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-
     }
 
     private fun getDeepLink() {

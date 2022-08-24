@@ -15,7 +15,6 @@ import com.huawei.hms.common.ApiException
 import com.huawei.hms.push.HmsMessaging
 import com.huawei.hms.push.RemoteMessage
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
 
 class NotificationsViewModel(
@@ -94,30 +93,37 @@ class NotificationsViewModel(
         HmsMessaging.getInstance(context).send(message)
     }
 
-    fun getHMSAccessToken() {
+    fun getHMSAccessToken(isTopic: Boolean, sendTo: String, dataMap: String) {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.retrofitToken.gteHMSAccessToken()
-                if (response.isSuccessful) {
-                    Log.d(TAG, "getHMSAccessToken: ${response.body()!!.accessToken}")
+                val tokenResponse = RetrofitClient.retrofitToken.gteHMSAccessToken()
+                if (tokenResponse.isSuccessful) {
+                    Log.d(TAG, "getHMSAccessToken: ${tokenResponse.body()!!.accessToken}")
                     val body = NotificationRequestBody()
                     val messageBody = NotificationMessage()
-                    messageBody.token =
-                        arrayOf("IQAAAACy0ucvAACI-BCsgoO7NdDbolDSf4DD9noHLezwb2IiB7DCYwDE_gjR-rT4d54T0quz9Te_q3-X-ZtOVTUZ_zXtk6zx-zQ2um_ArOQghy0V-g").toMutableList()
-                    val dataMap = JSONObject()
-                    dataMap.put("case_id", "eslam")
-                    dataMap.put("user_id", "faisal")
-                    dataMap.put("title", "ali")
-                    dataMap.put("description", "emara")
-                    messageBody.data = dataMap.toString()
-                    
+
+                    if (isTopic)
+                        messageBody.topic = sendTo
+                    else
+                        messageBody.token = arrayOf(sendTo).toMutableList()
+
+                    messageBody.data = dataMap
                     body.message = messageBody
-                    val response = RetrofitClient.retrofitNotification.sendNotification(body)
-                    if(response.isSuccessful){
-                        Log.d(TAG, "getHMSAccessToken: ")
+
+                    val sendNotResponse = RetrofitClient.retrofitNotification.sendNotification(
+                        tokenResponse.body()!!.accessToken,
+                        body
+                    )
+                    if (sendNotResponse.isSuccessful) {
+                        Log.d(TAG, "retrofitNotification: ${sendNotResponse.body()}")
+                    } else {
+                        Log.d(TAG, "retrofitNotification: ${sendNotResponse.errorBody()}")
                     }
+                } else {
+                    Log.d(TAG, "getHMSAccessToken: ${tokenResponse.errorBody()}")
                 }
             } catch (e: Exception) {
+                Log.d(TAG, "getHMSAccessToken error: ${e.message}")
             }
         }
     }

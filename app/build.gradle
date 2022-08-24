@@ -12,7 +12,7 @@ plugins {
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/eslamfaisal/Desktop/Work/projects/android/tar2/key_store.jks')
+            storeFile file('D:\\Eslam Work\\programming projects\\android\\Tar2\\key_store.jks')
             storePassword '111111'
             keyAlias 'upload'
             keyPassword '111111'

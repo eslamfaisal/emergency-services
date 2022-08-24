@@ -1,9 +1,14 @@
 package com.bluethunder.tar2.model;
 
+import androidx.annotation.Keep;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NotificationRequestBody {
+import java.io.Serializable;
+
+@Keep
+public class NotificationRequestBody implements Serializable {
 
     @SerializedName("message")
     @Expose

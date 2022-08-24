@@ -1,12 +1,10 @@
 package com.bluethunder.tar2.ui.home
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +20,7 @@ import com.bluethunder.tar2.ui.home.fragments.MenuFragment
 import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -84,7 +83,12 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initViewModel() {
         notificationViewModel.getToken()
-        notificationViewModel.getHMSAccessToken()
+        val dataMap = JSONObject()
+        dataMap.put("case_id", "eslam")
+        dataMap.put("user_id", "faisal")
+        dataMap.put("title", "ali")
+        dataMap.put("description", "emara")
+        notificationViewModel.getHMSAccessToken(isTopic = true, sendTo = "all", dataMap.toString())
         // region tab layout
         viewModel.onSelectedTabIndex.observe(this) { position ->
             binding.homeTabViewPager.currentItem = position
