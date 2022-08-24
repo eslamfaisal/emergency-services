@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -23,11 +24,15 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.cloud_db.StorageReferences
+import com.bluethunder.tar2.model.NotificationType
+import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.chat.adapter.ChatAdapter
 import com.bluethunder.tar2.ui.chat.model.ChatHead
 import com.bluethunder.tar2.ui.chat.model.Message
 import com.bluethunder.tar2.ui.chat.model.MessageType
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
+import com.bluethunder.tar2.ui.extentions.getViewModelFactory
+import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
 import com.bluethunder.tar2.views.AudioRecordView
 import com.bluethunder.tar2.views.AudioRecordView.RecordingListener
 import com.esafirm.imagepicker.features.ImagePicker
@@ -39,6 +44,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.yalantis.ucrop.UCrop
 import id.zelory.compressor.Compressor
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
@@ -61,59 +67,30 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-        caseData
-        tokenID
+
+        caseData()
         initToolbar()
         iniComponent()
         getMessages()
     }
 
-    private val caseData: Unit
-        private get() {
-            val intent = intent
-            caseModel = intent.getSerializableExtra(CASE_EXTRA_KEY) as CaseModel?
-            chatHead = intent.getSerializableExtra(CHAT_HEAD_EXTRA_KEY) as ChatHead?
-        }
+    fun caseData() {
+        val intent = intent
+        caseModel = intent.getSerializableExtra(CASE_EXTRA_KEY) as CaseModel?
+        chatHead = intent.getSerializableExtra(CHAT_HEAD_EXTRA_KEY) as ChatHead?
+        getCaseUserData()
+    }
 
-    //        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                if (!task.isSuccessful()) {
-//                    //    Log.w(TAG, "getInstanceId failed", task.getException());
-//                    return;
-//                }
-//
-//                // Get new Instance ID token
-//                token = task.getResult().getToken();
-//
-//                // Log and toast
-//                //  String msg = getString(R.string.msg_token_fmt, token);
-//                // Log.d(TAG, msg);
-//                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                //   CommonUtil.showToast("current token is : " + token);
-//            }
-//        });
-    val tokenID: Unit
-        get() {
-//        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                if (!task.isSuccessful()) {
-//                    //    Log.w(TAG, "getInstanceId failed", task.getException());
-//                    return;
-//                }
-//
-//                // Get new Instance ID token
-//                token = task.getResult().getToken();
-//
-//                // Log and toast
-//                //  String msg = getString(R.string.msg_token_fmt, token);
-//                // Log.d(TAG, msg);
-//                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                //   CommonUtil.showToast("current token is : " + token);
-//            }
-//        });
-        }
+    var caseUserModel: UserModel? = null
+    private fun getCaseUserData() {
+        FirebaseFirestore.getInstance().collection(FirestoreReferences.UsersCollection.value)
+            .document(caseModel!!.userId!!)
+            .get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    caseUserModel = it.result!!.toObject(UserModel::class.java)
+                }
+            }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -221,11 +198,11 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
             .collection(FirestoreReferences.MessagesCollection.value())
             .document(message.id)
             .set(message)
-            .addOnCompleteListener({ task: Task<Void?> ->
+            .addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "onComplete: success ")
                 }
-            })
+            }
     }
 
     private fun updateChatHead(content: String) {
@@ -249,28 +226,22 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
         sendNotification(MessageType.Records.name)
     }
 
+    private val notificationViewModel by viewModels<NotificationsViewModel> { getViewModelFactory() }
     private fun sendNotification(content: String) {
-//        FirebaseFirestore.getInstance().collection(MessageType.AdminTokens.name())
-//                .addSnapshotListener((snapshots, e) -> {
-//                    if (e != null) {
-//                        Log.w(TAG, "listen:error", e);
-//                        return;
-//                    }
-//
-//                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
-//                        switch (dc.getType()) {
-//                            case ADDED:
-//                                Admin message = dc.getDocument().toObject(Admin.class);
-//                                SendNotification.sendWithOtherThread(message.getToken(), SessionConstants.INSTANCE.getCurrentLoggedInUserModel().getName(), content, null);
-//                                break;
-//                            case MODIFIED:
-//                                break;
-//                            case REMOVED:
-//                                break;
-//                        }
-//                    }
-//
-//                });
+        val dataMap = JSONObject()
+        dataMap.put("case_id", caseModel!!.id)
+        dataMap.put("title", caseModel!!.title)
+        dataMap.put("description", content)
+        dataMap.put("type", NotificationType.Chat)
+        caseUserModel?.let {
+            it.pushToken?.let {
+                notificationViewModel.getHMSAccessTokenAndSendNotification(
+                    isTopic = true,
+                    sendTo = it,
+                    dataMap.toString()
+                )
+            }
+        }
     }
 
     private fun sendRecordMessage() {

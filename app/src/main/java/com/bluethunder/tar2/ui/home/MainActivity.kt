@@ -83,12 +83,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initViewModel() {
         notificationViewModel.getToken()
-        val dataMap = JSONObject()
-        dataMap.put("case_id", "eslam")
-        dataMap.put("user_id", "faisal")
-        dataMap.put("title", "ali")
-        dataMap.put("description", "emara")
-        notificationViewModel.getHMSAccessToken(isTopic = true, sendTo = "all", dataMap.toString())
         // region tab layout
         viewModel.onSelectedTabIndex.observe(this) { position ->
             binding.homeTabViewPager.currentItem = position

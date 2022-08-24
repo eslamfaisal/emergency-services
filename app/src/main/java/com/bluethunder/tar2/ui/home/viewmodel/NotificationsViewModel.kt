@@ -93,7 +93,7 @@ class NotificationsViewModel(
         HmsMessaging.getInstance(context).send(message)
     }
 
-    fun getHMSAccessToken(isTopic: Boolean, sendTo: String, dataMap: String) {
+    fun getHMSAccessTokenAndSendNotification(isTopic: Boolean, sendTo: String, dataMap: String) {
         viewModelScope.launch {
             try {
                 val tokenResponse = RetrofitClient.retrofitToken.gteHMSAccessToken()
