@@ -75,6 +75,11 @@ class HmsPushService : HmsMessageService() {
             0,
             notificationBuilder.build()
         )
+        {
+            'case_id':'value1',
+            'user_id':'value2' ,
+            'user_id':'value2' ,
+        }
     }
 
 }
