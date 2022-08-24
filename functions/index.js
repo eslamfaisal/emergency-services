@@ -76,10 +76,10 @@ exports.newMessageCound = functions.firestore
 
         if (firstMessageSenderID === lastMessageSenderID) {
             let anotherUserId;
-            if (firstMessageSenderID === users[0]) {
-                anotherUserId = users[0];
+            if (users.indexOf(firstMessageSenderID) === 0) {
+                anotherUserId = users.at(1);
             } else {
-                anotherUserId = users[1];
+                anotherUserId = users.at(0);
             }
             return updateUSerCount(anotherUserId, true).then(
                 (document) => {
