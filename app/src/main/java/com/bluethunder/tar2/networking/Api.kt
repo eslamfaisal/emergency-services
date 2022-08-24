@@ -1,6 +1,7 @@
 package com.bluethunder.tar2.networking
 
 import com.bluethunder.tar2.model.HMSAccessTokenResponse
+import com.bluethunder.tar2.model.NotificationRequestBody
 import com.bluethunder.tar2.ui.case_details.model.LocationDistanceModel
 import com.bluethunder.tar2.ui.case_details.model.LocationDistanceRequestBody
 import retrofit2.Call
@@ -16,11 +17,18 @@ interface Api {
     ): Call<LocationDistanceModel>
 
     @FormUrlEncoded
-    @POST("v1/106842921/messages:send")
+    @POST("oauth2/v3/token")
     suspend fun gteHMSAccessToken(
         @Field("grant_type") body: String = "client_credentials",
         @Field("client_id") clientID: String = "106649263",
         @Field("client_secret") clientSecret: String = "d32aff21440d2832fd15c1622ebfaf90fa3f4243b66f58d0836d85b50d1bfdfb",
+    ): Response<HMSAccessTokenResponse>
+
+
+    @FormUrlEncoded
+    @POST("v1/106842921/messages:send")
+    suspend fun sendNotification(
+      @Body body: NotificationRequestBody
     ): Response<HMSAccessTokenResponse>
 
 

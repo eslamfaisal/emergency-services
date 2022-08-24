@@ -63,23 +63,19 @@ class HmsPushService : HmsMessageService() {
             NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_huawie_logo)
                 .setColor(ContextCompat.getColor(context, R.color.dark_red))
-                .setContentTitle(data.getString("param1"))
+                .setContentTitle(data.getString("title"))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(pendingIntent)
-        notificationBuilder.setContentText(data.getString("param2"))
+        notificationBuilder.setContentText(data.getString("description"))
         notificationManager.notify(
             System.currentTimeMillis().toString(),
             0,
             notificationBuilder.build()
         )
-        {
-            'case_id':'value1',
-            'user_id':'value2' ,
-            'user_id':'value2' ,
-        }
+
     }
 
 }

@@ -6,7 +6,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bluethunder.tar2.SessionConstants
-import com.bluethunder.tar2.model.HMSAccessTokenResponse
+import com.bluethunder.tar2.model.NotificationMessage
+import com.bluethunder.tar2.model.NotificationRequestBody
 import com.bluethunder.tar2.networking.RetrofitClient
 import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.hms.aaid.HmsInstanceId
@@ -14,6 +15,7 @@ import com.huawei.hms.common.ApiException
 import com.huawei.hms.push.HmsMessaging
 import com.huawei.hms.push.RemoteMessage
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 
 class NotificationsViewModel(
@@ -96,10 +98,27 @@ class NotificationsViewModel(
         viewModelScope.launch {
             try {
                 val response = RetrofitClient.retrofitToken.gteHMSAccessToken()
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     Log.d(TAG, "getHMSAccessToken: ${response.body()!!.accessToken}")
+                    val body = NotificationRequestBody()
+                    val messageBody = NotificationMessage()
+                    messageBody.token =
+                        arrayOf("IQAAAACy0ucvAACI-BCsgoO7NdDbolDSf4DD9noHLezwb2IiB7DCYwDE_gjR-rT4d54T0quz9Te_q3-X-ZtOVTUZ_zXtk6zx-zQ2um_ArOQghy0V-g").toMutableList()
+                    val dataMap = JSONObject()
+                    dataMap.put("case_id", "eslam")
+                    dataMap.put("user_id", "faisal")
+                    dataMap.put("title", "ali")
+                    dataMap.put("description", "emara")
+                    messageBody.data = dataMap.toString()
+                    
+                    body.message = messageBody
+                    val response = RetrofitClient.retrofitNotification.sendNotification(body)
+                    if(response.isSuccessful){
+                        Log.d(TAG, "getHMSAccessToken: ")
+                    }
                 }
-            }catch (e: Exception){}
+            } catch (e: Exception) {
+            }
         }
     }
 }
