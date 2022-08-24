@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initViewModel() {
         notificationViewModel.getToken()
+        notificationViewModel.getHMSAccessToken()
         // region tab layout
         viewModel.onSelectedTabIndex.observe(this) { position ->
             binding.homeTabViewPager.currentItem = position

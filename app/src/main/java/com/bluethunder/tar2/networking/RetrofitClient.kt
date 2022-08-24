@@ -9,7 +9,10 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASE_URL = "https://mapapi.cloud.huawei.com/"
+    private const val MAP_BASE_URL = "https://mapapi.cloud.huawei.com/"
+    private const val NTIFICATIONS_BASE_URL = "https://push-api.cloud.huawei.com/"
+    private const val HMS_TOKEN_BASE_URL = "https://oauth-login.cloud.huawei.com/"
+
     private const val TIME_OUT: Long = 120
 
     private val gson = GsonBuilder().setLenient().create()
@@ -23,10 +26,27 @@ object RetrofitClient {
             }.intercept(it)
         }.build()
 
-    val retrofit: Api by lazy {
+    val retrofitMap: Api by lazy {
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl(BASE_URL)
+            .baseUrl(MAP_BASE_URL)
+            .client(okHttpClient)
+            .build().create(Api::class.java)
+    }
+
+    val retrofitNotification: Api by lazy {
+        Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .baseUrl(NTIFICATIONS_BASE_URL)
+            .client(okHttpClient)
+            .build().create(Api::class.java)
+    }
+
+
+    val retrofitToken: Api by lazy {
+        Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .baseUrl(HMS_TOKEN_BASE_URL)
             .client(okHttpClient)
             .build().create(Api::class.java)
     }
