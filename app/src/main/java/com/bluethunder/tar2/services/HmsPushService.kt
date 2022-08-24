@@ -26,9 +26,9 @@ class HmsPushService : HmsMessageService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "onMessageReceived: remoteMessage: $remoteMessage")
+        Log.d(TAG, "onMessageReceived: remoteMessage: ${remoteMessage.data}")
 
-//        sendNotification(this, remoteMessage.data)
+        sendNotification(this, JSONObject(remoteMessage.data))
     }
 
     /**
@@ -38,7 +38,7 @@ class HmsPushService : HmsMessageService() {
      */
     @Throws(JSONException::class)
     fun sendNotification(context: Context, sendBird: JSONObject) {
-
+//
 //        val message = sendBird.getString(StringSet.message)
 //        val channel = sendBird.getJSONObject(StringSet.channel)
 //        val channelUrl = channel.getString(StringSet.channel_url)
