@@ -113,7 +113,7 @@ class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapt
                 lng = longitude,
             )
         )
-        RetrofitClient.retrofit.getCaseDistance(body)
+        RetrofitClient.retrofitMap.getCaseDistance(body)
             .enqueue(object : Callback<LocationDistanceModel> {
                 override fun onResponse(
                     call: Call<LocationDistanceModel>,

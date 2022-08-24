@@ -4,11 +4,16 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.bluethunder.tar2.SessionConstants
+import com.bluethunder.tar2.model.HMSAccessTokenResponse
+import com.bluethunder.tar2.networking.RetrofitClient
 import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.push.HmsMessaging
 import com.huawei.hms.push.RemoteMessage
+import kotlinx.coroutines.launch
 
 
 class NotificationsViewModel(
@@ -45,6 +50,7 @@ class NotificationsViewModel(
 
     private fun sendRegTokenToServer(token: String?) {
         token?.let {
+            Log.d(TAG, "sendRegTokenToServer: token = $token")
             updateUserToken(token)
             sbscribeTopic()
         }
@@ -62,7 +68,8 @@ class NotificationsViewModel(
 
     fun updateUserToken(token: String) {
         FirebaseFirestore.getInstance().collection("users")
-            .document("user1").update("pushToken", token)
+            .document(SessionConstants.currentLoggedInUserModel!!.id!!)
+            .update("pushToken", token)
             .addOnCompleteListener {
                 Log.i(TAG, "update token success")
             }
@@ -83,5 +90,16 @@ class NotificationsViewModel(
 
         val message: RemoteMessage = builder.build()
         HmsMessaging.getInstance(context).send(message)
+    }
+
+    fun getHMSAccessToken() {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.retrofitToken.gteHMSAccessToken()
+                if(response.isSuccessful){
+                    Log.d(TAG, "getHMSAccessToken: ${response.body()!!.accessToken}")
+                }
+            }catch (e: Exception){}
+        }
     }
 }
