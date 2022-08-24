@@ -19,8 +19,8 @@ interface Api {
     @POST("v1/106842921/messages:send")
     suspend fun gteHMSAccessToken(
         @Field("grant_type") body: String = "client_credentials",
-        @Field("client_id") clientID: String = "106842921",
-        @Field("client_secret") clientSecret: String = "5645b7ce975ca21ecac374256356b8a330bce83048fce100c99cc23dd77f551a",
+        @Field("client_id") clientID: String = "106649263",
+        @Field("client_secret") clientSecret: String = "d32aff21440d2832fd15c1622ebfaf90fa3f4243b66f58d0836d85b50d1bfdfb",
     ): Response<HMSAccessTokenResponse>
 
 
