@@ -81,6 +81,15 @@ class SplashActivity : AppCompatActivity() {
 
     private fun checkOpenFrom() {
         getDeepLink()
+        checkNotificationIntent()
+    }
+
+    private fun checkNotificationIntent() {
+        val casId = intent.getStringExtra("case_id")
+        Log.d(TAG, "checkNotificationIntent:case_id =  ${casId}")
+        casId?.let {
+            viewModel.getCaseDetailsAndOpenIt(this, it)
+        }
     }
 
     private fun openHomeActivity() {

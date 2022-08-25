@@ -15,6 +15,7 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.home.MainActivity
+import com.bluethunder.tar2.ui.splash.SplashActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.google.gson.Gson
@@ -50,35 +51,40 @@ class HmsPushService : HmsMessageService() {
         val dataModel = Gson().fromJson(data, NotificationDataModel::class.java)
         if (currentLoggedInUserModel.id == dataModel.userId) return
 
-
         val notificationManager =
             context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val CHANNEL_ID: String = "StringSet.CHANNEL_ID"
+
+        val CHANNEL_ID = dataModel.type
         if (Build.VERSION.SDK_INT >= 26) {  // Build.VERSION_CODES.O
             val mChannel = NotificationChannel(
                 CHANNEL_ID,
-                "StringSet.CHANNEL_NAME",
+                CHANNEL_ID,
                 NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(mChannel)
         }
-        val intent = Intent(context, MainActivity::class.java)
-//        intent.putExtra(Constants.CHANNEL_URL, channelUrl)
-        intent.flags =
-            Intent.FLAG_ACTIVITY_CLEAR_TASK
-        val pendingIntent =
-            PendingIntent.getActivity(context, 0 /* Request code */, intent, 0)
+
+        val notifyIntent = Intent(this, SplashActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("case_id", dataModel.caseId)
+        }
+
+        val notifyPendingIntent = PendingIntent.getActivity(
+            this, 0, notifyIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_huawie_logo)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setColor(ContextCompat.getColor(context, R.color.dark_red))
                 .setContentTitle(dataModel.title)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(notifyPendingIntent)
         notificationBuilder.setContentText(dataModel.description)
         notificationManager.notify(
             System.currentTimeMillis().toString(),

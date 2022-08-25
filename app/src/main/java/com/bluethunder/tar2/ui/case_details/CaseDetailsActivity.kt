@@ -21,7 +21,9 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.SessionConstants.myCurrentLocation
 import com.bluethunder.tar2.databinding.ActivityCaseDetailsBinding
+import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.model.Status.*
+import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.MyLocationViewModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
@@ -29,7 +31,6 @@ import com.bluethunder.tar2.ui.case_details.model.CommentModel
 import com.bluethunder.tar2.ui.case_details.model.CommentType
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.chat.ChatActivity
-import com.bluethunder.tar2.ui.chat.ChatActivity.*
 import com.bluethunder.tar2.ui.chat.ChatActivity.Companion.CASE_EXTRA_KEY
 import com.bluethunder.tar2.ui.chat.ChatActivity.Companion.CHAT_HEAD_EXTRA_KEY
 import com.bluethunder.tar2.ui.chat.model.ChatHead
@@ -41,10 +42,12 @@ import com.bluethunder.tar2.ui.extentions.hideKeyboard
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
 import com.bluethunder.tar2.ui.home.model.CaseStatus
+import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
 import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import com.huawei.agconnect.applinking.AppLinking
 import com.huawei.agconnect.applinking.ShortAppLinking
 import com.huawei.hms.maps.common.util.DistanceCalculator
@@ -55,6 +58,7 @@ import java.util.*
 
 class CaseDetailsActivity : AppCompatActivity() {
 
+    private val notificationViewModel by viewModels<NotificationsViewModel> { getViewModelFactory() }
     private val myLocationViewModel by viewModels<MyLocationViewModel> { getViewModelFactory() }
     private val viewModel by viewModels<CaseDetailsViewModel> { getViewModelFactory() }
     private lateinit var binding: ActivityCaseDetailsBinding
@@ -131,7 +135,10 @@ class CaseDetailsActivity : AppCompatActivity() {
         chatHead.caseImage = currentCase.mainImage
         chatHead.caseUserId = currentCase.userId
         chatHead.chatSenderId = SessionConstants.currentLoggedInUserModel!!.id
-        chatHead.users = arrayOf(SessionConstants.currentLoggedInUserModel!!.id, currentCase.id!!).toMutableList()
+        chatHead.users = arrayOf(
+            SessionConstants.currentLoggedInUserModel!!.id,
+            currentCase.id!!
+        ).toMutableList()
         return chatHead
     }
 
@@ -246,6 +253,26 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     private fun sendUpVote() {
         viewModel.sendUpVote(currentCase.id!!)
+        currentCaseUserDetails?.let {
+            sendUpVoteNotification()
+        }
+    }
+
+    private fun sendUpVoteNotification() {
+        if (currentCaseUserDetails == null) return
+        val data = NotificationDataModel(
+            SessionConstants.currentLoggedInUserModel!!.id!!,
+            currentCase.id,
+            currentCase.title,
+            "${SessionConstants.currentLoggedInUserModel!!.name} Send you New UpVote",
+            NotificationType.UpVote.name
+        )
+        val jsonString = Gson().toJson(data)
+        notificationViewModel.getHMSAccessTokenAndSendNotification(
+            isTopic = false,
+            sendTo = currentCaseUserDetails!!.pushToken,
+            jsonString
+        )
     }
 
     private fun tryOpenLocationOnMap() {
@@ -309,7 +336,26 @@ class CaseDetailsActivity : AppCompatActivity() {
         commentModel.userId = SessionConstants.currentLoggedInUserModel!!.id
         commentModel.userName = SessionConstants.currentLoggedInUserModel!!.name
         viewModel.sendComment(currentCase.id!!, commentModel)
+
+        sendCommentNotification(binding.commentsEt.text.toString())
         binding.commentsEt.setText("")
+    }
+
+    private fun sendCommentNotification(comment: String) {
+        if (currentCaseUserDetails == null) return
+        val data = NotificationDataModel(
+            SessionConstants.currentLoggedInUserModel!!.id!!,
+            currentCase.id,
+            currentCase.title,
+            comment,
+            NotificationType.Comment.name
+        )
+        val jsonString = Gson().toJson(data)
+        notificationViewModel.getHMSAccessTokenAndSendNotification(
+            isTopic = false,
+            sendTo = currentCaseUserDetails!!.pushToken,
+            jsonString
+        )
     }
 
     private fun initViewModel() {
