@@ -168,7 +168,6 @@ class LoginFragment : Fragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
-                    Log.d(TAG, "initViewModel: ${resource.data!!.user.phone}")
                     viewModel.getUserDetails(resource.data!!)
                     progressDialog.dismiss()
                 }
@@ -192,7 +191,6 @@ class LoginFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     parsingError(resource.errorBody.toString())
-                    Log.d(TAG, "initViewModel: ${resource.errorBody}")
                     progressDialog.dismiss()
                 }
                 else -> {}

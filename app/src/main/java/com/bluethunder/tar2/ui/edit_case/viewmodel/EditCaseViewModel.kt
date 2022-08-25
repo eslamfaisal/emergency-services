@@ -146,7 +146,7 @@ class EditCaseViewModel : ViewModel() {
         try {
             val geocoder = Geocoder(activity, Locale.getDefault())
             val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-            if (addresses.isNotEmpty()) {
+            if (addresses!!.isNotEmpty()) {
                 val address = addresses[0]
                 val case = currentCaseModel.value!!
                 case.locationName = address.getAddressLine(0)

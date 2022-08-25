@@ -80,12 +80,18 @@ class AuthViewModel : ViewModel() {
             .document(it.user.uid).get()
             .addOnSuccessListener {
                 try {
-                    val user: UserModel = it.toObject(UserModel::class.java)!!
-                    setUserData(Resource.success(user))
+                    if (it.exists()) {
+                        val user: UserModel = it.toObject(UserModel::class.java)!!
+                        setUserData(Resource.success(user))
+                    } else {
+                        setUserData(Resource.error("User not found"))
+                    }
                 } catch (e: Exception) {
+                    Log.d(TAG, "getUserDetails:ins ${e}")
                     setUserData(Resource.error(e.message))
                 }
             }.addOnFailureListener {
+                Log.d(TAG, "getUserDetails: ${it}")
                 setUserData(Resource.error(it.message))
             }
     }
@@ -249,11 +255,15 @@ class AuthViewModel : ViewModel() {
     }
 
     fun signInWithHuaweiId(activity: Activity) {
+        AGConnectAuth.getInstance().signOut()
         setSignInWithHuaweiIdResponse(Resource.loading())
         AGConnectAuth.getInstance().signIn(activity, AGConnectAuthCredential.HMS_Provider)
             .addOnSuccessListener {
+                Log.d(TAG, "signInWithHuaweiId: success ${it.user.uid}")
                 setSignInWithHuaweiIdResponse(Resource.success(it))
             }.addOnFailureListener {
+                Log.d(TAG, "signInWithHuaweiId:da ${it.message}")
+                Log.d(TAG, "signInWithHuaweiId:fa ${it.localizedMessage}")
                 setSignInWithHuaweiIdResponse(Resource.error(it.message))
             }
     }

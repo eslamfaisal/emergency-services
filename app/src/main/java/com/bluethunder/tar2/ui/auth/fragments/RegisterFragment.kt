@@ -120,6 +120,7 @@ class RegisterFragment : BaseFragment() {
                 }
                 Status.ERROR -> {
                     progressDialog.dismiss()
+                    Log.d(TAG, "signInWithHuaweiId: ${resource.errorBody.toString()}")
                     binding.createWithHuaweiIdBtn.showSnakeBarError(resource.errorBody.toString())
                 }
                 else -> {}
