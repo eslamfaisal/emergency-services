@@ -1,4 +1,4 @@
-package com.bluethunder.tar2.model;
+package com.bluethunder.tar2.model.notifications;
 
 import androidx.annotation.Keep;
 

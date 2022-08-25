@@ -1,7 +1,7 @@
 package com.bluethunder.tar2.networking
 
-import com.bluethunder.tar2.model.HMSAccessTokenResponse
-import com.bluethunder.tar2.model.NotificationRequestBody
+import com.bluethunder.tar2.model.notifications.HMSAccessTokenResponse
+import com.bluethunder.tar2.model.notifications.NotificationRequestBody
 import com.bluethunder.tar2.ui.case_details.model.LocationDistanceModel
 import com.bluethunder.tar2.ui.case_details.model.LocationDistanceRequestBody
 import retrofit2.Call

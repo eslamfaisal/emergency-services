@@ -25,6 +25,7 @@ import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.cloud_db.StorageReferences
 import com.bluethunder.tar2.model.NotificationType
+import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.chat.adapter.ChatAdapter
 import com.bluethunder.tar2.ui.chat.model.ChatHead
@@ -42,6 +43,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.google.gson.Gson
 import com.yalantis.ucrop.UCrop
 import id.zelory.compressor.Compressor
 import org.json.JSONObject
@@ -105,7 +107,7 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
     fun initToolbar() {
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener(View.OnClickListener { v: View? -> onBackPressed() })
+        toolbar.setNavigationOnClickListener { onBackPressed() }
         actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
         actionBar!!.setHomeButtonEnabled(true)
@@ -228,17 +230,21 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
 
     private val notificationViewModel by viewModels<NotificationsViewModel> { getViewModelFactory() }
     private fun sendNotification(content: String) {
-        val dataMap = JSONObject()
-        dataMap.put("case_id", caseModel!!.id)
-        dataMap.put("title", caseModel!!.title)
-        dataMap.put("description", content)
-        dataMap.put("type", NotificationType.Chat)
+
+        val data = NotificationDataModel(
+            currentLoggedInUserModel!!.id!!,
+            caseModel!!.id,
+            caseModel!!.title,
+            content,
+            NotificationType.Chat.name
+        )
+        val jsonString = Gson().toJson(data)
         caseUserModel?.let {
             it.pushToken?.let {
                 notificationViewModel.getHMSAccessTokenAndSendNotification(
                     isTopic = true,
                     sendTo = it,
-                    dataMap.toString()
+                    jsonString
                 )
             }
         }

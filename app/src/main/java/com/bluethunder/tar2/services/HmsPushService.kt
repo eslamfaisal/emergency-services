@@ -12,11 +12,15 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.model.notifications.NotificationDataModel
+import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.home.MainActivity
+import com.bluethunder.tar2.utils.SharedHelper
+import com.bluethunder.tar2.utils.SharedHelperKeys
+import com.google.gson.Gson
 import com.huawei.hms.push.HmsMessageService
 import com.huawei.hms.push.RemoteMessage
 import org.json.JSONException
-import org.json.JSONObject
 
 
 class HmsPushService : HmsMessageService() {
@@ -30,7 +34,7 @@ class HmsPushService : HmsMessageService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "onMessageReceived: remoteMessage: ${remoteMessage.data}")
 
-        sendNotification(this, JSONObject(remoteMessage.data))
+        sendNotification(this, (remoteMessage.data))
     }
 
     /**
@@ -39,7 +43,13 @@ class HmsPushService : HmsMessageService() {
      * @param sendBird JSONObject payload from FCM
      */
     @Throws(JSONException::class)
-    fun sendNotification(context: Context, data: JSONObject) {
+    fun sendNotification(context: Context, data: String) {
+        val currentLoggedInUserModel = Gson().fromJson(
+            SharedHelper.getString(this, SharedHelperKeys.USER_DATA), UserModel::class.java
+        )
+        val dataModel = Gson().fromJson(data, NotificationDataModel::class.java)
+        if (currentLoggedInUserModel.id == dataModel.userId) return
+
 
         val notificationManager =
             context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -63,13 +73,13 @@ class HmsPushService : HmsMessageService() {
             NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_huawie_logo)
                 .setColor(ContextCompat.getColor(context, R.color.dark_red))
-                .setContentTitle(data.getString("title"))
+                .setContentTitle(dataModel.title)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(pendingIntent)
-        notificationBuilder.setContentText(data.getString("description"))
+        notificationBuilder.setContentText(dataModel.description)
         notificationManager.notify(
             System.currentTimeMillis().toString(),
             0,

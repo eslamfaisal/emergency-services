@@ -6,8 +6,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bluethunder.tar2.SessionConstants
-import com.bluethunder.tar2.model.NotificationMessage
-import com.bluethunder.tar2.model.NotificationRequestBody
+import com.bluethunder.tar2.model.notifications.NotificationMessage
+import com.bluethunder.tar2.model.notifications.NotificationRequestBody
 import com.bluethunder.tar2.networking.RetrofitClient
 import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.hms.aaid.HmsInstanceId
@@ -99,8 +99,10 @@ class NotificationsViewModel(
                 val tokenResponse = RetrofitClient.retrofitToken.gteHMSAccessToken()
                 if (tokenResponse.isSuccessful) {
                     Log.d(TAG, "getHMSAccessToken: ${tokenResponse.body()!!.accessToken}")
-                    val body = NotificationRequestBody()
-                    val messageBody = NotificationMessage()
+                    val body =
+                        NotificationRequestBody()
+                    val messageBody =
+                        NotificationMessage()
 
                     if (isTopic)
                         messageBody.topic = sendTo

@@ -14,23 +14,31 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.SessionConstants.currentLanguage
 import com.bluethunder.tar2.databinding.FragmentCaseDetailsBinding
+import com.bluethunder.tar2.model.NotificationTopic
+import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.model.Status
+import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
+import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
+import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 
 
 class CaseDetailsFragment : BaseFragment() {
-
+    private val notificationViewModel by viewModels<NotificationsViewModel> { getViewModelFactory() }
     private lateinit var binding: FragmentCaseDetailsBinding
     lateinit var viewModel: EditCaseViewModel
     lateinit var progressDialog: Dialog
@@ -175,6 +183,7 @@ class CaseDetailsFragment : BaseFragment() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
+                    sendNotifdications()
                     Toast.makeText(
                         requireContext(),
                         if (viewModel.isNewCase) getString(R.string.case_created_succ_msg)
@@ -191,6 +200,23 @@ class CaseDetailsFragment : BaseFragment() {
                 }
                 else -> {}
             }
+        }
+    }
+
+    private fun sendNotifdications() {
+        if (viewModel.isNewCase) {
+            val data = NotificationDataModel(
+                SessionConstants.currentLoggedInUserModel!!.id!!,
+                viewModel.currentCaseModel.value!!.id,
+                viewModel.currentCaseModel.value!!.title,
+                viewModel.currentCaseModel.value!!.description,
+                NotificationType.NewCase.name
+            )
+            notificationViewModel.getHMSAccessTokenAndSendNotification(
+                true,
+                NotificationTopic.all.name,
+                Gson().toJson(data)
+            )
         }
     }
 

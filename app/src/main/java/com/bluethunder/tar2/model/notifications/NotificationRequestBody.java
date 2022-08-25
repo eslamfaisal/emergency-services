@@ -1,7 +1,8 @@
-package com.bluethunder.tar2.model;
+package com.bluethunder.tar2.model.notifications;
 
 import androidx.annotation.Keep;
 
+import com.bluethunder.tar2.model.notifications.NotificationMessage;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
