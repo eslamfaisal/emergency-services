@@ -27,22 +27,20 @@
             android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+            android:paddingTop="4dp"
             android:paddingBottom="4dp">
 
             <ImageView
                 android:id="@+id/messages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_home_messages" />
+                android:src="@drawable/ic_home_messages"
+                android:visibility="gone" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:src="@drawable/ic_home_logo" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

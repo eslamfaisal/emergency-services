@@ -38,7 +38,8 @@
                 android:id="@+id/messages"
                 style="@style/RippleStyleWhite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -74,6 +75,7 @@
 
             <com.balysv.materialripple.MaterialRippleLayout
                 style="@style/RippleStyleWhite"
+                android:id="@+id/about_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -113,6 +115,7 @@
 
             <com.balysv.materialripple.MaterialRippleLayout
                 style="@style/RippleStyleWhite"
+                android:id="@+id/contact_us"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -151,6 +154,7 @@
 
             <com.balysv.materialripple.MaterialRippleLayout
                 style="@style/RippleStyleWhite"
+                android:id="@+id/privacy_policy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -190,7 +194,8 @@
             <com.balysv.materialripple.MaterialRippleLayout
                 style="@style/RippleStyleWhite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -227,6 +232,7 @@
 
             <com.balysv.materialripple.MaterialRippleLayout
                 style="@style/RippleStyleWhite"
+                android:id="@+id/share_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -265,11 +271,11 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/logout_tv"
-                android:padding="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="50dp"
+                android:padding="16dp"
                 android:text="@string/logout"
                 android:textColor="@color/dark_red"
                 android:textSize="24sp" />

@@ -154,6 +154,7 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/case_user_view"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -574,6 +575,7 @@ I made an accident in the road, so I need help as soon as possible" />
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/case_published"
                         android:layout_width="wrap_content"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginEnd="8dp"

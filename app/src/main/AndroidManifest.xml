@@ -82,6 +82,9 @@
                 <data
                     android:host="tar2.xyz"
                     android:scheme="https" />
+                <data
+                    android:host="appgallery.huawei.com"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity

@@ -13,18 +13,18 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
             android:id="@+id/currentLanguage"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:padding="8dp"
-            android:textSize="@dimen/header_text_size"
             android:text="@string/current_language"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
+            android:textSize="@dimen/header_text_size"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <fragment
-            android:layout_marginTop="-14dp"
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
