@@ -127,7 +127,9 @@ class EditCaseViewModel : ViewModel() {
 
                             val case = currentCaseModel.value!!
                             case.latitude = it.latitude.toString()
+                            case.lat = it.latitude
                             case.longitude = it.longitude.toString()
+                            case.lng = it.longitude
                             setCurrentCase(case)
 
                             setLastLocationValue(Resource.success(it))

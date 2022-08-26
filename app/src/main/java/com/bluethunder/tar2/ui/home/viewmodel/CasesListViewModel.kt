@@ -70,10 +70,10 @@ class CasesListViewModel : ViewModel() {
         setCasesValue(Resource.loading())
         var query: Query =
             FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
-                .whereNotEqualTo(
-                    FirestoreReferences.UserIdField.value(),
-                    currentLoggedInUserModel!!.id
-                )
+//                .whereNotEqualTo(
+//                    FirestoreReferences.UserIdField.value(),
+//                    currentLoggedInUserModel!!.id
+//                )
 
         if (category.reference != "ALL")
             query = query.whereEqualTo(FirestoreReferences.CaseCategoryId.value(), category.id)
