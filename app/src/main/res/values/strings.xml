@@ -129,4 +129,7 @@ Users can filter the cases by type
 Users will get a new message or comment on their cases.
 
 Users can control their cases by deleting them or making them rescued.</string>
+    <string name="delete_case">Delete case</string>
+    <string name="report_case">Report case</string>
+    <string name="report_msg">Case reported successfully.</string>
 </resources>

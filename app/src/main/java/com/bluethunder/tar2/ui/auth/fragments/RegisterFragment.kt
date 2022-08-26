@@ -370,7 +370,7 @@ class RegisterFragment : BaseFragment() {
     }
 
     private fun showTermsAndConditions() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/eslamfaisal/tar2-privacy-policy/blob/main/README.md")))
     }
 
     override fun onDestroy() {

@@ -9,7 +9,6 @@ import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 
 class MyCasesViewModel : ViewModel() {
@@ -32,25 +31,30 @@ class MyCasesViewModel : ViewModel() {
 
     fun getMyCases() {
         setCasesValue(Resource.loading())
+
         FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
             .whereEqualTo(FirestoreReferences.UserIdField.value(), currentLoggedInUserModel!!.id)
-            .get().addOnSuccessListener { querySnapShot ->
-                try {
-                    val myCasesList = ArrayList<CaseModel>()
-                    querySnapShot.documents.forEach { document ->
-                        myCasesList.add(document.toObject(CaseModel::class.java)!!)
-                    }
-                    Log.d(TAG, "getMyCases: size  ${myCasesList.size}")
-                    myCasesList.sortByDescending { it.createdAt }
-                    setCasesValue(Resource.success(myCasesList))
-                } catch (e: Exception) {
-                    Log.d(TAG, "getMyCases: exception $e")
-                    setCasesValue(Resource.error(e.message!!))
-                }
-            }.addOnFailureListener {
+            .addSnapshotListener { querySnapShot, error ->
 
-                Log.d(TAG, "getMyCases: exception ${it.message!!}")
-                setCasesValue(Resource.error(it.message!!))
+                if (error != null) {
+                    Log.d(TAG, "getMyCases: exception ${error.message!!}")
+                    setCasesValue(Resource.error(error.message!!))
+                } else {
+                    querySnapShot?.let {
+                        val myCasesList = ArrayList<CaseModel>()
+                        querySnapShot.documentChanges.forEach { document ->
+                            try {
+                                myCasesList.add(document.document.toObject(CaseModel::class.java))
+                            } catch (e: Exception) {
+                                Log.d(TAG, "getMyCases: exception $e")
+                                setCasesValue(Resource.error(e.message!!))
+                            }
+                        }
+                        Log.d(TAG, "getMyCases: size  ${myCasesList.size}")
+                        myCasesList.sortByDescending { it.createdAt }
+                        setCasesValue(Resource.success(myCasesList))
+                    }
+                }
             }
     }
 

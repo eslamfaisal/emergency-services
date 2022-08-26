@@ -225,5 +225,23 @@ class CaseDetailsViewModel : ViewModel() {
         _caseLocationDistance.value = value
     }
 
+    fun deleteCase() {
+        FirebaseFirestore.getInstance().collection("cases")
+            .document(currentCaseDetails.value!!.id!!).delete().addOnCompleteListener {
+                Log.d(TAG, "deleteCase: ")
+            }
+    }
+
+    fun reportCase() {
+        FirebaseFirestore.getInstance().collection("cases")
+            .document(currentCaseDetails.value!!.id!!)
+            .set(
+                mapOf(
+                    "caseID" to currentCaseDetails.value!!.id!!,
+                    "userId" to SessionConstants.currentLoggedInUserModel!!.id!!
+                )
+            ).addOnCompleteListener { }
+    }
+
 
 }

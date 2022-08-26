@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -143,17 +144,8 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun checkMenuBtn() {
-        if (myCase) {
-            binding.menuImage.setImageDrawable(resources.getDrawable(R.drawable.ic_more))
-        } else {
-            binding.menuImage.setImageDrawable(resources.getDrawable(R.drawable.ic_share_case))
-        }
         binding.menuBtn.setOnClickListener {
-            if (myCase) {
-                showMenuPopup(it)
-            } else {
-                createAppLinking()
-            }
+            showMenuPopup(it)
         }
 
     }
@@ -173,6 +165,14 @@ class CaseDetailsActivity : AppCompatActivity() {
                 .invoke(menuHelper, true)
         } catch (e: java.lang.Exception) {
         }
+
+        if (!myCase) {
+            popup.menu.findItem(R.id.delete_case).isEnabled = false
+            popup.menu.findItem(R.id.edit_case).isEnabled = false
+        } else {
+            popup.menu.findItem(R.id.report_case).isEnabled = false
+        }
+
         popup.setOnMenuItemClickListener { item ->
             when (item!!.itemId) {
                 R.id.share_case -> {
@@ -181,11 +181,29 @@ class CaseDetailsActivity : AppCompatActivity() {
                 R.id.edit_case -> {
                     editCase()
                 }
+                R.id.delete_case -> {
+                    deletedCase()
+                }
+                R.id.delete_case -> {
+                    reportCase()
+                }
             }
             true
         }
 
         popup.show()
+    }
+
+    private fun reportCase() {
+        viewModel.reportCase()
+        Toast.makeText(this, getString(R.string.report_msg), Toast.LENGTH_LONG).show()
+    }
+
+    private fun deletedCase() {
+        viewModel.deleteCase()
+        onBackPressedDispatcher.addCallback(this) {
+            finish()
+        }
     }
 
     private fun editCase() {

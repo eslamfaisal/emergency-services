@@ -12,4 +12,14 @@
         android:title="@string/edit_case"
         android:icon="@drawable/ic_edit">
     </item>
+
+    <item android:id="@+id/delete_case"
+        android:title="@string/delete_case"
+        android:icon="@drawable/ic_delete">
+    </item>
+
+    <item android:id="@+id/report_case"
+        android:title="@string/report_case"
+        android:icon="@drawable/ic_report">
+    </item>
 </menu>

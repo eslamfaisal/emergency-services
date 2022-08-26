@@ -130,4 +130,7 @@
 سيتلقى المستخدمون رسالة جديدة أو تعليقًا على حالاتهم.
 
 يمكن للمستخدمين التحكم في حالاتهم عن طريق حذفها أو إنقاذها.</string>
+    <string name="delete_case">Delete case</string>
+    <string name="report_case">Report case</string>
+    <string name="report_msg">Case reported successfully.</string>
 </resources>
