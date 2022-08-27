@@ -1,18 +1,13 @@
 package com.bluethunder.tar2.ui.home.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
-import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.launch
 
 
 class MapScreenViewModel : ViewModel() {
@@ -29,7 +24,7 @@ class MapScreenViewModel : ViewModel() {
         setCasesValue(Resource.loading())
         val query: Query =
             FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
-                .whereEqualTo(FirestoreReferences.IsDeletedField.value(), false)
+                .whereEqualTo(FirestoreReferences.CaseDeletedField.value(), false)
 
         query.addSnapshotListener { querySnapShot, error ->
             try {

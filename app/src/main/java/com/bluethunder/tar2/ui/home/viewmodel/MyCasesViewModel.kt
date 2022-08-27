@@ -43,7 +43,7 @@ class MyCasesViewModel : ViewModel() {
                     FirestoreReferences.UserIdField.value(),
                     currentLoggedInUserModel!!.id
                 )
-                .whereEqualTo(FirestoreReferences.IsDeletedField.value(), false)
+                .whereEqualTo(FirestoreReferences.CaseDeletedField.value(), false)
 
         query.addSnapshotListener { querySnapShot, error ->
             try {
@@ -68,7 +68,7 @@ class MyCasesViewModel : ViewModel() {
             casesList.add(document.document.toObject(CaseModel::class.java))
         }
         setAddedCasesValue(Resource.success(casesList))
-        setDeletedCasesValue(Resource.success(casesList.filter { it.isDeleted }.toMutableList()))
+        setDeletedCasesValue(Resource.success(casesList.filter { it.caseDeleted }.toMutableList()))
     }
 
     private fun handleDeletedList(querySnapShot: QuerySnapshot?) {

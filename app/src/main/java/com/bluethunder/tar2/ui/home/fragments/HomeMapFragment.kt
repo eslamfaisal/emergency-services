@@ -129,7 +129,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                             val case = document.document.toObject(CaseModel::class.java)
                             if (document.type == DocumentChange.Type.ADDED) {
                                 casesList.remove(case)
-                                if (case.isDeleted) {
+                                if (case.caseDeleted) {
                                     removeMarkerFromMap(case)
                                 } else {
                                     addMArkerToMAp(case)

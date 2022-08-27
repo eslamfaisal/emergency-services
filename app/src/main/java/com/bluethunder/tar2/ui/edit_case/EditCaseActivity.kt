@@ -46,6 +46,8 @@ class EditCaseActivity : AppCompatActivity() {
             mCurrentCase.userId = currentLoggedInUserModel!!.id
             mCurrentCase.userName = currentLoggedInUserModel!!.name
             mCurrentCase.userImage = currentLoggedInUserModel!!.imageUrl
+            mCurrentCase.countryCode = currentLoggedInUserModel!!.countryCode
+            mCurrentCase.caseDeleted = false
         } else {
             mCurrentCase = intent.getSerializableExtra(EXTRA_CASE) as CaseModel
         }
