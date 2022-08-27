@@ -19,19 +19,19 @@ android {
             v2SigningEnabled true
         }
     }
-    compileSdkVersion 33
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.bluethunder.tar2"
         minSdkVersion 21
-        targetSdkVersion 33
-        versionCode 3
-        versionName "0.0.3"
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
-        resConfigs 'en', 'US', 'ar'
+        resConfigs "en", "US", "ar"
     }
 
     buildTypes {

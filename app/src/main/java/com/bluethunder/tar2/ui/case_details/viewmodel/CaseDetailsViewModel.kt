@@ -238,7 +238,7 @@ class CaseDetailsViewModel : ViewModel() {
     }
 
     fun reportCase() {
-        FirebaseFirestore.getInstance().collection("cases")
+        FirebaseFirestore.getInstance().collection("reports")
             .document(currentCaseDetails.value!!.id!!)
             .set(
                 mapOf(
