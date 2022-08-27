@@ -239,7 +239,7 @@ class CaseDetailsViewModel : ViewModel() {
 
     fun reportCase() {
         FirebaseFirestore.getInstance().collection("reports")
-            .document(currentCaseDetails.value!!.id!!)
+            .document()
             .set(
                 mapOf(
                     "caseId" to currentCaseDetails.value!!.id!!,
