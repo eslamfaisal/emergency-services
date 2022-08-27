@@ -154,7 +154,6 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/case_user_view"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
@@ -221,6 +220,7 @@
 
                             <com.google.android.material.card.MaterialCardView
                                 android:id="@+id/chat_btn"
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
