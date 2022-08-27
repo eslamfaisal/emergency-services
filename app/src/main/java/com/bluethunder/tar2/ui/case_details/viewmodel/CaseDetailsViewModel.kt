@@ -242,7 +242,7 @@ class CaseDetailsViewModel : ViewModel() {
             .document(currentCaseDetails.value!!.id!!)
             .set(
                 mapOf(
-                    "caseID" to currentCaseDetails.value!!.id!!,
+                    "caseId" to currentCaseDetails.value!!.id!!,
                     "userId" to SessionConstants.currentLoggedInUserModel!!.id!!
                 )
             ).addOnCompleteListener { }
