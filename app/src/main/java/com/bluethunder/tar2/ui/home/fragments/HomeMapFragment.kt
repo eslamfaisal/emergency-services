@@ -51,7 +51,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var hmap: HuaweiMap
     private var mMarkers: MutableList<Marker> = ArrayList()
-    private var mCircle: Circle? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
