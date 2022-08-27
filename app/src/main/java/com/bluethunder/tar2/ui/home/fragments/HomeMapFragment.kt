@@ -50,7 +50,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentHomeMapBinding
 
     private lateinit var hmap: HuaweiMap
-    private var mMarker: Marker? = null
+    private var mMarkers: MutableList<Marker> = ArrayList()
     private var mCircle: Circle? = null
 
     override fun onCreateView(
@@ -125,15 +125,22 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             when (resources.status) {
                 SUCCESS -> {
                     resources.data!!.forEach { document ->
-                        if (document.type == DocumentChange.Type.ADDED) {
-                            try {
-                                val case = document.document.toObject(CaseModel::class.java)
-                                addMArkerToMAp(case)
+                        try {
+                            val case = document.document.toObject(CaseModel::class.java)
+                            if (document.type == DocumentChange.Type.ADDED) {
                                 casesList.remove(case)
-                                casesList.add(case)
-                            } catch (e: Exception) {
-                                Log.d(TAG, "listenToCases: ${e.message}")
+                                if (case.isDeleted) {
+                                    removeMarkerFromMap(case)
+                                } else {
+                                    addMArkerToMAp(case)
+                                    casesList.add(case)
+                                }
+                            } else if (document.type == DocumentChange.Type.REMOVED) {
+                                removeMarkerFromMap(case)
+                                casesList.remove(case)
                             }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "listenToCases: ${e.message}")
                         }
                     }
                     binding.progressBar.visibility = View.GONE
@@ -251,6 +258,16 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         hmap.setInfoWindowAdapter(customInfoWindow)
         val marker = hmap.addMarker(options)
         marker.tag = case
+        marker.title = case.id
+        mMarkers.add(marker)
+    }
+
+    private fun removeMarkerFromMap(case: CaseModel) {
+        try {
+            val marker = mMarkers.filter { it.title == case.id }.first()
+            marker.remove()
+        } catch (e: Exception) {
+        }
 
     }
 

@@ -200,6 +200,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun deletedCase() {
+        Log.d(TAG, "deletedCase: try")
         viewModel.deleteCase()
         finish()
     }
