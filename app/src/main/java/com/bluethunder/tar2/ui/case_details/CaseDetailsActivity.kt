@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -276,7 +275,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun sendUpVoteNotification() {
-        if (currentCaseUserDetails == null) return
+        if (currentCaseUserDetails == null || currentCaseUserDetails!!.pushToken == null) return
         val data = NotificationDataModel(
             SessionConstants.currentLoggedInUserModel!!.id!!,
             currentCase.id,
@@ -359,7 +358,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun sendCommentNotification(comment: String) {
-        if (currentCaseUserDetails == null) return
+        if (currentCaseUserDetails == null || currentCaseUserDetails!!.pushToken == null) return
         val data = NotificationDataModel(
             SessionConstants.currentLoggedInUserModel!!.id!!,
             currentCase.id,

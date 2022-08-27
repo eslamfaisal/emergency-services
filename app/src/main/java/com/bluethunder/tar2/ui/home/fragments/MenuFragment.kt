@@ -22,8 +22,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.huawei.agconnect.applinking.AppLinking
-import com.huawei.agconnect.applinking.ShortAppLinking
 import com.huawei.agconnect.auth.AGConnectAuth
 
 class MenuFragment : Fragment() {
@@ -52,18 +50,9 @@ class MenuFragment : Fragment() {
     private fun initViews() {
         progressDialog = requireActivity().showLoadingDialog()
         binding.usernameTv.text = SessionConstants.currentLoggedInUserModel!!.name
-        val circularProgressDrawable = CircularProgressDrawable(requireActivity())
-        circularProgressDrawable.strokeWidth = 5f
-        circularProgressDrawable.centerRadius = 30f
-        circularProgressDrawable.start()
-        Glide.with(this)
-            .asBitmap()
-            .load(SessionConstants.currentLoggedInUserModel!!.imageUrl)
-            .optionalTransform(CircleCrop())
-            .placeholder(circularProgressDrawable)
-            .apply(RequestOptions().override(200, 200))
-            .into(binding.profileImage)
-
+        SessionConstants.currentLoggedInUserModel!!.imageUrl?.let {
+            setUserImage(it)
+        }
 
         binding.logoutTv.paintFlags = binding.logoutTv.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.logoutTv.setOnClickListener {
@@ -91,8 +80,22 @@ class MenuFragment : Fragment() {
         }
     }
 
+    private fun setUserImage(it: String) {
+        val circularProgressDrawable = CircularProgressDrawable(requireActivity())
+        circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.centerRadius = 30f
+        circularProgressDrawable.start()
+        Glide.with(this)
+            .asBitmap()
+            .load(it)
+            .optionalTransform(CircleCrop())
+            .placeholder(circularProgressDrawable)
+            .apply(RequestOptions().override(200, 200))
+            .into(binding.profileImage)
+    }
+
     private fun showAboutApp() {
-        MaterialAlertDialogBuilder(requireActivity(),)
+        MaterialAlertDialogBuilder(requireActivity())
             .setTitle(resources.getString(R.string.about_app))
             .setMessage(resources.getString(R.string.about_app_description))
             .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->

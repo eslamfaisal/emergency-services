@@ -50,10 +50,14 @@ class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapt
             mInfoView.findViewById<TextView>(R.id.username_tv).text = caseModel.userName
             mInfoView.findViewById<TextView>(R.id.infoTile).text = caseModel.title
             mInfoView.findViewById<TextView>(R.id.infoAddress).text = caseModel.description
-            setUserImage(
-                mInfoView.findViewById(R.id.profile_image),
-                caseModel.userImage!!
-            )
+
+            caseModel.userImage?.let {
+                setUserImage(
+                    mInfoView.findViewById(R.id.profile_image),
+                    it
+                )
+            }
+
             getCaseLocationDistance(
                 mInfoView.findViewById(R.id.distance_progress_bar),
                 mInfoView.findViewById(R.id.distance_tv),
@@ -73,7 +77,7 @@ class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapt
             }
 
         } catch (e: Exception) {
-            Log.d(TAG, "getInfoWindow: ${e.message}")
+            Log.d(TAG, "getInfoWindow: error ${e.message}")
         }
         return mInfoView
     }
