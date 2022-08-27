@@ -241,6 +241,9 @@ class CaseDetailsActivity : AppCompatActivity() {
             binding.caseDescriptionTv.text = it.toString()
         }
 
+        if(currentCase.caseDeleted){
+            finish()
+        }
     }
 
     private fun setupCaseStatus() {
