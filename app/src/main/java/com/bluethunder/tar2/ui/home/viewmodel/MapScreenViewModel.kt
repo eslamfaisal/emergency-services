@@ -29,6 +29,7 @@ class MapScreenViewModel : ViewModel() {
         setCasesValue(Resource.loading())
         val query: Query =
             FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
+                .whereEqualTo(FirestoreReferences.IsDeletedField.value(), false)
 
         query.addSnapshotListener { querySnapShot, error ->
             try {

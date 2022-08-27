@@ -167,10 +167,10 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
 
         if (!myCase) {
-            popup.menu.findItem(R.id.delete_case).isEnabled = false
-            popup.menu.findItem(R.id.edit_case).isEnabled = false
+            popup.menu.findItem(R.id.delete_case).isVisible = false
+            popup.menu.findItem(R.id.edit_case).isVisible = false
         } else {
-            popup.menu.findItem(R.id.report_case).isEnabled = false
+            popup.menu.findItem(R.id.report_case).isVisible = false
         }
 
         popup.setOnMenuItemClickListener { item ->
@@ -184,7 +184,7 @@ class CaseDetailsActivity : AppCompatActivity() {
                 R.id.delete_case -> {
                     deletedCase()
                 }
-                R.id.delete_case -> {
+                R.id.report_case -> {
                     reportCase()
                 }
             }
@@ -195,15 +195,13 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun reportCase() {
-        viewModel.reportCase()
         Toast.makeText(this, getString(R.string.report_msg), Toast.LENGTH_LONG).show()
+        viewModel.reportCase()
     }
 
     private fun deletedCase() {
         viewModel.deleteCase()
-        onBackPressedDispatcher.addCallback(this) {
-            finish()
-        }
+        finish()
     }
 
     private fun editCase() {

@@ -108,6 +108,11 @@ class MyCasesAdapter(
         notifyDataSetChanged()
     }
 
+    fun addDeleteData(data: MutableList<CaseModel>) {
+        this.myCases.removeAll(data)
+        notifyDataSetChanged()
+    }
+
     fun clearData() {
         this.myCases.clear()
         notifyDataSetChanged()

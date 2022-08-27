@@ -227,7 +227,11 @@ class CaseDetailsViewModel : ViewModel() {
 
     fun deleteCase() {
         FirebaseFirestore.getInstance().collection("cases")
-            .document(currentCaseDetails.value!!.id!!).delete().addOnCompleteListener {
+            .document(currentCaseDetails.value!!.id!!).update(
+                mapOf(
+                    FirestoreReferences.IsDeletedField.value() to false
+                )
+            ).addOnCompleteListener {
                 Log.d(TAG, "deleteCase: ")
             }
     }

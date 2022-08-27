@@ -96,6 +96,11 @@ class CasesListAdapter(
         notifyDataSetChanged()
     }
 
+    fun addDeleteData(data: MutableList<CaseModel>) {
+        this.myCases.removeAll(data)
+        notifyDataSetChanged()
+    }
+
     interface CasesListInteractions {
         fun onCaseClicked(caseModel: CaseModel)
     }

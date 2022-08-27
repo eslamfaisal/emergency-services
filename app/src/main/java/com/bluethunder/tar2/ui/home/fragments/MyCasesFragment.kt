@@ -52,7 +52,7 @@ class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
     private fun initViewModel() {
         Log.d(TAG, "initViewModel: get my cases")
         viewModel.getMyCases()
-        viewModel.myCases.observe(viewLifecycleOwner) { resource ->
+        viewModel.addedCasesList.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
                 Status.SUCCESS -> {
                     hideProgress()
@@ -69,6 +69,15 @@ class MyCasesFragment : BaseFragment(), MyCasesAdapter.MyCasesInteractions {
                     hideProgress()
                     myCasesAdapter.clearData()
                 }
+            }
+        }
+
+        viewModel.deletedCases.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    myCasesAdapter.addDeleteData(resource.data!!)
+                }
+                else -> {}
             }
         }
     }

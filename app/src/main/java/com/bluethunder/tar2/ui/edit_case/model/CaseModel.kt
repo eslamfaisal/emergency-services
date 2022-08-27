@@ -23,6 +23,7 @@ class CaseModel : Serializable {
     var hasPhoneCall = true
     var hasOnlineCall = true
     var hasVideoCall = true
+    var isDeleted = false
     var locationName: String? = null
     var address: String? = null
     var countryCode: String? = null
@@ -50,6 +51,7 @@ class CaseModel : Serializable {
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
                 ", showUserData=" + showUserData +
+                ", isDeleted=" + isDeleted +
                 ", hasPhoneCall=" + hasPhoneCall +
                 ", hasChatMessages=" + hasChatMessages +
                 ", hasOnlineCall='" + hasOnlineCall + '\'' +
@@ -89,6 +91,7 @@ class CaseModel : Serializable {
         result = 31 * result + hasChatMessages.hashCode()
         result = 31 * result + hasPhoneCall.hashCode()
         result = 31 * result + hasOnlineCall.hashCode()
+        result = 31 * result + isDeleted.hashCode()
         result = 31 * result + hasVideoCall.hashCode()
         result = 31 * result + (locationName?.hashCode() ?: 0)
         result = 31 * result + (address?.hashCode() ?: 0)
