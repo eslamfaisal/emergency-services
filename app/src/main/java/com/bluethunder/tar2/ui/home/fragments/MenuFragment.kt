@@ -53,7 +53,7 @@ class MenuFragment : Fragment() {
         SessionConstants.currentLoggedInUserModel!!.imageUrl?.let {
             setUserImage(it)
         }
-
+                                                                                                                                                       
         binding.logoutTv.paintFlags = binding.logoutTv.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.logoutTv.setOnClickListener {
             SessionConstants.currentLoggedInUserModel = null

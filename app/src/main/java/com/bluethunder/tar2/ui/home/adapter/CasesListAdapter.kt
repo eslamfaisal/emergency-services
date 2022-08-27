@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.CasesListItemBinding
 import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.utils.TimeAgo
@@ -60,6 +61,7 @@ class CasesListAdapter(
 
         Glide.with(holder.bindingView.mainImageView.context)
             .load(myCases[holder.absoluteAdapterPosition].mainImage)
+            .error(holder.bindingView.mainImageView.context.resources.getDrawable(R.drawable.ic_place_holder))
             .placeholder(circularProgressDrawable)
             .into(holder.bindingView.mainImageView)
 
@@ -67,6 +69,7 @@ class CasesListAdapter(
             .load(myCases[holder.absoluteAdapterPosition].userImage)
             .placeholder(circularProgressDrawable)
             .optionalTransform(CircleCrop())
+            .error(holder.bindingView.mainImageView.context.resources.getDrawable(R.drawable.ic_small_profile_image_place_holder))
             .into(holder.bindingView.profileImage)
 
         holder.bindingView.root.setOnClickListener {

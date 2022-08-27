@@ -74,6 +74,7 @@ class MyCasesAdapter(
             .placeholder(circularProgressDrawable)
             .load(myCases[holder.absoluteAdapterPosition].mainImage)
             .override(200, 200)
+            .error(holder.bindingView.mainImageView.context.resources.getDrawable(R.drawable.ic_place_holder))
             .into(holder.bindingView.mainImageView)
 
         holder.bindingView.root.setOnClickListener {
