@@ -111,14 +111,14 @@
     <string name="accept">قبول</string>
     <string name="permission_required">الإذن مطلوب</string>
     <string name="share_case">مشاركه الحالة</string>
-    <string name="downlad_map_app">Download maps app</string>
-    <string name="open_on_web">Open on web</string>
-    <string name="edit_case">Edit Case</string>
-    <string name="case_updated_successfully">Case updated successfully</string>
-    <string name="get_direction">Get Directions</string>
-    <string name="type_a_message">Type a message</string>
-    <string name="slide_to_cancel">Slide to cancel</string>
-    <string name="chats">Chats</string>
+    <string name="downlad_map_app">تنزيل تطبيق الخرائط</string>
+    <string name="open_on_web">افتح فى المتصفح</string>
+    <string name="edit_case">تعديل الحالة</string>
+    <string name="case_updated_successfully">تم تحديث الحالة بنجاح</string>
+    <string name="get_direction">احصل على الاتجاهات</string>
+    <string name="type_a_message">اكتب رسالة</string>
+    <string name="slide_to_cancel">حرك للإلغاء</string>
+    <string name="chats">الدردشات</string>
     <string name="about_app_description">تطبيق (طارئ - Tar2) هو تطبيق اجتماعي يتيح للمستخدمين في حالة الحاجة إلى المساعدة نشر حالتهم مع الوصف والصور وموقع الحالة لجعل جميع المستخدمين في نطاق الحالة يعرفون أن هناك شخصًا ما من يحتاج إلى مساعدتهم.
 
 من خلال إطلاق الحالة ، فإن (Tar2 - طارئ) سوف يرسل إشعارًا إلى جميع المستخدمين في نطاق الحالة ، الذي حدده المستخدم مسبقًا ، مع تفاصيل الحالة.
@@ -130,7 +130,7 @@
 سيتلقى المستخدمون رسالة جديدة أو تعليقًا على حالاتهم.
 
 يمكن للمستخدمين التحكم في حالاتهم عن طريق حذفها أو إنقاذها.</string>
-    <string name="delete_case">Delete case</string>
-    <string name="report_case">Report case</string>
-    <string name="report_msg">Case reported successfully.</string>
+    <string name="delete_case">حذف الحالة</string>
+    <string name="report_case">الإبلاغ عن حالة</string>
+    <string name="report_msg">تم الإبلاغ عن الحالة بنجاح.</string>
 </resources>

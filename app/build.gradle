@@ -25,13 +25,12 @@ android {
         applicationId "com.bluethunder.tar2"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "0.0.4"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
-        resConfigs "en", "US", "ar"
     }
 
     buildTypes {
