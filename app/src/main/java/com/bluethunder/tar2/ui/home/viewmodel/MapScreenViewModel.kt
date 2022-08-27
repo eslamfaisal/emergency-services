@@ -8,6 +8,7 @@ import com.bluethunder.tar2.model.Resource
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.launch
 
 
 class MapScreenViewModel : ViewModel() {

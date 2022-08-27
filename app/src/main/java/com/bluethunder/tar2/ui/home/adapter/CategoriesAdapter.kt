@@ -97,6 +97,7 @@ class CategoriesAdapter(
     }
 
     fun addNewData(list: MutableList<CaseCategoryModel>) {
+        selectedIndex = 0
         this.categoriesList.addAll(list)
         notifyDataSetChanged()
     }
