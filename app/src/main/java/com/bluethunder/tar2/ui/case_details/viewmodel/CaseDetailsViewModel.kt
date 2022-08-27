@@ -245,7 +245,9 @@ class CaseDetailsViewModel : ViewModel() {
                     "caseId" to currentCaseDetails.value!!.id!!,
                     "userId" to SessionConstants.currentLoggedInUserModel!!.id!!
                 )
-            ).addOnCompleteListener { }
+            ).addOnCompleteListener {
+                Log.d(TAG, "reportCase: reported")
+            }
     }
 
 
