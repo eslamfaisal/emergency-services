@@ -12,9 +12,9 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
-import com.bluethunder.tar2.ui.home.MainActivity
 import com.bluethunder.tar2.ui.splash.SplashActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
@@ -49,7 +49,8 @@ class HmsPushService : HmsMessageService() {
             SharedHelper.getString(this, SharedHelperKeys.USER_DATA), UserModel::class.java
         )
         val dataModel = Gson().fromJson(data, NotificationDataModel::class.java)
-        if (currentLoggedInUserModel.id == dataModel.userId) return
+        if (currentLoggedInUserModel.id == dataModel.userId &&
+            dataModel.type == NotificationType.NewCase.name) return
 
         val notificationManager =
             context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
