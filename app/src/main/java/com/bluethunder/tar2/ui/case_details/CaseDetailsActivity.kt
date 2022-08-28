@@ -178,7 +178,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener { item ->
             when (item!!.itemId) {
                 R.id.case_qr -> {
-                    createAppLinking(false)
+                    generateQRCode(currentCase.id!!)
                 }
                 R.id.share_case -> {
                     createAppLinking(true)

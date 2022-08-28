@@ -5,12 +5,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -28,7 +30,8 @@ import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.CustomInfoWindowAdapter
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
-import com.bluethunder.tar2.ui.scan.DefinedActivity
+import com.bluethunder.tar2.ui.scan.ScanCaseActivity
+import com.bluethunder.tar2.ui.scan.ScanCaseActivity.Companion.SCAN_RESULT
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.firebase.geofire.GeoFireUtils
@@ -42,6 +45,7 @@ import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapsInitializer
 import com.huawei.hms.maps.OnMapReadyCallback
 import com.huawei.hms.maps.model.*
+import com.huawei.hms.ml.scan.HmsScan
 
 
 class HomeMapFragment : Fragment(), OnMapReadyCallback {
@@ -75,10 +79,52 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             requestLocationPermissions()
         }
 
-        binding.logo.setOnClickListener {
-            requireActivity().startActivity(Intent(requireActivity(), DefinedActivity::class.java))
+        binding.qrScanner.setOnClickListener {
+            requestCameraPermission()
         }
         initViewModel()
+    }
+
+    private val requestMultiplePermissions = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        repeat(permissions.entries.size) {
+            startQrForResult()
+        }
+    }
+
+    private val someActivityResultLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                try {
+                    val data: Intent? = result.data
+                    val obj: HmsScan = data!!.getParcelableExtra(SCAN_RESULT)!!
+                    Log.d(TAG, "scan result : ${obj.showResult}")
+                    viewModel.getCaseDetailsAndOpenIt(requireActivity(), obj.showResult)
+                } catch (e: Exception) {}
+            }
+        }
+
+    @Throws(Exception::class)
+    private fun launchCaseDetails(url: String) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        startActivity(i)
+    }
+
+
+    private fun startQrForResult() {
+        someActivityResultLauncher.launch(Intent(requireActivity(), ScanCaseActivity::class.java))
+    }
+
+    private fun requestCameraPermission() {
+        requestMultiplePermissions.launch(
+            arrayOf(
+                Manifest.permission.CAMERA,
+            )
+        )
     }
 
     private fun initViewModel() {

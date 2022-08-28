@@ -13,15 +13,13 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bluethunder.tar2.R
-import com.huawei.hms.hmsscankit.OnLightVisibleCallBack
-import com.huawei.hms.hmsscankit.OnResultCallback
 import com.huawei.hms.hmsscankit.RemoteView
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import java.io.IOException
 
-class DefinedActivity : Activity() {
+class ScanCaseActivity : Activity() {
     var frameLayout: FrameLayout? = null
     var remoteView: RemoteView? = null
     var backBtn: ImageView? = null
@@ -31,8 +29,8 @@ class DefinedActivity : Activity() {
     var mScreenWidth = 0
     var mScreenHeight = 0
 
-    val SCAN_FRAME_SIZE = 240
-    val img = intArrayOf(R.drawable.flashlight_on, R.drawable.flashlight_off)
+    private val SCAN_FRAME_SIZE = 240
+    private val img = intArrayOf(R.drawable.flashlight_on, R.drawable.flashlight_off)
 
     companion object {
         const val SCAN_RESULT = "scanResult"
@@ -77,11 +75,11 @@ class DefinedActivity : Activity() {
         // When the light is dim, this API is called back to display the flashlight switch.
         // When the light is dim, this API is called back to display the flashlight switch.
         flushBtn = findViewById(R.id.flush_btn)
-        remoteView?.setOnLightVisibleCallback(OnLightVisibleCallBack { visible ->
+        remoteView?.setOnLightVisibleCallback { visible ->
             if (visible) {
                 flushBtn?.visibility = View.VISIBLE
             }
-        })
+        }
         // Subscribe to the scanning result callback event.
         // Subscribe to the scanning result callback event.
         remoteView?.setOnResultCallback { result -> //Check the result.
@@ -119,7 +117,7 @@ class DefinedActivity : Activity() {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
             pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-            this@DefinedActivity.startActivityForResult(pickIntent, REQUEST_CODE_PHOTO)
+            this@ScanCaseActivity.startActivityForResult(pickIntent, REQUEST_CODE_PHOTO)
         }
     }
 
@@ -137,7 +135,7 @@ class DefinedActivity : Activity() {
 
     private fun setBackOperation() {
         backBtn = findViewById(R.id.back_img)
-        backBtn?.setOnClickListener(View.OnClickListener { finish() })
+        backBtn?.setOnClickListener { finish() }
     }
 
     override fun onStart() {
@@ -171,7 +169,7 @@ class DefinedActivity : Activity() {
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data.data)
                 val hmsScans = ScanUtil.decodeWithBitmap(
-                    this@DefinedActivity,
+                    this@ScanCaseActivity,
                     bitmap,
                     HmsScanAnalyzerOptions.Creator().setPhotoMode(true).create()
                 )

@@ -23,12 +23,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/ef_white"
-            android:gravity="center"
             android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingTop="4dp"
+            android:gravity="center"
             android:paddingEnd="16dp"
             android:paddingBottom="4dp">
+
+            <ImageView
+                android:padding="8dp"
+                android:id="@+id/qr_scanner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_qr_code" />
 
             <ImageView
                 android:id="@+id/messages"
@@ -37,6 +44,10 @@
                 android:src="@drawable/ic_home_messages"
                 android:visibility="gone" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/logo"
@@ -55,10 +66,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="60dp"
             android:gravity="center"
-            android:layout_marginStart="8dp"
             android:layoutDirection="ltr"
             android:orientation="horizontal">
 
@@ -72,8 +83,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="Petal Maps"
-                android:textSize="12dp"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"
+                android:textSize="12dp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </RelativeLayout>

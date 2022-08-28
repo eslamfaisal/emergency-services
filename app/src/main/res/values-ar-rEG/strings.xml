@@ -133,9 +133,9 @@
     <string name="delete_case">حذف الحالة</string>
     <string name="report_case">الإبلاغ عن حالة</string>
     <string name="report_msg">تم الإبلاغ عن الحالة بنجاح.</string>
-    <string name="open_in_browser">Open in browser</string>
-    <string name="scan_to_open_case">Scan to Open Case</string>
-    <string name="scan_case">Scan Case</string>
-    <string name="scan">Scan</string>
-    <string name="place_the_code_within_the_frame">Place the code within the frame</string>
+    <string name="open_in_browser">فتح فى المتصفح</string>
+    <string name="scan_to_open_case">امسح اكود لتفح تفاصيل الحالة</string>
+    <string name="scan_case">مسح الكود</string>
+    <string name="scan">مسح</string>
+    <string name="place_the_code_within_the_frame">وجة الكود الذي تم إنشاؤه من تفاصيل الحالة داخل الإطار</string>
 </resources>
