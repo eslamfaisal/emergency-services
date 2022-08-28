@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -26,7 +27,9 @@ import com.bluethunder.tar2.model.Status.*
 import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.MyLocationViewModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
+import com.bluethunder.tar2.ui.case_details.CaseDetailsActivity.Companion.CASE_URL_QR_CODE
 import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
+import com.bluethunder.tar2.ui.case_details.fragments.ShareCaseQRDialogFragment
 import com.bluethunder.tar2.ui.case_details.model.CommentModel
 import com.bluethunder.tar2.ui.case_details.model.CommentType
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
@@ -174,8 +177,11 @@ class CaseDetailsActivity : AppCompatActivity() {
 
         popup.setOnMenuItemClickListener { item ->
             when (item!!.itemId) {
+                R.id.case_qr -> {
+                    createAppLinking(false)
+                }
                 R.id.share_case -> {
-                    createAppLinking()
+                    createAppLinking(true)
                 }
                 R.id.edit_case -> {
                     editCase()
@@ -191,6 +197,18 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
 
         popup.show()
+    }
+
+    private fun generateQRCode(toString: String) {
+
+        val requestPermissionDialogFragment = ShareCaseQRDialogFragment()
+        requestPermissionDialogFragment.arguments = bundleOf(
+            CASE_URL_QR_CODE to toString
+        )
+        requestPermissionDialogFragment.show(
+            supportFragmentManager,
+            "qr-code"
+        )
     }
 
     private fun reportCase() {
@@ -241,7 +259,7 @@ class CaseDetailsActivity : AppCompatActivity() {
             binding.caseDescriptionTv.text = it.toString()
         }
 
-        if(currentCase.caseDeleted){
+        if (currentCase.caseDeleted) {
             finish()
         }
     }
@@ -556,7 +574,7 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     }
 
-    private fun createAppLinking() {
+    private fun createAppLinking(isShareText: Boolean) {
         progressDialog.show()
         val builder = AppLinking.Builder()
             .setUriPrefix("https://tar2.dra.agconnect.link")
@@ -573,8 +591,10 @@ class CaseDetailsActivity : AppCompatActivity() {
 
         builder.buildShortAppLinking(ShortAppLinking.LENGTH.SHORT)
             .addOnSuccessListener { shortAppLinking: ShortAppLinking ->
-                shareAppLink(shortAppLinking.shortUrl.toString())
                 progressDialog.dismiss()
+                if (isShareText)
+                    shareAppLink(shortAppLinking.shortUrl.toString())
+                else generateQRCode(shortAppLinking.shortUrl.toString())
             }
             .addOnFailureListener { e: Exception ->
                 showError(e.message)
@@ -619,5 +639,6 @@ class CaseDetailsActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "CaseDetailsActivity"
+        private const val CASE_URL_QR_CODE = "CASE_URL_QR_CODE"
     }
 }

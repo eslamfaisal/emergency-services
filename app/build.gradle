@@ -122,4 +122,6 @@ dependencies {
     implementation 'com.github.rygelouv:android-audio-sensei:0.1.2'
     implementation 'com.facebook.fresco:fresco:2.6.0'
     implementation 'com.github.stfalcon:frescoimageviewer:0.5.0'
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
+    implementation 'com.google.zxing:core:3.3.3'
 }

@@ -132,4 +132,7 @@ Users can control their cases by deleting them or making them rescued.</string>
     <string name="delete_case">Delete case</string>
     <string name="report_case">Report case</string>
     <string name="report_msg">Case reported successfully.</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="scan_to_open_case">Scan to Open Case</string>
+    <string name="scan_case">Scan Case</string>
 </resources>
