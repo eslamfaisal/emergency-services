@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.ActivityMainBinding
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
@@ -20,7 +21,8 @@ import com.bluethunder.tar2.ui.home.fragments.MenuFragment
 import com.bluethunder.tar2.ui.home.fragments.MyCasesFragment
 import com.bluethunder.tar2.ui.home.viewmodel.HomeViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
-import org.json.JSONObject
+import com.huawei.hms.analytics.HiAnalytics
+import com.huawei.hms.analytics.HiAnalyticsTools
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        logUser()
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.viewmodel = viewModel
         setContentView(binding.root)
@@ -44,6 +47,12 @@ class MainActivity : AppCompatActivity() {
         initViews()
         initViewModel()
 //        setTransparentStatusBar()
+    }
+
+    private fun logUser() {
+        HiAnalyticsTools.enableLog()
+        val instance = HiAnalytics.getInstance(this)
+        instance.setUserProfile("user_id", SessionConstants.currentLoggedInUserModel!!.id!!)
     }
 
 
