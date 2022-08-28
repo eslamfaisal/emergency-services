@@ -27,7 +27,6 @@ import com.bluethunder.tar2.model.Status.*
 import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.MyLocationViewModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
-import com.bluethunder.tar2.ui.case_details.CaseDetailsActivity.Companion.CASE_URL_QR_CODE
 import com.bluethunder.tar2.ui.case_details.adapter.CommentsAdapter
 import com.bluethunder.tar2.ui.case_details.fragments.ShareCaseQRDialogFragment
 import com.bluethunder.tar2.ui.case_details.model.CommentModel
@@ -55,6 +54,7 @@ import com.huawei.agconnect.applinking.AppLinking
 import com.huawei.agconnect.applinking.ShortAppLinking
 import com.huawei.hms.maps.common.util.DistanceCalculator
 import com.huawei.hms.maps.model.LatLng
+import com.stfalcon.frescoimageviewer.ImageViewer
 import java.lang.reflect.Field
 import java.util.*
 
@@ -178,7 +178,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener { item ->
             when (item!!.itemId) {
                 R.id.case_qr -> {
-                    createAppLinking(false)
+                    generateQRCode(currentCase.id!!)
                 }
                 R.id.share_case -> {
                     createAppLinking(true)
@@ -538,6 +538,11 @@ class CaseDetailsActivity : AppCompatActivity() {
             .placeholder(circularProgressDrawable)
             .into(binding.mainImage)
 
+        binding.mainImage.setOnClickListener {
+            ImageViewer.Builder<Any?>(this, arrayOf(currentCase.mainImage))
+                .setStartPosition(0)
+                .show()
+        }
     }
 
     private fun setUserImage() {

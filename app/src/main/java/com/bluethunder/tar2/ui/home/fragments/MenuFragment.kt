@@ -66,6 +66,7 @@ class MenuFragment : Fragment() {
         binding.shareApp.setOnClickListener {
             shareAppLink("Download Tar2-طارق \n\nhttps://tar2.dra.agconnect.link/r-Tar2-App")
         }
+
         binding.privacyPolicy.setOnClickListener {
             val url = "https://github.com/eslamfaisal/tar2-privacy-policy#readme"
             val i = Intent(Intent.ACTION_VIEW)

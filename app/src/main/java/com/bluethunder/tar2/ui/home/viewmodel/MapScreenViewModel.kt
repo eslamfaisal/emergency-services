@@ -1,10 +1,15 @@
 package com.bluethunder.tar2.ui.home.viewmodel
 
+import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
+import com.bluethunder.tar2.ui.case_details.CaseDetailsActivity
+import com.bluethunder.tar2.ui.edit_case.model.CaseModel
+import com.bluethunder.tar2.ui.home.fragments.CasesListFragment
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -38,5 +43,26 @@ class MapScreenViewModel : ViewModel() {
 
     private fun setCasesValue(success: Resource<List<DocumentChange>>) {
         _myCases.value = success
+    }
+
+    fun getCaseDetailsAndOpenIt(context: Activity, caseId: String) {
+        FirebaseFirestore.getInstance()
+            .collection(FirestoreReferences.CasesCollection.value())
+            .document(caseId)
+            .get().addOnCompleteListener {
+                try {
+                    val caseDetails = it.result.toObject(CaseModel::class.java)
+                    openCaseDetails(context, caseDetails!!)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+    }
+
+    @Throws(Exception::class)
+    private fun openCaseDetails(context: Activity, caseDetails: CaseModel) {
+        val intent = Intent(context, CaseDetailsActivity::class.java)
+        intent.putExtra(CasesListFragment.EXTRA_CASE_MODEL, caseDetails)
+        context.startActivity(intent)
     }
 }
