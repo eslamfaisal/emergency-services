@@ -82,7 +82,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         binding.qrScanner.setOnClickListener {
             requestCameraPermission()
         }
-        initViewModel()
+        initMapView()
     }
 
     private val requestMultiplePermissions = registerForActivityResult(
@@ -103,16 +103,10 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                     val obj: HmsScan = data!!.getParcelableExtra(SCAN_RESULT)!!
                     Log.d(TAG, "scan result : ${obj.showResult}")
                     viewModel.getCaseDetailsAndOpenIt(requireActivity(), obj.showResult)
-                } catch (e: Exception) {}
+                } catch (e: Exception) {
+                }
             }
         }
-
-    @Throws(Exception::class)
-    private fun launchCaseDetails(url: String) {
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(url)
-        startActivity(i)
-    }
 
 
     private fun startQrForResult() {
@@ -132,9 +126,19 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             when (resources.status) {
                 SUCCESS -> {
                     resources.data?.let { location ->
+                        SharedHelper.putString(
+                            requireActivity(),
+                            "last_lat",
+                            location.latitude.toString()
+                        )
+                        SharedHelper.putString(
+                            requireActivity(),
+                            "last_lng",
+                            location.longitude.toString()
+                        )
                         SessionConstants.myCurrentLocation =
                             LatLng(location.latitude, location.longitude)
-                        initMapView()
+                        animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 10f)
                     }
                 }
                 else -> {
@@ -164,6 +168,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         Log.d(TAG, "onViewCreated: getMapAsync ")
         // get map by async method
         binding.mapView.getMapAsync(this)
+        initViewModel()
     }
 
 
@@ -251,14 +256,19 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
 
 
     override fun onMapReady(map: HuaweiMap) {
-
         Log.d(TAG, "onMapReady: map is ready")
-        // after call getMapAsync method ,we can get HuaweiMap instance in this call back method
         hmap = map
+
+        try {
+            val lastLat = SharedHelper.getString(requireActivity(), "last_lat")!!.toDouble()
+            val lastLng = SharedHelper.getString(requireActivity(), "last_lng")!!.toDouble()
+            SessionConstants.myCurrentLocation =
+                LatLng(lastLat, lastLng)
+            animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 10f)
+        } catch (e: Exception) {
+        }
+
         hmap.isMyLocationEnabled = true
-
-
-        animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 10f)
 
         hmap.setOnMarkerClickListener { marker ->
             val isInfoWindowShown: Boolean = marker.isInfoWindowShown
