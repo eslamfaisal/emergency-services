@@ -48,6 +48,7 @@ import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
 import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.huawei.agconnect.applinking.AppLinking
@@ -539,8 +540,12 @@ class CaseDetailsActivity : AppCompatActivity() {
             .into(binding.mainImage)
 
         binding.mainImage.setOnClickListener {
+            val hierarchyBuilder = GenericDraweeHierarchyBuilder.newInstance(resources)
+                .setFailureImage(me.ibrahimsn.lib.R.drawable.mtrl_ic_error)
+                .setProgressBarImage(R.drawable.ic_refresh)
+
             ImageViewer.Builder<Any?>(this, arrayOf(currentCase.mainImage))
-                .setStartPosition(0)
+                .setStartPosition(0).setCustomDraweeHierarchyBuilder(hierarchyBuilder)
                 .show()
         }
     }

@@ -17,14 +17,22 @@ package com.bluethunder.tar2
 
 import android.app.Application
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.imagepipeline.core.ImagePipelineConfig
+import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig
 import com.huawei.hms.maps.MapsInitializer
+
 
 class Tar2Application : Application() {
     override fun onCreate() {
         super.onCreate()
         MapsInitializer.initialize(this)
         MapsInitializer.setApiKey("DAEDADPF5OJAG21jxCnUWAX0InV9vW76SXWUaSMiIv81YAXW8bfCDMkAKKZ3lMU9mC2GCv78cYTZgeOIZ8OJkKXPg4ynC/CyrCUuvQ==");
-        Fresco.initialize(this)
+        val config = ImagePipelineConfig.newBuilder(this)
+            .setProgressiveJpegConfig(SimpleProgressiveJpegConfig())
+            .setResizeAndRotateEnabledForNetwork(true)
+            .setDownsampleEnabled(true)
+            .build()
+        Fresco.initialize(this, config)
     }
 
 }

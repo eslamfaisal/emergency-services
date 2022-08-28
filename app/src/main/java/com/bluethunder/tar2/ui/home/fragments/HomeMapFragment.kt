@@ -139,6 +139,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                         SessionConstants.myCurrentLocation =
                             LatLng(location.latitude, location.longitude)
                         animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 10f)
+                        hmap.isMyLocationEnabled = true
                     }
                 }
                 else -> {
@@ -267,8 +268,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 10f)
         } catch (e: Exception) {
         }
-
-        hmap.isMyLocationEnabled = true
 
         hmap.setOnMarkerClickListener { marker ->
             val isInfoWindowShown: Boolean = marker.isInfoWindowShown
