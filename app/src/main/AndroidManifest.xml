@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-sdk tools:overrideLibrary="com.huawei.agconnect.credential,com.huawei.agconnect.core,com.huawei.agconnect.https,com.huawei.agconnect.datastore"/>
 
     <queries>
         <intent>
@@ -34,6 +35,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false" />

@@ -10,6 +10,7 @@ import com.bluethunder.tar2.model.notifications.NotificationMessage
 import com.bluethunder.tar2.model.notifications.NotificationRequestBody
 import com.bluethunder.tar2.networking.RetrofitClient
 import com.google.firebase.firestore.FirebaseFirestore
+import com.huawei.agconnect.apms.APMS
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.push.HmsMessaging
@@ -94,8 +95,12 @@ class NotificationsViewModel(
     }
 
     fun getHMSAccessTokenAndSendNotification(isTopic: Boolean, sendTo: String, dataMap: String) {
+
         viewModelScope.launch {
+            val customTrace = APMS.getInstance().createCustomTrace("create_new_case")
             try {
+
+                customTrace.start()
                 val tokenResponse = RetrofitClient.retrofitToken.gteHMSAccessToken()
                 if (tokenResponse.isSuccessful) {
                     Log.d(TAG, "getHMSAccessToken: ${tokenResponse.body()!!.accessToken}")
@@ -124,8 +129,10 @@ class NotificationsViewModel(
                 } else {
                     Log.d(TAG, "getHMSAccessToken: ${tokenResponse.errorBody()}")
                 }
+                customTrace.stop();
             } catch (e: Exception) {
                 Log.d(TAG, "getHMSAccessToken error: ${e.message}")
+                customTrace.stop();
             }
         }
     }

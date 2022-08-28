@@ -18,6 +18,7 @@ import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.FirebaseFirestore
+import com.huawei.agconnect.apms.APMS
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
 import com.huawei.hms.location.*
@@ -293,6 +294,8 @@ class EditCaseViewModel : ViewModel() {
     }
 
     fun saveCase() {
+        val customTrace = APMS.getInstance().createCustomTrace("create_new_case")
+        customTrace.start()
         setSavingCaseModelValue(Resource.loading())
         FirebaseFirestore.getInstance().collection(FirestoreReferences.CasesCollection.value())
             .document(currentCaseModel.value!!.id!!).set(currentCaseModel.value!!)
@@ -300,10 +303,11 @@ class EditCaseViewModel : ViewModel() {
                 saveCaseGeoLocation()
                 Log.d(TAG, "saveCase: onSuccess")
                 setSavingCaseModelValue(Resource.success(true))
-
+                customTrace.stop();
             }.addOnFailureListener {
                 Log.d(TAG, "saveCase: onFailure")
                 setSavingCaseModelValue(Resource.error(it.message))
+                customTrace.stop();
             }
     }
 
