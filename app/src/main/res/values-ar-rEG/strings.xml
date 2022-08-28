@@ -136,4 +136,6 @@
     <string name="open_in_browser">Open in browser</string>
     <string name="scan_to_open_case">Scan to Open Case</string>
     <string name="scan_case">Scan Case</string>
+    <string name="scan">Scan</string>
+    <string name="place_the_code_within_the_frame">Place the code within the frame</string>
 </resources>

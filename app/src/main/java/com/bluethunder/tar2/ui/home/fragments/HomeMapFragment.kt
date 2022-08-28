@@ -28,6 +28,7 @@ import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.adapter.CustomInfoWindowAdapter
 import com.bluethunder.tar2.ui.home.viewmodel.MapScreenViewModel
+import com.bluethunder.tar2.ui.scan.DefinedActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.firebase.geofire.GeoFireUtils
@@ -74,6 +75,9 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             requestLocationPermissions()
         }
 
+        binding.logo.setOnClickListener {
+            requireActivity().startActivity(Intent(requireActivity(), DefinedActivity::class.java))
+        }
         initViewModel()
     }
 
