@@ -15,7 +15,7 @@ agcp {
 android {
     signingConfigs {
         release {
-            storeFile file('D:\\Eslam Work\\programming projects\\android\\Tar2\\key_store.jks')
+            storeFile file('/Users/eslamfaisal/Desktop/Work/projects/android/tar2/key_store.jks')
             storePassword '111111'
             keyAlias 'upload'
             keyPassword '111111'
@@ -28,8 +28,8 @@ android {
         applicationId "com.bluethunder.tar2"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 7
-        versionName "0.0.7"
+        versionCode 8
+        versionName "0.0.8"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
