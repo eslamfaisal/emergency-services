@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.*
+import com.huawei.agconnect.applinking.AGConnectAppLinking
 import com.huawei.hms.maps.CameraUpdateFactory
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapsInitializer
@@ -102,7 +103,9 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                     val data: Intent? = result.data
                     val obj: HmsScan = data!!.getParcelableExtra(SCAN_RESULT)!!
                     Log.d(TAG, "scan result : ${obj.showResult}")
-                    viewModel.getCaseDetailsAndOpenIt(requireActivity(), obj.showResult)
+                    val caseId = obj.showResult.split("/").first()
+                    Log.d(TAG, "scanned case id = $caseId ")
+                    viewModel.getCaseDetailsAndOpenIt(requireActivity(), caseId)
                 } catch (e: Exception) {
                 }
             }

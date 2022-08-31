@@ -179,7 +179,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener { item ->
             when (item!!.itemId) {
                 R.id.case_qr -> {
-                    generateQRCode(currentCase.id!!)
+                    generateQRCode("${currentCase.id!!}/\n Please Download the from link below to show the case\nhttps://appgallery.huawei.com/app/C102457337")
                 }
                 R.id.share_case -> {
                     createAppLinking(true)
