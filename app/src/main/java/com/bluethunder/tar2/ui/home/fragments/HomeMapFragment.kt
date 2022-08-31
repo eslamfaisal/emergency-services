@@ -103,7 +103,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                     val data: Intent? = result.data
                     val obj: HmsScan = data!!.getParcelableExtra(SCAN_RESULT)!!
                     Log.d(TAG, "scan result : ${obj.showResult}")
-                    val caseId = obj.showResult.split("/").first()
+                    val caseId = obj.showResult.split("ID=").last()
                     Log.d(TAG, "scanned case id = $caseId ")
                     viewModel.getCaseDetailsAndOpenIt(requireActivity(), caseId)
                 } catch (e: Exception) {
