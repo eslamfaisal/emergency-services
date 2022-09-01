@@ -475,7 +475,6 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
 
     companion object {
         const val USER_ID_EXTRA_KEY = "user_id_extra_key"
-        const val CASE_EXTRA_KEY = "case_extra_key"
         const val CHAT_HEAD_EXTRA_KEY = "chat_head_extra_key"
         private const val TAG = "ChatActivity"
         var insideChat = false

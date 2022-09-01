@@ -71,7 +71,6 @@ class ChatHeadsActivity : AppCompatActivity() , ChatHeadAdapter.ChatHeadInteract
 
     override fun onChatHeadClicked(chatHead: ChatHead) {
         startActivity(Intent(this, ChatActivity::class.java).apply {
-            putExtra(ChatActivity.CASE_EXTRA_KEY, chatHead)
             putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
         })
     }

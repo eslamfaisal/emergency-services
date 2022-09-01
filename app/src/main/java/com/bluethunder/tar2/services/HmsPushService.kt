@@ -73,8 +73,9 @@ class HmsPushService : HmsMessageService() {
             putExtra("case_id", dataModel.caseId)
         }
 
+        var chatHead: ChatHead? = null
         if (dataModel.type == NotificationType.Chat.name) {
-            val chatHead = Gson().fromJson(data, ChatHead::class.java)
+            chatHead = Gson().fromJson(dataModel.description, ChatHead::class.java)
             notifyIntent = Intent(this, ChatActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
@@ -97,7 +98,7 @@ class HmsPushService : HmsMessageService() {
                 .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(notifyPendingIntent)
-        notificationBuilder.setContentText(dataModel.description)
+        notificationBuilder.setContentText(if (chatHead == null) dataModel.description else chatHead.lastMessage)
         notificationManager.notify(
             System.currentTimeMillis().toString(),
             0,

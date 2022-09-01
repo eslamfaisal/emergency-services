@@ -33,7 +33,6 @@ import com.bluethunder.tar2.ui.case_details.model.CommentModel
 import com.bluethunder.tar2.ui.case_details.model.CommentType
 import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.chat.ChatActivity
-import com.bluethunder.tar2.ui.chat.ChatActivity.Companion.CASE_EXTRA_KEY
 import com.bluethunder.tar2.ui.chat.ChatActivity.Companion.CHAT_HEAD_EXTRA_KEY
 import com.bluethunder.tar2.ui.chat.model.ChatHead
 import com.bluethunder.tar2.ui.edit_case.EditCaseActivity
