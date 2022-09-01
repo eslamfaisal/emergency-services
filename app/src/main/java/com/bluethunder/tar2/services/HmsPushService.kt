@@ -15,6 +15,8 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
+import com.bluethunder.tar2.ui.chat.ChatActivity
+import com.bluethunder.tar2.ui.chat.model.ChatHead
 import com.bluethunder.tar2.ui.splash.SplashActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
@@ -50,7 +52,8 @@ class HmsPushService : HmsMessageService() {
         )
         val dataModel = Gson().fromJson(data, NotificationDataModel::class.java)
         if (currentLoggedInUserModel.id == dataModel.userId &&
-            dataModel.type == NotificationType.NewCase.name) return
+            dataModel.type == NotificationType.NewCase.name
+        ) return
 
         val notificationManager =
             context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -65,9 +68,17 @@ class HmsPushService : HmsMessageService() {
             notificationManager.createNotificationChannel(mChannel)
         }
 
-        val notifyIntent = Intent(this, SplashActivity::class.java).apply {
+        var notifyIntent = Intent(this, SplashActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("case_id", dataModel.caseId)
+        }
+
+        if (dataModel.type == NotificationType.Chat.name) {
+            val chatHead = Gson().fromJson(data, ChatHead::class.java)
+            notifyIntent = Intent(this, ChatActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
+            }
         }
 
         val notifyPendingIntent = PendingIntent.getActivity(

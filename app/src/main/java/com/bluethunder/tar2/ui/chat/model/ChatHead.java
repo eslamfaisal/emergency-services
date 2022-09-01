@@ -1,5 +1,7 @@
 package com.bluethunder.tar2.ui.chat.model;
 
+import androidx.annotation.Keep;
+
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
@@ -7,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@Keep
 public class ChatHead implements Serializable {
 
     private String id;
@@ -23,21 +26,6 @@ public class ChatHead implements Serializable {
     private String lastMessageSenderID;
 
     public ChatHead() {
-    }
-
-    public ChatHead(String id, String caseTitle, String caseDescription, String caseImage,
-                    List<String> users, Date lastMessageAt, String caseUserId,
-                    String chatSenderId, String lastMessage) {
-        this.id = id;
-        this.caseTitle = caseTitle;
-        this.caseDescription = caseDescription;
-        this.caseImage = caseImage;
-        this.users = users;
-        this.lastMessageAt = lastMessageAt;
-        this.caseUserId = caseUserId;
-        this.chatSenderId = chatSenderId;
-        this.lastMessage = lastMessage;
-        this.lastMessageSenderID = lastMessageSenderID;
     }
 
     public String getCaseImage() {

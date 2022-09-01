@@ -114,7 +114,6 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
         binding.chatBtn.setOnClickListener {
             startActivity(Intent(this, ChatActivity::class.java).apply {
-                putExtra(CASE_EXTRA_KEY, currentCase)
                 putExtra(CHAT_HEAD_EXTRA_KEY, getChatHead())
             })
         }

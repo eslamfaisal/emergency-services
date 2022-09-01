@@ -13,31 +13,28 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.cloud_db.StorageReferences
 import com.bluethunder.tar2.databinding.ActivityChatBinding
-import com.bluethunder.tar2.databinding.ActivityChatHeadsBinding
 import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.chat.adapter.ChatAdapter
-import com.bluethunder.tar2.ui.chat.adapter.ChatHeadAdapter
 import com.bluethunder.tar2.ui.chat.model.ChatHead
 import com.bluethunder.tar2.ui.chat.model.Message
 import com.bluethunder.tar2.ui.chat.model.MessageType
-import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
+import com.bluethunder.tar2.ui.splash.viewmodel.SplashViewModel
 import com.bluethunder.tar2.views.AudioRecordView
 import com.bluethunder.tar2.views.AudioRecordView.RecordingListener
 import com.bumptech.glide.Glide
@@ -52,13 +49,14 @@ import com.google.firebase.storage.UploadTask
 import com.google.gson.Gson
 import com.yalantis.ucrop.UCrop
 import id.zelory.compressor.Compressor
-import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ChatActivity : AppCompatActivity(), RecordingListener {
 
+    private val viewModel by viewModels<SplashViewModel> { getViewModelFactory() }
     private lateinit var binding: ActivityChatBinding
 
     private var chatHead: ChatHead? = null
@@ -91,14 +89,24 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
         getCaseUserData()
     }
 
-    var caseUserModel: UserModel? = null
+    var anotherUserDetails: UserModel? = null
     private fun getCaseUserData() {
+        var anotherUserId = ""
+        chatHead!!.users.forEach {
+        if(it != currentLoggedInUserModel!!.id)
+            anotherUserId = it
+        }
         FirebaseFirestore.getInstance().collection(FirestoreReferences.UsersCollection.value)
-            .document(chatHead!!.caseUserId!!)
+            .document(anotherUserId)
             .get().addOnCompleteListener {
-                if (it.isSuccessful) {
-                    caseUserModel = it.result!!.toObject(UserModel::class.java)
+                try {
+                    if (it.isSuccessful) {
+                        anotherUserDetails = it.result!!.toObject(UserModel::class.java)
+                        binding.recordingView.visibility = View.VISIBLE
+                    }
+                } catch (e: Exception) {
                 }
+
             }
     }
 
@@ -114,6 +122,12 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
 
     fun initToolbar() {
         binding.backBtn.setOnClickListener { onBackPressed() }
+        binding.caseDetailsV.setOnClickListener {
+            viewModel.getCaseDetailsAndOpenIt(
+                this,
+                chatHead!!.caseId!!
+            )
+        }
         binding.titleTv.text = chatHead!!.caseTitle
 
         val circularProgressDrawable =
@@ -250,14 +264,14 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
             currentLoggedInUserModel!!.id!!,
             chatHead!!.caseId,
             chatHead!!.caseTitle,
-            content,
+            Gson().toJson(chatHead),
             NotificationType.Chat.name
         )
         val jsonString = Gson().toJson(data)
-        caseUserModel?.let {
+        anotherUserDetails?.let {
             it.pushToken?.let {
                 notificationViewModel.getHMSAccessTokenAndSendNotification(
-                    isTopic = true,
+                    isTopic = false,
                     sendTo = it,
                     jsonString
                 )
