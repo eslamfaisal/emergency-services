@@ -10,8 +10,10 @@ import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.CloudStorageWrapper
 import com.bluethunder.tar2.databinding.ActivitySplashBinding
+import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.model.UserModel
+import com.bluethunder.tar2.ui.chat.ChatActivity
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.extentions.setAppLocale
 import com.bluethunder.tar2.ui.home.MainActivity
@@ -85,11 +87,24 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkNotificationIntent() {
-        val casId = intent.getStringExtra("case_id")
-        Log.d(TAG, "checkNotificationIntent:case_id =  ${casId}")
-        casId?.let {
-            viewModel.getCaseDetailsAndOpenIt(this, it)
+
+        try {
+            if (intent.getStringExtra("type") == NotificationType.Chat.name) {
+                val chatHead = intent.getSerializableExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY)
+                startActivity(Intent(this, ChatActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
+                })
+            } else {
+                val casId = intent.getStringExtra("case_id")
+                Log.d(TAG, "checkNotificationIntent:case_id =  ${casId}")
+                casId?.let {
+                    viewModel.getCaseDetailsAndOpenIt(this, it)
+                }
+            }
+        } catch (e: Exception) {
         }
+
     }
 
     private fun openHomeActivity() {

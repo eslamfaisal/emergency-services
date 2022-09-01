@@ -17,6 +17,7 @@ import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.chat.ChatActivity
 import com.bluethunder.tar2.ui.chat.model.ChatHead
+import com.bluethunder.tar2.ui.home.MainActivity
 import com.bluethunder.tar2.ui.splash.SplashActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
@@ -68,19 +69,7 @@ class HmsPushService : HmsMessageService() {
             notificationManager.createNotificationChannel(mChannel)
         }
 
-        var notifyIntent = Intent(this, SplashActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("case_id", dataModel.caseId)
-        }
-
-        var chatHead: ChatHead? = null
-        if (dataModel.type == NotificationType.Chat.name) {
-            chatHead = Gson().fromJson(dataModel.description, ChatHead::class.java)
-            notifyIntent = Intent(this, ChatActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
-            }
-        }
+        val (notifyIntent, chatHead: ChatHead?) = handleIntend(dataModel)
 
         val notifyPendingIntent = PendingIntent.getActivity(
             this, 0, notifyIntent,
@@ -105,6 +94,32 @@ class HmsPushService : HmsMessageService() {
             notificationBuilder.build()
         )
 
+    }
+
+    private fun handleIntend(dataModel: NotificationDataModel): Pair<Intent, ChatHead?> {
+        var notifyIntent = Intent(this, SplashActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("case_id", dataModel.caseId)
+            putExtra("type", dataModel.type)
+        }
+
+        var chatHead: ChatHead? = null
+        if (dataModel.type == NotificationType.Chat.name) {
+            chatHead = Gson().fromJson(dataModel.description, ChatHead::class.java)
+
+            if (MainActivity.applicationOpened) {
+                notifyIntent = Intent(this, ChatActivity::class.java).apply {
+                    putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
+                }
+            } else {
+                notifyIntent = Intent(this, SplashActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
+                    putExtra("type", dataModel.type)
+                }
+            }
+        }
+        return Pair(notifyIntent, chatHead)
     }
 
 }

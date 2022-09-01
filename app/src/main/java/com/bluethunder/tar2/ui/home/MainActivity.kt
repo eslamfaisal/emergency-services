@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
-
+        var applicationOpened = false
     }
 
     private val viewModel by viewModels<HomeViewModel> { getViewModelFactory() }
@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applicationOpened = true
         logUser()
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.viewmodel = viewModel
@@ -140,4 +141,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        applicationOpened = false
+        super.onDestroy()
+        applicationOpened = false
+    }
 }
