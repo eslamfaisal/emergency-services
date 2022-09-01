@@ -1,6 +1,7 @@
 package com.bluethunder.tar2.ui.chat
 
 import android.Manifest
+import android.app.ActivityManager
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaRecorder
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
-import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.cloud_db.StorageReferences
@@ -34,6 +34,7 @@ import com.bluethunder.tar2.ui.chat.model.Message
 import com.bluethunder.tar2.ui.chat.model.MessageType
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
+import com.bluethunder.tar2.ui.splash.SplashActivity
 import com.bluethunder.tar2.ui.splash.viewmodel.SplashViewModel
 import com.bluethunder.tar2.views.AudioRecordView
 import com.bluethunder.tar2.views.AudioRecordView.RecordingListener
@@ -52,7 +53,7 @@ import id.zelory.compressor.Compressor
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class ChatActivity : AppCompatActivity(), RecordingListener {
 
@@ -93,8 +94,8 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
     private fun getCaseUserData() {
         var anotherUserId = ""
         chatHead!!.users.forEach {
-        if(it != currentLoggedInUserModel!!.id)
-            anotherUserId = it
+            if (it != currentLoggedInUserModel!!.id)
+                anotherUserId = it
         }
         FirebaseFirestore.getInstance().collection(FirestoreReferences.UsersCollection.value)
             .document(anotherUserId)
@@ -470,6 +471,18 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
             } catch (e: Exception) {
                 Log.d("gggggggggggg", "startstopniging: " + e.message)
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        val mngr = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val taskList = mngr.getRunningTasks(10)
+        if (taskList[0].numActivities == 1 && taskList[0].topActivity!!.className == this.javaClass.name) {
+            Log.i(TAG, "This is last activity in the stack")
+            startActivity(Intent(this, SplashActivity::class.java))
+            super.onBackPressed()
+        } else {
+            super.onBackPressed()
         }
     }
 
