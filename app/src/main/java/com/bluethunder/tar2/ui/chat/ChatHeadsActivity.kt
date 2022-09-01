@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bluethunder.tar2.databinding.ActivityChatHeadsBinding
 import com.bluethunder.tar2.model.Status.*
@@ -15,7 +14,6 @@ import com.bluethunder.tar2.ui.chat.model.ChatHead
 import com.bluethunder.tar2.ui.chat.viewmodel.ChatHeadViewModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
-import com.bluethunder.tar2.views.setupRefreshLayout
 
 class ChatHeadsActivity : AppCompatActivity() , ChatHeadAdapter.ChatHeadInteractions {
 
@@ -37,7 +35,7 @@ class ChatHeadsActivity : AppCompatActivity() , ChatHeadAdapter.ChatHeadInteract
 
     private fun initViewModel() {
         viewModel.getChatHeads()
-        viewModel.chatHeads.observe(this) { resource ->
+        viewModel.addedChatHeads.observe(this) { resource ->
             when (resource.status) {
                 SUCCESS -> {
                     Log.d(TAG, "initViewModel: ${resource.data!!.size}")

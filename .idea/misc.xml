@@ -59,7 +59,7 @@
         <entry key="app/src/main/res/drawable/ic_qr_code.xml" value="0.181" />
         <entry key="app/src/main/res/layout-v23/fragment_case_details.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/activity_case_details.xml" value="0.3333333333333333" />
-        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.3458333333333333" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_chat_heads.xml" value="0.28703703703703703" />
         <entry key="app/src/main/res/layout/activity_edit_case.xml" value="0.30092592592592593" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2657407407407407" />

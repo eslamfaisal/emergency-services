@@ -20,10 +20,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.cloud_db.StorageReferences
+import com.bluethunder.tar2.databinding.ActivityChatBinding
+import com.bluethunder.tar2.databinding.ActivityChatHeadsBinding
 import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
@@ -37,6 +40,8 @@ import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.home.viewmodel.NotificationsViewModel
 import com.bluethunder.tar2.views.AudioRecordView
 import com.bluethunder.tar2.views.AudioRecordView.RecordingListener
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
 import com.google.android.gms.tasks.Task
@@ -53,22 +58,26 @@ import java.io.File
 import java.util.*
 
 class ChatActivity : AppCompatActivity(), RecordingListener {
+
+    private lateinit var binding: ActivityChatBinding
+
     private var chatHead: ChatHead? = null
     private val token: String? = null
     private var startTimeRecording: Long = 0
     private var adapter: ChatAdapter? = null
     private lateinit var recycler_view: RecyclerView
-    private var actionBar: ActionBar? = null
     private lateinit var audioRecordView: AudioRecordView
-    private lateinit var toolbar: Toolbar
     private val user: User? = null
     private var options: UCrop.Options? = null
     private var thumbBitmap: Bitmap? = null
     private lateinit var imageBytes: ByteArray
     private var mRecorder: MediaRecorder? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+
+        binding = ActivityChatBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         caseData()
         initToolbar()
@@ -104,14 +113,23 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
     }
 
     fun initToolbar() {
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
-        actionBar = supportActionBar
-        actionBar!!.setDisplayHomeAsUpEnabled(true)
-        actionBar!!.setHomeButtonEnabled(true)
-        //        Tools.setSystemBarColorInt(this, Color.parseColor("#006ACF"));
-        toolbar.title = chatHead!!.caseTitle
+        binding.backBtn.setOnClickListener { onBackPressed() }
+        binding.titleTv.text = chatHead!!.caseTitle
+
+        val circularProgressDrawable =
+            CircularProgressDrawable(this)
+        circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.centerRadius = 30f
+        circularProgressDrawable.start()
+        Glide.with(this)
+            .asBitmap()
+            .placeholder(circularProgressDrawable)
+            .load(chatHead!!.caseImage!!)
+            .override(200, 200)
+            .optionalTransform(CircleCrop())
+            .error(resources.getDrawable(R.drawable.ic_place_holder))
+            .into(binding.mainImageView)
+
     }
 
     fun iniComponent() {
@@ -140,8 +158,6 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
                 .start()
         }
 
-//        audioRecordView.getMessageView().addTextChangedListener(contentWatcher);
-        toolbar.setOnClickListener { v: View? -> showToolBarChooseDialog() }
     }
 
     private fun showToolBarChooseDialog() {}

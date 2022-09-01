@@ -5,6 +5,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class ChatHead implements Serializable {
 
@@ -125,5 +126,18 @@ public class ChatHead implements Serializable {
 
     public void setLastMessageSenderID(String lastMessageSenderID) {
         this.lastMessageSenderID = lastMessageSenderID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChatHead chatHead = (ChatHead) o;
+        return Objects.equals(id, chatHead.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

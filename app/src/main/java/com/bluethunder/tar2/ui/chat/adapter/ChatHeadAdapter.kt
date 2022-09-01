@@ -70,10 +70,11 @@ class ChatHeadAdapter(
     fun addNewData(chatHeads: MutableList<ChatHead>) {
         this.chatHeads.removeAll(chatHeads)
         this.chatHeads.addAll(chatHeads)
+        this.chatHeads.sortByDescending { it.lastMessageAt }
         notifyDataSetChanged()
     }
 
-    fun addDeleteData(data: MutableList<ChatHead>) {
+    fun modifiedList(data: MutableList<ChatHead>) {
         this.chatHeads.removeAll(data)
         notifyDataSetChanged()
     }
