@@ -134,6 +134,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     private fun getChatHead(): ChatHead {
         val chatHead = ChatHead()
         chatHead.id = SessionConstants.currentLoggedInUserModel!!.id + currentCase.id!!
+        chatHead.caseId = currentCase.id
         chatHead.caseTitle = currentCase.title
         chatHead.caseDescription = currentCase.description
         chatHead.caseImage = currentCase.mainImage
@@ -141,7 +142,7 @@ class CaseDetailsActivity : AppCompatActivity() {
         chatHead.chatSenderId = SessionConstants.currentLoggedInUserModel!!.id
         chatHead.users = arrayOf(
             SessionConstants.currentLoggedInUserModel!!.id,
-            currentCase.id!!
+            currentCase.userId!!
         ).toMutableList()
         return chatHead
     }

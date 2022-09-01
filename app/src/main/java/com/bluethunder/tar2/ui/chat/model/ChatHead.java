@@ -9,6 +9,7 @@ import java.util.List;
 public class ChatHead implements Serializable {
 
     private String id;
+    private String caseId;
     private String caseTitle;
     private String caseDescription;
     private List<String> users;
@@ -44,6 +45,14 @@ public class ChatHead implements Serializable {
 
     public void setCaseImage(String caseImage) {
         this.caseImage = caseImage;
+    }
+
+    public String getCaseId() {
+        return caseId;
+    }
+
+    public void setCaseId(String caseId) {
+        this.caseId = caseId;
     }
 
     public String getId() {

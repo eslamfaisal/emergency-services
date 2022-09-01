@@ -23,26 +23,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/ef_white"
+            android:gravity="center"
             android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingTop="4dp"
-            android:gravity="center"
             android:paddingEnd="16dp"
             android:paddingBottom="4dp">
 
             <ImageView
-                android:padding="8dp"
                 android:id="@+id/qr_scanner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="4dp"
                 android:src="@drawable/ic_qr_code" />
 
             <ImageView
                 android:id="@+id/messages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:src="@drawable/ic_home_messages"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <View
                 android:layout_width="0dp"

@@ -28,6 +28,7 @@ import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.model.notifications.NotificationDataModel
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.chat.adapter.ChatAdapter
+import com.bluethunder.tar2.ui.chat.adapter.ChatHeadAdapter
 import com.bluethunder.tar2.ui.chat.model.ChatHead
 import com.bluethunder.tar2.ui.chat.model.Message
 import com.bluethunder.tar2.ui.chat.model.MessageType
@@ -52,7 +53,6 @@ import java.io.File
 import java.util.*
 
 class ChatActivity : AppCompatActivity(), RecordingListener {
-    private var caseModel: CaseModel? = null
     private var chatHead: ChatHead? = null
     private val token: String? = null
     private var startTimeRecording: Long = 0
@@ -78,7 +78,6 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
 
     fun caseData() {
         val intent = intent
-        caseModel = intent.getSerializableExtra(CASE_EXTRA_KEY) as CaseModel?
         chatHead = intent.getSerializableExtra(CHAT_HEAD_EXTRA_KEY) as ChatHead?
         getCaseUserData()
     }
@@ -86,7 +85,7 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
     var caseUserModel: UserModel? = null
     private fun getCaseUserData() {
         FirebaseFirestore.getInstance().collection(FirestoreReferences.UsersCollection.value)
-            .document(caseModel!!.userId!!)
+            .document(chatHead!!.caseUserId!!)
             .get().addOnCompleteListener {
                 if (it.isSuccessful) {
                     caseUserModel = it.result!!.toObject(UserModel::class.java)
@@ -233,8 +232,8 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
 
         val data = NotificationDataModel(
             currentLoggedInUserModel!!.id!!,
-            caseModel!!.id,
-            caseModel!!.title,
+            chatHead!!.caseId,
+            chatHead!!.caseTitle,
             content,
             NotificationType.Chat.name
         )
@@ -452,4 +451,5 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
         var insideChat = false
         private var mFileName: String? = null
     }
+
 }

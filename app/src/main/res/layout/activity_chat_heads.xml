@@ -60,22 +60,13 @@
 
             </LinearLayout>
 
-            <com.bluethunder.tar2.views.ScrollChildSwipeRefreshLayout
-                android:id="@+id/refresh_layout"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chat_head_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:onRefreshListener="@{viewmodel::refresh}"
-                app:refreshing="@{viewmodel.dataRefreshLoading}">
+                android:layout_margin="8dp"
+                android:padding="4dp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/chat_head_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/grey_curved_rectangle_shape"
-                    android:padding="4dp" />
-            </com.bluethunder.tar2.views.ScrollChildSwipeRefreshLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
