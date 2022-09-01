@@ -73,7 +73,7 @@ class HmsPushService : HmsMessageService() {
 
         val notifyPendingIntent = PendingIntent.getActivity(
             this, 0, notifyIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -108,6 +108,7 @@ class HmsPushService : HmsMessageService() {
             chatHead = Gson().fromJson(dataModel.description, ChatHead::class.java)
 
             if (MainActivity.applicationOpened) {
+                Log.d(TAG, "handleIntend: mainActivityOpened")
                 notifyIntent = Intent(this, ChatActivity::class.java).apply {
                     putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
                 }
