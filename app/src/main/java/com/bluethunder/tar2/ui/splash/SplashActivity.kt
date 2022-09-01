@@ -92,7 +92,6 @@ class SplashActivity : AppCompatActivity() {
             if (intent.getStringExtra("type") == NotificationType.Chat.name) {
                 val chatHead = intent.getSerializableExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY)
                 startActivity(Intent(this, ChatActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     putExtra(ChatActivity.CHAT_HEAD_EXTRA_KEY, chatHead)
                 })
             } else {
