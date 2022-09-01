@@ -28,8 +28,8 @@ android {
         applicationId "com.bluethunder.tar2"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 8
-        versionName "0.0.8"
+        versionCode 9
+        versionName "0.0.9"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
