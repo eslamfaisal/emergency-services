@@ -422,7 +422,7 @@ class ChatActivity : AppCompatActivity(), RecordingListener {
             mRecorder = MediaRecorder()
             mRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
             mRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mFileName = Environment.getExternalStorageDirectory().absolutePath
+            mFileName = cacheDir.absolutePath
             mFileName += "/" + System.currentTimeMillis() + ".3gp"
             mRecorder!!.setOutputFile(mFileName)
             mRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
