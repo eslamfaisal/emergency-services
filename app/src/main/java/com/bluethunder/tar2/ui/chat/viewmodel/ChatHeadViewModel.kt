@@ -8,8 +8,6 @@ import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.chat.model.ChatHead
-import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
-import com.bluethunder.tar2.ui.edit_case.model.CaseModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -24,8 +22,8 @@ class ChatHeadViewModel : ViewModel() {
     private val _dataRefreshLoading = MutableLiveData(false)
     val dataRefreshLoading: LiveData<Boolean> = _dataRefreshLoading
 
-    private val _chatHeads = MutableLiveData<Resource<ArrayList<ChatHead>>>()
-    val chatHeads: LiveData<Resource<ArrayList<ChatHead>>> = _chatHeads
+    private val _addedChatHeads = MutableLiveData<Resource<ArrayList<ChatHead>>>()
+    val chatHeads: LiveData<Resource<ArrayList<ChatHead>>> = _addedChatHeads
 
     fun refresh() {
         setCasesValue(Resource.empty())
@@ -60,7 +58,7 @@ class ChatHeadViewModel : ViewModel() {
 
     private fun setCasesValue(success: Resource<ArrayList<ChatHead>>) {
         _dataRefreshLoading.value = false
-        _chatHeads.value = success
+        _addedChatHeads.value = success
     }
 
 }
