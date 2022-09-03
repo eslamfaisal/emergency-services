@@ -47,11 +47,9 @@ class CasesListViewModel : ViewModel() {
             .get().addOnSuccessListener { querySnapShot ->
                 try {
                     val categoriesList = ArrayList<CaseCategoryModel>()
-                    categoriesList.add(CaseCategoryModel("all", "الكل", "All", "ALL", 0))
                     querySnapShot.documents.forEach { document ->
                         categoriesList.add(document.toObject(CaseCategoryModel::class.java)!!)
                     }
-                    categoriesList.sortBy { it.priority }
                     SessionConstants.enabledCategories?.let { enabledReeferences ->
                         val configList = ArrayList<CaseCategoryModel>()
                         categoriesList.forEach { categoryModel ->
@@ -59,12 +57,14 @@ class CasesListViewModel : ViewModel() {
                                 configList.add(categoryModel)
                             }
                         }
-                        setCategoriesValue(Resource.success(configList))
-                        getCasesList(configList.first())
-                    } ?: kotlin.run {
-                        setCategoriesValue(Resource.success(categoriesList))
-                        getCasesList(categoriesList.first())
+                        categoriesList.clear()
+                        categoriesList.addAll(configList)
                     }
+                    categoriesList.sortBy { it.priority }
+                    categoriesList.add(0,CaseCategoryModel("all", "الكل", "All", "ALL", 0))
+                    setCategoriesValue(Resource.success(categoriesList))
+                    getCasesList(categoriesList.first())
+
                     Log.d(TAG, "caseewModel: get my ce  ${categoriesList.size}")
                 } catch (e: Exception) {
                     Log.d(TAG, "caseList: exception $e")
