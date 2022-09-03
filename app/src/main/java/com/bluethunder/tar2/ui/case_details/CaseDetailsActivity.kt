@@ -150,7 +150,6 @@ class CaseDetailsActivity : AppCompatActivity() {
         binding.menuBtn.setOnClickListener {
             showMenuPopup(it)
         }
-
     }
 
     private fun showMenuPopup(v: View) {
@@ -271,7 +270,7 @@ class CaseDetailsActivity : AppCompatActivity() {
             binding.commentsTv.text = it.toString()
         }
         currentCase.description?.let {
-            binding.caseDescriptionTv.text = it.toString()
+            binding.caseDescriptionTv.text = it
         }
         currentCase.address?.let {
             binding.manualAddressView.visibility = View.VISIBLE

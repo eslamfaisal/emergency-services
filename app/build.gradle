@@ -95,6 +95,7 @@ dependencies {
     implementation 'com.huawei.hms:hianalytics:6.7.0.300'
     implementation 'com.huawei.agconnect:agconnect-apms:1.5.1.301'
     implementation 'com.huawei.hms:scanplus:2.6.0.301'
+    implementation 'com.huawei.agconnect:agconnect-remoteconfig-ktx:1.7.1.300'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:30.2.0')

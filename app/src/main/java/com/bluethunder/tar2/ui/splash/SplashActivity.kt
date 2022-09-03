@@ -11,6 +11,7 @@ import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.cloud_db.CloudStorageWrapper
 import com.bluethunder.tar2.databinding.ActivitySplashBinding
 import com.bluethunder.tar2.model.NotificationType
+import com.bluethunder.tar2.model.remot_config.EnabledCategoriesConfig
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.chat.ChatActivity
@@ -25,6 +26,7 @@ import com.bluethunder.tar2.utils.SharedHelperKeys.USER_DATA
 import com.google.gson.Gson
 import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.applinking.AGConnectAppLinking
+import com.huawei.agconnect.remoteconfig.AGConnectConfig
 
 class SplashActivity : AppCompatActivity() {
 
@@ -63,7 +65,23 @@ class SplashActivity : AppCompatActivity() {
     private fun openCloudDBZones() {
         AGConnectInstance.initialize(this)
         CloudStorageWrapper.initStorage(this)
-        checkLogin()
+        getRemoteConfigData()
+
+    }
+
+    private fun getRemoteConfigData() {
+        AGConnectConfig.getInstance().fetch().addOnCompleteListener {
+            Log.d(TAG, "getRemoteConfigData: ${it.result}")
+            Log.d(TAG, "getRemoteConfigData: ${it.result.getValueAsString("categories")}")
+            try {
+                SessionConstants.enabledCategories = Gson().fromJson(
+                    it.result.getValueAsString("categories"),
+                    EnabledCategoriesConfig::class.java
+                ).categories
+            } catch (e: Exception) {
+            }
+            checkLogin()
+        }
     }
 
     private fun checkLogin() {

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.ui.edit_case.model.CaseCategoryModel
@@ -28,7 +29,7 @@ class CasesListViewModel : ViewModel() {
     val addedCasesList: LiveData<Resource<MutableList<CaseModel>>> = _addedCases
 
     private val _deletedCases = MutableLiveData<Resource<MutableList<CaseModel>>>()
-    val deletedCases : LiveData<Resource<MutableList<CaseModel>>> = _deletedCases
+    val deletedCases: LiveData<Resource<MutableList<CaseModel>>> = _deletedCases
 
     private val _categories = MutableLiveData<Resource<ArrayList<CaseCategoryModel>>>()
     val categories: LiveData<Resource<ArrayList<CaseCategoryModel>>> = _categories
@@ -51,9 +52,19 @@ class CasesListViewModel : ViewModel() {
                         categoriesList.add(document.toObject(CaseCategoryModel::class.java)!!)
                     }
                     categoriesList.sortBy { it.priority }
-                    setCategoriesValue(Resource.success(categoriesList))
-                    getCasesList(categoriesList.first())
-
+                    SessionConstants.enabledCategories?.let { enabledReeferences ->
+                        val configList = ArrayList<CaseCategoryModel>()
+                        categoriesList.forEach { categoryModel ->
+                            if (enabledReeferences.contains(categoryModel.reference)) {
+                                configList.add(categoryModel)
+                            }
+                        }
+                        setCategoriesValue(Resource.success(configList))
+                        getCasesList(configList.first())
+                    } ?: kotlin.run {
+                        setCategoriesValue(Resource.success(categoriesList))
+                        getCasesList(categoriesList.first())
+                    }
                     Log.d(TAG, "caseewModel: get my ce  ${categoriesList.size}")
                 } catch (e: Exception) {
                     Log.d(TAG, "caseList: exception $e")
@@ -95,7 +106,7 @@ class CasesListViewModel : ViewModel() {
     }
 
     private fun handleAddedList(querySnapShot: QuerySnapshot?) {
-        if (querySnapShot == null) return;
+        if (querySnapShot == null) return
         val casesList = ArrayList<CaseModel>()
         val addedList =
             querySnapShot.documentChanges.filter {
@@ -110,7 +121,7 @@ class CasesListViewModel : ViewModel() {
     }
 
     private fun handleDeletedList(querySnapShot: QuerySnapshot?) {
-        if (querySnapShot == null) return;
+        if (querySnapShot == null) return
         val casesList = ArrayList<CaseModel>()
         val addedList =
             querySnapShot.documentChanges.filter {
