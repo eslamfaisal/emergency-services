@@ -333,29 +333,4 @@ class EditCaseViewModel : ViewModel() {
 
     }
 
-    fun setCaseTitle(toString: String) {
-        val case = currentCaseModel.value!!
-        case.title = toString
-        setCurrentCase(case)
-    }
-
-    fun setCaseCategory(id: String?) {
-        val case = currentCaseModel.value!!
-        case.categoryId = id
-        setCurrentCase(case)
-    }
-
-    fun setCaseLocation(toString: String) {
-        val case = currentCaseModel.value!!
-        case.locationName = toString
-        setCurrentCase(case)
-    }
-
-    fun setCaseDescription(toString: String) {
-        val case = currentCaseModel.value!!
-        case.description = toString
-        setCurrentCase(case)
-    }
-
-
 }

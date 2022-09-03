@@ -48,6 +48,7 @@ import com.bluethunder.tar2.utils.TimeAgo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.huawei.agconnect.applinking.AppLinking
@@ -187,7 +188,7 @@ class CaseDetailsActivity : AppCompatActivity() {
                     editCase()
                 }
                 R.id.delete_case -> {
-                    deletedCase()
+                    showDeleteCaseDialog()
                 }
                 R.id.report_case -> {
                     reportCase()
@@ -197,6 +198,20 @@ class CaseDetailsActivity : AppCompatActivity() {
         }
 
         popup.show()
+    }
+
+    private fun showDeleteCaseDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setMessage(resources.getString(R.string.delete_case_message))
+            .setCancelable(false)
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.delete_case)) { dialog, which ->
+                deletedCase()
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun generateQRCode(toString: String) {

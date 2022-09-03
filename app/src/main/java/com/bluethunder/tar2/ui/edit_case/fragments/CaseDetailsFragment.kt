@@ -103,36 +103,34 @@ class CaseDetailsFragment : BaseFragment() {
             binding.caseTitleInput.error = getString(R.string.case_title_err_msg)
             binding.caseTitleInput.showSnakeBarError(getString(R.string.case_title_err_msg))
             return
-        } else {
-            viewModel.setCaseTitle(binding.caseTitleInput.text.toString())
         }
 
         if (binding.caseCategoryInput.text.toString().isEmpty()) {
             binding.caseCategoryInput.error = getString(R.string.choose_category_err_msg)
             binding.caseCategoryInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
-        } else {
-            selectedCategoryModel?.let {
-                viewModel.setCaseCategory(it.id)
-            }
         }
-
 
         if (binding.caseLocationInput.text.toString().isEmpty()) {
             binding.caseLocationInput.error = getString(R.string.location_err_msg)
             binding.caseCategoryInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
-        } else {
-            viewModel.setCaseLocation(binding.caseLocationInput.text.toString())
         }
 
         if (binding.caseDescriptionInput.text.toString().isEmpty()) {
             binding.caseDescriptionInput.error = getString(R.string.enter_description)
             binding.caseDescriptionInput.showSnakeBarError(getString(R.string.choose_category_err_msg))
             return
-        } else {
-            viewModel.setCaseDescription(binding.caseDescriptionInput.text.toString())
         }
+
+        val case = viewModel.currentCaseModel.value!!
+        case.description = binding.caseDescriptionInput.text.toString()
+        case.locationName = binding.caseLocationInput.text.toString()
+        case.title = binding.caseTitleInput.text.toString()
+        selectedCategoryModel?.let {
+            case.categoryId = it.id
+        }
+        viewModel.setCurrentCase(case)
 
         moveToPersonalDataPage()
 

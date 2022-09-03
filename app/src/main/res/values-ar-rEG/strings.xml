@@ -138,4 +138,5 @@
     <string name="scan_case">مسح الكود</string>
     <string name="scan">مسح</string>
     <string name="place_the_code_within_the_frame">وجة الكود الذي تم إنشاؤه من تفاصيل الحالة داخل الإطار</string>
+    <string name="delete_case_message">هل أنت متأكد أنك تريد حذف هذه الحالة.</string>
 </resources>
