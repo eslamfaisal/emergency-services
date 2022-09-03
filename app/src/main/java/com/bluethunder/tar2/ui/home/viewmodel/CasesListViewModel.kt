@@ -65,13 +65,10 @@ class CasesListViewModel : ViewModel() {
                     setCategoriesValue(Resource.success(categoriesList))
                     getCasesList(categoriesList.first())
 
-                    Log.d(TAG, "caseewModel: get my ce  ${categoriesList.size}")
                 } catch (e: Exception) {
-                    Log.d(TAG, "caseList: exception $e")
                     setCategoriesValue(Resource.error(e.message!!))
                 }
             }.addOnFailureListener {
-                Log.d(TAG, "caseList: exception ${it.message!!}")
                 setCategoriesValue(Resource.error(it.message!!))
             }
     }

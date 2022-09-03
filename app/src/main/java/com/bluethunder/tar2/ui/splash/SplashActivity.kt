@@ -71,8 +71,6 @@ class SplashActivity : AppCompatActivity() {
 
     private fun getRemoteConfigData() {
         AGConnectConfig.getInstance().fetch().addOnCompleteListener {
-            Log.d(TAG, "getRemoteConfigData: ${it.result}")
-            Log.d(TAG, "getRemoteConfigData: ${it.result.getValueAsString("categories")}")
             try {
                 SessionConstants.enabledCategories = Gson().fromJson(
                     it.result.getValueAsString("categories"),
