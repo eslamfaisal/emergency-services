@@ -126,6 +126,7 @@ class CaseDetailsFragment : BaseFragment() {
         val case = viewModel.currentCaseModel.value!!
         case.description = binding.caseDescriptionInput.text.toString()
         case.locationName = binding.caseLocationInput.text.toString()
+        case.address = binding.caseManualAddressInput.text.toString()
         case.title = binding.caseTitleInput.text.toString()
         selectedCategoryModel?.let {
             case.categoryId = it.id

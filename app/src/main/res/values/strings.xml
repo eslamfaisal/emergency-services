@@ -138,4 +138,5 @@ Users can control their cases by deleting them or making them rescued.</string>
     <string name="scan">Scan</string>
     <string name="place_the_code_within_the_frame">Place the code generated from Case details within the frame</string>
     <string name="delete_case_message">Are you sure you want to delete this case</string>
+    <string name="address">Address</string>
 </resources>

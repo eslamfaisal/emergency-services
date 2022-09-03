@@ -270,8 +270,12 @@ class CaseDetailsActivity : AppCompatActivity() {
         currentCase.commentsCount.let {
             binding.commentsTv.text = it.toString()
         }
-        currentCase.description.let {
+        currentCase.description?.let {
             binding.caseDescriptionTv.text = it.toString()
+        }
+        currentCase.address?.let {
+            binding.manualAddressView.visibility = View.VISIBLE
+            binding.manualAddress.text = it
         }
 
         if (currentCase.caseDeleted) {

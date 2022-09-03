@@ -220,11 +220,11 @@
 
                             <com.google.android.material.card.MaterialCardView
                                 android:id="@+id/chat_btn"
-                                android:visibility="visible"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_margin="8dp"
+                                android:visibility="visible"
                                 app:cardBackgroundColor="@color/colorWhite"
                                 app:cardCornerRadius="12dp">
 
@@ -310,10 +310,10 @@
                             app:cardCornerRadius="12dp">
 
                             <LinearLayout
-                                android:padding="8dp"
-                                android:gravity="center"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:padding="8dp">
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/distance_tv"
@@ -333,12 +333,53 @@
                         </com.google.android.material.card.MaterialCardView>
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/manual_address_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/address"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text=": "
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/manual_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/case_description_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:fontFamily="@font/poppins_regular"
                         android:paddingEnd="16dp"
                         android:textColor="@color/colorGreyDark"
@@ -566,6 +607,7 @@ I made an accident in the road, so I need help as soon as possible" />
 
                     </com.google.android.material.card.MaterialCardView>
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/case_status_view"
                     android:layout_width="wrap_content"
@@ -575,10 +617,10 @@ I made an accident in the road, so I need help as soon as possible" />
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/case_published"
                         android:layout_width="wrap_content"
-                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginEnd="8dp"
+                        android:visibility="gone"
                         app:cardBackgroundColor="@color/color_published"
                         app:cardCornerRadius="12dp">
 
@@ -597,10 +639,10 @@ I made an accident in the road, so I need help as soon as possible" />
                                 app:srcCompat="@drawable/ic_published" />
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_marginTop="8dp"
                                 android:id="@+id/case_status_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:fontFamily="@font/poppins_regular"
                                 android:gravity="center"
                                 android:text="@string/published"
