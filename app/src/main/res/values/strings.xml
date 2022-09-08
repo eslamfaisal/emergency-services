@@ -139,4 +139,9 @@ Users can control their cases by deleting them or making them rescued.</string>
     <string name="place_the_code_within_the_frame">Place the code generated from Case details within the frame</string>
     <string name="delete_case_message">Are you sure you want to delete this case</string>
     <string name="address">Address</string>
+    <string name="police_number">Police number</string>
+    <string name="emergency_numbers">Emergency numbers</string>
+    <string name="ambulance_number">Ambulance number</string>
+    <string name="hot_lines_special">Hotline for people with special needs</string>
+    <string name="baby_help">Baby help</string>
 </resources>

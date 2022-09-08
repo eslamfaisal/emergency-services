@@ -2,7 +2,6 @@ package com.bluethunder.tar2.model.notifications;
 
 import androidx.annotation.Keep;
 
-import com.huawei.wisesecurity.kfs.validation.constrains.KfsIntegerRange;
 
 import java.io.Serializable;
 

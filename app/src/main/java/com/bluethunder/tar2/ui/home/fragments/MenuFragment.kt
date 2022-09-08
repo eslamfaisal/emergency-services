@@ -53,7 +53,7 @@ class MenuFragment : Fragment() {
         SessionConstants.currentLoggedInUserModel!!.imageUrl?.let {
             setUserImage(it)
         }
-                                                                                                                                                       
+
         binding.logoutTv.paintFlags = binding.logoutTv.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.logoutTv.setOnClickListener {
             SessionConstants.currentLoggedInUserModel = null
@@ -79,6 +79,9 @@ class MenuFragment : Fragment() {
         binding.aboutApp.setOnClickListener {
             showAboutApp()
         }
+        binding.twar2Numbers.setOnClickListener {
+            openTwar2BottomSheet()
+        }
     }
 
     private fun setUserImage(it: String) {
@@ -93,6 +96,11 @@ class MenuFragment : Fragment() {
             .placeholder(circularProgressDrawable)
             .apply(RequestOptions().override(200, 200))
             .into(binding.profileImage)
+    }
+
+    private fun openTwar2BottomSheet() {
+        val sheet = Twar2NumbersBottomSheet()
+        sheet.show(childFragmentManager, "numbers")
     }
 
     private fun showAboutApp() {

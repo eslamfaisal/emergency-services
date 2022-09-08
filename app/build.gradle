@@ -28,8 +28,8 @@ android {
         applicationId "com.bluethunder.tar2"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 9
-        versionName "0.0.9"
+        versionCode 10
+        versionName "0.1.0"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -81,7 +81,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3'
 
-    //huawei agconnect libs
+    //Huawei AGConnect Libs (My Love)
     implementation 'com.huawei.agconnect:agconnect-core:1.7.1.300'
     implementation "com.huawei.agconnect:agconnect-auth:1.7.0.300"
     implementation "com.huawei.agconnect:agconnect-auth-huawei:1.7.0.300"
