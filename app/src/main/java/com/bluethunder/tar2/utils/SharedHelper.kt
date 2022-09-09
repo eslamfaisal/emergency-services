@@ -8,6 +8,7 @@ object SharedHelperKeys {
     const val USER_DATA = "userData"
     const val LANGUAGE_KEY = "languageKey"
     const val PERMISSIONS_REQUEST = "permissions_request"
+    const val NOTIFICATION_ENABLED = "notificationEnabled"
 }
 
 object SharedHelper {
@@ -28,9 +29,9 @@ object SharedHelper {
         return sharedPreferences.getString(Key, defaultValue)
     }
 
-    fun getBoolean(contextGetKey: Context, Key: String?): Boolean {
+    fun getBoolean(contextGetKey: Context, Key: String?, defaultValue: Boolean = false): Boolean {
         sharedPreferences = contextGetKey.getSharedPreferences(KEY, Context.MODE_PRIVATE)
-        return sharedPreferences.getBoolean(Key, false)
+        return sharedPreferences.getBoolean(Key, defaultValue)
     }
 
     fun getInt(contextGetKey: Context, Key: String?, default: Int = -1): Int {

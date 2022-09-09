@@ -140,9 +140,14 @@
     <string name="place_the_code_within_the_frame">وجة الكود الذي تم إنشاؤه من تفاصيل الحالة داخل الإطار</string>
     <string name="delete_case_message">هل أنت متأكد أنك تريد حذف هذه الحالة.</string>
     <string name="address">العنوان</string>
-    <string name="police_number">Polic number</string>
-    <string name="emergency_numbers">Emergency numbers</string>
-    <string name="ambulance_number">Ambulance number</string>
-    <string name="hot_lines_special">Hotline for people with special needs</string>
-    <string name="baby_help">Baby help</string>
+    <string name="police_number">رقم الشرطة</string>
+    <string name="emergency_numbers">أرقام الطوارئ</string>
+    <string name="ambulance_number">رقم الإسعاف</string>
+    <string name="hot_lines_special">الخط الساخن لذوي الاحتياجات الخاصة</string>
+    <string name="baby_help">مساعدة الطفل</string>
+    <string name="select_language">اختار اللغة</string>
+    <string name="receive_notification">استلام اشعارات</string>
+    <string name="selected_language_value">عربي</string>
+    <string name="english">English</string>
+    <string name="arabic">عربي</string>
 </resources>

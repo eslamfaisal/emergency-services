@@ -17,11 +17,6 @@ class Twar2NumbersBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var binding: Twar2NumbersBottomSheetBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style. AppBottomSheetDialogTheme);
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

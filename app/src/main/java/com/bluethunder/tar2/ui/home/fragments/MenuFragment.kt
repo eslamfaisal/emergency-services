@@ -16,6 +16,7 @@ import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.FragmentMenuBinding
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
+import com.bluethunder.tar2.ui.settings.SettingsActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.bumptech.glide.Glide
@@ -82,6 +83,13 @@ class MenuFragment : Fragment() {
         binding.twar2Numbers.setOnClickListener {
             openTwar2BottomSheet()
         }
+        binding.settings.setOnClickListener {
+            openSettings()
+        }
+    }
+
+    private fun openSettings() {
+        requireActivity().startActivity(Intent(requireActivity(), SettingsActivity::class.java))
     }
 
     private fun setUserImage(it: String) {

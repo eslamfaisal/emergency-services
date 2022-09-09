@@ -38,7 +38,17 @@ class HmsPushService : HmsMessageService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "onMessageReceived: remoteMessage: ${remoteMessage.data}")
 
-        sendNotification(this, (remoteMessage.data))
+        try {
+            val enabled = SharedHelper.getBoolean(
+                this,
+                SharedHelperKeys.NOTIFICATION_ENABLED,
+                defaultValue = true
+            )
+            if (enabled)
+                sendNotification(this, (remoteMessage.data))
+        } catch (e: Exception) {
+
+        }
     }
 
     /**

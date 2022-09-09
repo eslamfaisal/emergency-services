@@ -144,4 +144,9 @@ Users can control their cases by deleting them or making them rescued.</string>
     <string name="ambulance_number">Ambulance number</string>
     <string name="hot_lines_special">Hotline for people with special needs</string>
     <string name="baby_help">Baby help</string>
+    <string name="select_language">Select Language</string>
+    <string name="receive_notification">Receive Notification</string>
+    <string name="selected_language_value">English</string>
+    <string name="english">English</string>
+    <string name="arabic">عربي</string>
 </resources>
