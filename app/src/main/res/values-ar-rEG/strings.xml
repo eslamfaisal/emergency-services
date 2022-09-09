@@ -150,4 +150,5 @@
     <string name="selected_language_value">عربي</string>
     <string name="english">English</string>
     <string name="arabic">عربي</string>
+    <string name="skip">Skip</string>
 </resources>

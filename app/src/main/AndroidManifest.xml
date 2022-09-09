@@ -43,6 +43,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.onboarding.OnBoardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.scan.ScanCaseActivity"
             android:exported="false" />
         <activity

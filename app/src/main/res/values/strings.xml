@@ -149,4 +149,5 @@ Users can control their cases by deleting them or making them rescued.</string>
     <string name="selected_language_value">English</string>
     <string name="english">English</string>
     <string name="arabic">عربي</string>
+    <string name="skip">Skip</string>
 </resources>
