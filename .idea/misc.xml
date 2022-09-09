@@ -9,6 +9,7 @@
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/bg_gradient_soft.xml" value="0.1055" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/cloors.xml" value="0.129" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_add.xml" value="0.174" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_back.xml" value="0.1565" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_emergency_case_red.xml" value="0.156" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1575" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1575" />
@@ -53,6 +54,7 @@
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/loading_layout.xml" value="0.2" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/maps_layout.xml" value="0.22760416666666666" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/recording_layout.xml" value="0.2" />
+        <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/select_language_bottom_sheet.xml" value="0.2" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/layout/twar2_numbers_bottom_sheet.xml" value="0.15416666666666667" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/menu/bottom_nav_menu.xml" value="0.39947916666666666" />
         <entry key="..\:/Eslam Work/programming projects/android/Tar2/app/src/main/res/menu/case_menu.xml" value="0.21481481481481482" />
