@@ -9,6 +9,7 @@ import com.bluethunder.tar2.ui.BaseActivity
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.extentions.setAppLocale
+import com.bluethunder.tar2.ui.splash.SplashActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
 
@@ -24,13 +25,11 @@ class AuthActivity : BaseActivity() {
             SharedHelper.getString(this, SharedHelperKeys.LANGUAGE_KEY, defaultValue = "en").let {
                 if (it == "en") {
                     SharedHelper.putString(this, SharedHelperKeys.LANGUAGE_KEY, "ar")
-                    setAppLocale(this, "ar")
                 } else {
                     SharedHelper.putString(this, SharedHelperKeys.LANGUAGE_KEY, "en")
-                    setAppLocale(this, "en")
                 }
 
-                val intent = Intent(this, AuthActivity::class.java)
+                val intent = Intent(this, SplashActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()

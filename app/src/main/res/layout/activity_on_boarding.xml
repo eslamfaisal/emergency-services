@@ -68,6 +68,7 @@
                 android:layout_weight="4" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/indicator_img"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -78,17 +79,19 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="16dp">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_skip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
+                android:padding="16dp"
                 android:text="@string/skip"
                 android:textColor="@color/colorGreyDark"
                 android:textSize="@dimen/header2_text_size"
@@ -100,6 +103,7 @@
                 android:layout_weight="1" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
@@ -112,6 +116,29 @@
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_next_step" />
             </com.google.android.material.card.MaterialCardView>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                style="@style/RippleStyleWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/btn_get_started"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:background="@drawable/main_btn_bg"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/get_started"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
