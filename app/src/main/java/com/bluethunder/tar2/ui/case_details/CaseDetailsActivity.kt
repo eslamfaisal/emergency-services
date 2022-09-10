@@ -276,6 +276,10 @@ class CaseDetailsActivity : AppCompatActivity() {
             binding.manualAddressView.visibility = View.VISIBLE
             binding.manualAddress.text = it
         }
+        currentCase.locationName?.let {
+            binding.locationAddress.visibility = View.VISIBLE
+            binding.locationAddress.text = it
+        }
 
         if (currentCase.caseDeleted) {
             finish()
@@ -487,6 +491,7 @@ class CaseDetailsActivity : AppCompatActivity() {
     }
 
     private fun calculateDistance() {
+        binding.caseDistanceView.visibility = View.VISIBLE
         myCurrentLocation?.let {
             viewModel.getCaseLocationDistance(
                 currentCase.latitude!!.toDouble(),
