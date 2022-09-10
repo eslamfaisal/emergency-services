@@ -418,10 +418,10 @@ class CaseDetailsActivity : AppCompatActivity() {
         viewModel.listenToComments(currentCase.id!!)
         viewModel.listenToCaseDetails(currentCase.id!!)
 
-        if (!myCase)
+        if (!myCase) {
             viewModel.listenToCaseUserDetails(currentCase.userId!!)
-
-        calculateDistance()
+            calculateDistance()
+        }
 
         viewModel.caseLocationDistance.observe(this) { resources ->
             when (resources.status) {
