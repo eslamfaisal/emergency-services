@@ -46,8 +46,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/title_tv"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:maxLines="1"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"
@@ -55,6 +54,10 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"/>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/date"
                         android:layout_width="wrap_content"

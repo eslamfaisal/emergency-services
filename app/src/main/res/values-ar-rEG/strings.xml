@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">طارئ</string>
+    <string name="app_name">Tar2 - طارئ</string>
     <string name="current_language">English</string>
     <string name="hello_blank_fragment">خريطة</string>
     <string name="map">خريطة</string>
@@ -103,7 +103,7 @@
     <string name="days_ago">" أيام مضت "</string>
     <string name="week_ago">" منذ أسبوع "</string>
     <string name="weeks_ago">" منذ أسابيع"</string>
-    <string name="directions">Directions</string>
+    <string name="directions">الاتجاهات</string>
     <string name="maps_not_found_msg">يرجى تنزيل تطبيق خرائط لإظهار التنقل إلى موقع هذه الحالة.</string>
     <string name="write_comment">اكتب تعليق</string>
     <string name="request_permission_message">يُرجى قبول إذن الموقع ، فنحن نستخدمه فى جلب الحالات القرية منك ولحساب المسافة بينك وبين كل حالة ، ونشر حالة جديدة وإظهار اتجاهات الحالة.</string>
