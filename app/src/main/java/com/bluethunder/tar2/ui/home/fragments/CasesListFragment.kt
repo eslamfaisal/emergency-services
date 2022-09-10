@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,6 +67,9 @@ class CasesListFragment : BaseFragment(), CasesListAdapter.CasesListInteractions
             layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         }
+
+        ViewCompat.setNestedScrollingEnabled(binding.casesListRecyclerView, false)
+        ViewCompat.setNestedScrollingEnabled(binding.categoryListRecyclerView, false)
 
     }
 
