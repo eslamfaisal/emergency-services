@@ -56,6 +56,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentHomeMapBinding
 
     private lateinit var hmap: HuaweiMap
+    private var mapInisilized = false
     private var mMarkers: MutableList<Marker> = ArrayList()
 
     override fun onCreateView(
@@ -141,8 +142,10 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                         )
                         SessionConstants.myCurrentLocation =
                             LatLng(location.latitude, location.longitude)
-                        animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 10f)
-                        hmap.isMyLocationEnabled = true
+                        if(mapInisilized){
+                            animateCameraToPosision(SessionConstants.myCurrentLocation!!, zoom = 10f)
+                            hmap.isMyLocationEnabled = true
+                        }
                     }
                 }
                 else -> {
@@ -260,6 +263,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
 
 
     override fun onMapReady(map: HuaweiMap) {
+        mapInisilized = true
         Log.d(TAG, "onMapReady: map is ready")
         hmap = map
 
