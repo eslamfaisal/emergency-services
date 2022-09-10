@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
-import com.bluethunder.tar2.cloud_db.CloudStorageWrapper
 import com.bluethunder.tar2.databinding.ActivitySplashBinding
 import com.bluethunder.tar2.model.NotificationType
 import com.bluethunder.tar2.model.remot_config.EnabledCategoriesConfig
@@ -18,13 +17,14 @@ import com.bluethunder.tar2.ui.chat.ChatActivity
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.extentions.setAppLocale
 import com.bluethunder.tar2.ui.home.MainActivity
+import com.bluethunder.tar2.ui.onboarding.OnBoardingActivity
 import com.bluethunder.tar2.ui.splash.viewmodel.SplashViewModel
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys.IS_LOGGED_IN
 import com.bluethunder.tar2.utils.SharedHelperKeys.LANGUAGE_KEY
+import com.bluethunder.tar2.utils.SharedHelperKeys.ON_BOARDING_SHOW
 import com.bluethunder.tar2.utils.SharedHelperKeys.USER_DATA
 import com.google.gson.Gson
-import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.applinking.AGConnectAppLinking
 import com.huawei.agconnect.remoteconfig.AGConnectConfig
 
@@ -46,11 +46,7 @@ class SplashActivity : AppCompatActivity() {
 
         binding.root.postDelayed({
             runOnUiThread {
-                try {
-                    openCloudDBZones()
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error opening cloud db zones", e)
-                }
+                getRemoteConfigData()
             }
         }, 1000)
     }
@@ -60,13 +56,6 @@ class SplashActivity : AppCompatActivity() {
             SessionConstants.currentLanguage = it
             setAppLocale(this, it)
         }
-    }
-
-    private fun openCloudDBZones() {
-        AGConnectInstance.initialize(this)
-        CloudStorageWrapper.initStorage(this)
-        getRemoteConfigData()
-
     }
 
     private fun getRemoteConfigData() {
@@ -91,9 +80,17 @@ class SplashActivity : AppCompatActivity() {
             Log.d(TAG, "checkLogin: userId = ${currentLoggedInUserModel?.id}")
             openHomeActivity()
             checkOpenFrom()
-
         } else {
+            checkOnBoarding()
+        }
+    }
+
+    private fun checkOnBoarding() {
+        val onBoardingShowed = SharedHelper.getBoolean(this, ON_BOARDING_SHOW)
+        if (onBoardingShowed) {
             openAuthActivity()
+        } else {
+            openBoardingActivity()
         }
     }
 
@@ -159,6 +156,14 @@ class SplashActivity : AppCompatActivity() {
 
     private fun openAuthActivity() {
         val intent = Intent(this, AuthActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        finish()
+    }
+
+    private fun openBoardingActivity() {
+        val intent = Intent(this, OnBoardingActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

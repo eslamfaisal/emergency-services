@@ -151,4 +151,8 @@
     <string name="english">English</string>
     <string name="arabic">عربي</string>
     <string name="skip">Skip</string>
+    <string name="boarding_title_text_1">في حالة طارئة؟</string>
+    <string name="boarding_description_text_1">أنشر حالتك الان واحصل على المساعدة من الاخرين من حولك</string>
+    <string name="boarding_title_text_2">قدم يد المساعدة الآن!</string>
+    <string name="boarding_description_text_2">استكشف حالات المساعدة من حولك الآن لمساعدة الناس</string>
 </resources>
