@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bluethunder.tar2">
 
-    <uses-sdk tools:overrideLibrary="com.huawei.agconnect.credential,com.huawei.agconnect.core,com.huawei.agconnect.https,com.huawei.agconnect.datastore" />
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -31,7 +29,6 @@
     <application
         android:name=".Tar2Application"
         android:allowBackup="false"
-        android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,6 +39,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+
         <activity
             android:name=".ui.onboarding.OnBoardingActivity"
             android:exported="false" />
@@ -87,19 +85,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Set android:host to the prefix of your App Linking deep link or Android deep link. Set android:scheme to a custom scheme. -->
+
                 <data
                     android:host="tar2.xyz"
-                    android:scheme="https" />
-                <data
-                    android:host="appgallery.huawei.com"
-                    android:scheme="https" />
+                    android:scheme="tar2" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.home.MainActivity"

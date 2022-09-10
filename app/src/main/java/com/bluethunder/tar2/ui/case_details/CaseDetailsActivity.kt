@@ -620,9 +620,12 @@ class CaseDetailsActivity : AppCompatActivity() {
     private fun createAppLinking(isShareText: Boolean) {
         progressDialog.show()
         val builder = AppLinking.Builder()
-            .setUriPrefix("https://tar2.dra.agconnect.link")
-            .setDeepLink(Uri.parse("https://tar2.xyz/${currentCase.id}"))
-            .setAndroidLinkInfo(AppLinking.AndroidLinkInfo.Builder().build())
+            .setUriPrefix("https://tr2.dra.agconnect.link")
+            .setDeepLink(Uri.parse("tar2://tar2.xyz/${currentCase.id}"))
+            .setAndroidLinkInfo(
+                AppLinking.AndroidLinkInfo.Builder()
+                    .setAndroidDeepLink("tar2://tar2.xyz/${currentCase.id}").build()
+            )
             .setSocialCardInfo(
                 AppLinking.SocialCardInfo.newBuilder()
                     .setTitle(currentCase.title)
