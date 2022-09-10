@@ -39,7 +39,7 @@
     <string name="enter_otp">أدخل الرمز</string>
     <string name="enter_otp_phone_msg">تم إرسال رمز التعريف إلى رقم الهاتف المحمول</string>
     <string name="phone_regestered_before_mss">رقم الهاتف مسجل بالفعل لحساب آخر</string>
-    <string name="agree">Agree</string>
+    <string name="agree">موافق</string>
     <string name="no_enternet_connection">لا يوجد اتصال بالإنترنت</string>
     <string name="incorrect_phone_or_password">رقم الهاتف أو كلمة المرور غير صحيحة</string>
     <string name="incorrect_verification_code">رمز التحقق غير صحيح</string>
