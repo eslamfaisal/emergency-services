@@ -298,6 +298,32 @@
                                     android:textStyle="bold" />
 
                             </androidx.appcompat.widget.LinearLayoutCompat>
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_marginTop="4dp"
+                                android:id="@+id/manual_address_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    app:srcCompat="@drawable/ic_current_location"
+                                    app:tint="@color/colorGreyMedium" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/case_address"
+                                    android:gravity="start"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:textColor="@color/colorGreyDark"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:visibility="visible" />
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <com.google.android.material.card.MaterialCardView
@@ -339,7 +365,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:fontFamily="@font/poppins_regular"
                         android:paddingEnd="16dp"
                         android:textSize="@dimen/header2_text_size"
@@ -348,69 +374,6 @@
 I made an accident in the road, so I need help as soon as possible
 I made an accident in the road, so I need help as soon as possible" />
 
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/manual_address_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="@string/address"
-                            android:textSize="12sp"
-                            android:textColor="@color/colorGreyDark"
-                            android:textStyle="bold" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text=": "
-                            android:textColor="@color/colorGreyDark"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/location_address"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:textColor="@color/colorGreyDark"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:fontFamily="@font/poppins_regular"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:visibility="visible" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/manual_address"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:textColor="@color/colorGreyDark"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:fontFamily="@font/poppins_regular"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:visibility="visible" />
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/show_personal_data_box"

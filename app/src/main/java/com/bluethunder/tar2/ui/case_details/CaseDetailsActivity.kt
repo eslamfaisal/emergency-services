@@ -272,14 +272,25 @@ class CaseDetailsActivity : AppCompatActivity() {
         currentCase.description?.let {
             binding.caseDescriptionTv.text = it
         }
+        var address = ""
+
         currentCase.address?.let {
-            binding.manualAddressView.visibility = View.VISIBLE
-            binding.manualAddress.text = it
+            if (it.isNotEmpty()) {
+                address += it
+            } else {
+                currentCase.locationName?.let {
+                    address += it
+                }
+            }
+        } ?: run {
+            currentCase.locationName?.let {
+                address += it
+            }
         }
-        currentCase.locationName?.let {
-            binding.locationAddress.visibility = View.VISIBLE
-            binding.locationAddress.text = it
-        }
+
+
+
+        binding.caseAddress.text = address
 
         if (currentCase.caseDeleted) {
             finish()
