@@ -16,10 +16,8 @@ import com.bluethunder.tar2.databinding.FragmentChangePasswordBinding
 import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
-import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.fragments.VerifyPhoneFragment.Companion.COUNTRY_CODE_KEY
 import com.bluethunder.tar2.ui.auth.fragments.VerifyPhoneFragment.Companion.PHONE_NUMBER_KEY
-import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.profile.ChangePasswordActivity
@@ -165,7 +163,7 @@ class ChangePasswordFragment : BaseFragment() {
 
     private fun setUpPhoneNumberTextField() {
         phoneNumberKit =
-            PhoneNumberKit.Builder((requireActivity() as AuthActivity)).setIconEnabled(true).build()
+            PhoneNumberKit.Builder((requireActivity() as ChangePasswordActivity)).setIconEnabled(true).build()
         try {
             val tm =
                 requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -179,7 +177,7 @@ class ChangePasswordFragment : BaseFragment() {
         }
 
         phoneNumberKit.setupCountryPicker(
-            activity = (requireActivity() as AuthActivity),
+            activity = (requireActivity() as ChangePasswordActivity),
             searchEnabled = true
         )
     }

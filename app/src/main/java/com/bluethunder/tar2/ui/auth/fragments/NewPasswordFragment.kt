@@ -14,7 +14,6 @@ import com.bluethunder.tar2.databinding.FragmentNewPasswordBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.auth.AuthActivity
-import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.profile.ChangePasswordActivity
