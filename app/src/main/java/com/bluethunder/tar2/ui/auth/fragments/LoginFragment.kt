@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
@@ -23,7 +22,10 @@ import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.home.MainActivity
-import com.bluethunder.tar2.utils.*
+import com.bluethunder.tar2.ui.profile.ChangePasswordActivity
+import com.bluethunder.tar2.utils.SharedHelper
+import com.bluethunder.tar2.utils.SharedHelperKeys
+import com.bluethunder.tar2.utils.getErrorMsg
 import com.google.gson.Gson
 import com.huawei.agconnect.auth.AGConnectAuth
 import me.ibrahimsn.lib.PhoneNumberKit
@@ -79,10 +81,12 @@ class LoginFragment : Fragment() {
         }
 
         binding.forgetPassword.setOnClickListener {
-            try {
-                findNavController(this).navigate(R.id.action_loginFragment_to_changePasswordFragment)
-            } catch (e: Exception) {
-            }
+            requireActivity().startActivity(
+                Intent(
+                    requireActivity(),
+                    ChangePasswordActivity::class.java
+                )
+            )
         }
 
     }

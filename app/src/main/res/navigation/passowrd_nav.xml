@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/passowrd_nav"
+    app:startDestination="@id/changePasswordFragment">
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.bluethunder.tar2.ui.auth.fragments.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_newPasswordFragment"
+            app:destination="@id/newPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPasswordFragment"
+        android:name="com.bluethunder.tar2.ui.auth.fragments.NewPasswordFragment"
+        android:label="NewPasswordFragment" />
+</navigation>

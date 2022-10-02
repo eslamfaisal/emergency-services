@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.bluethunder.tar2.R
+import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.FragmentNewPasswordBinding
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
@@ -16,8 +17,11 @@ import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
+import com.bluethunder.tar2.utils.SharedHelper
+import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.bluethunder.tar2.utils.getErrorMsg
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.huawei.agconnect.auth.AGConnectAuth
 
 class NewPasswordFragment : BaseFragment() {
 
@@ -90,6 +94,9 @@ class NewPasswordFragment : BaseFragment() {
     }
 
     private fun goToLoginActivity() {
+        SessionConstants.currentLoggedInUserModel = null
+        AGConnectAuth.getInstance().signOut()
+        SharedHelper.putBoolean(requireActivity(), SharedHelperKeys.IS_LOGGED_IN, false)
         val intent = Intent(requireActivity(), AuthActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         requireActivity().startActivity(intent)

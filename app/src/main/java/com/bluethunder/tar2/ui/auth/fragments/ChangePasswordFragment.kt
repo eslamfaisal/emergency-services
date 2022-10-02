@@ -98,7 +98,7 @@ class ChangePasswordFragment : BaseFragment() {
             try {
                 NavHostFragment.findNavController(this)
                     .navigate(
-                        R.id.action_changePasswordFragment_to_newPasswordPhoneFragment,
+                        R.id.action_changePasswordFragment_to_newPasswordFragment,
                         bundleOf(
                             PHONE_NUMBER_KEY to phone.nationalNumber.toString(),
                             COUNTRY_CODE_KEY to phone.countryCode.toString()
@@ -120,7 +120,7 @@ class ChangePasswordFragment : BaseFragment() {
         setUpPhoneNumberTextField()
 
         binding.backBtn.setOnClickListener {
-            requireActivity().onBackPressed()
+            requireActivity().finish()
         }
 
         binding.btnNext.setOnClickListener {
