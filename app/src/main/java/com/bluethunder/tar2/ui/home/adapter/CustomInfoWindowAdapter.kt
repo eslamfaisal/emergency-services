@@ -59,6 +59,7 @@ class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapt
             }
 
             getCaseLocationDistance(
+                mInfoView.findViewById(R.id.case_distance_view),
                 mInfoView.findViewById(R.id.distance_progress_bar),
                 mInfoView.findViewById(R.id.distance_tv),
                 caseModel.lat,
@@ -101,6 +102,7 @@ class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapt
     }
 
     fun getCaseLocationDistance(
+        distanceView: View,
         distanceProgressBar: View,
         distanceTextView: TextView,
         latitude: Double,
@@ -128,10 +130,9 @@ class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapt
                             response.body()?.let {
                                 distanceTextView.text =
                                     it.routes[0].paths[0].distanceText!!.toString()
+                                distanceView.visibility = View.VISIBLE
                             }
-                        } catch (e: Exception) {
-
-                        }
+                        } catch (e: Exception) {}
                     }
                     distanceProgressBar.visibility = View.GONE
                 }

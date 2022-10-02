@@ -62,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/color_published"
                 app:cardCornerRadius="12dp">
 

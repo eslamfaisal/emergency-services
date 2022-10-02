@@ -155,4 +155,6 @@ Users can control their cases by deleting them or making them rescued.</string>
     <string name="boarding_title_text_2">Give a hand now!</string>
     <string name="boarding_description_text_2">Explore cases now around you to help people</string>
     <string name="get_started">Get Started</string>
+    <string name="profile">Profile</string>
+    <string name="delete_account">Delete account</string>
 </resources>

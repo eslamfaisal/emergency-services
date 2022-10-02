@@ -39,7 +39,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".ui.onboarding.OnBoardingActivity"
             android:exported="false" />
@@ -95,7 +101,6 @@
                     android:host="tar2.xyz"
                     android:scheme="tar2" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.home.MainActivity"

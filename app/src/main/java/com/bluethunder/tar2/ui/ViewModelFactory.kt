@@ -11,6 +11,7 @@ import com.bluethunder.tar2.ui.case_details.viewmodel.CaseDetailsViewModel
 import com.bluethunder.tar2.ui.chat.viewmodel.ChatHeadViewModel
 import com.bluethunder.tar2.ui.edit_case.viewmodel.EditCaseViewModel
 import com.bluethunder.tar2.ui.home.viewmodel.*
+import com.bluethunder.tar2.ui.profile.viewmodel.ProfileViewModel
 import com.bluethunder.tar2.ui.splash.viewmodel.SplashViewModel
 
 /**
@@ -51,6 +52,8 @@ class ViewModelFactory constructor(
                 SplashViewModel()
             isAssignableFrom(ChatHeadViewModel::class.java) ->
                 ChatHeadViewModel()
+            isAssignableFrom(ProfileViewModel::class.java) ->
+                ProfileViewModel()
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

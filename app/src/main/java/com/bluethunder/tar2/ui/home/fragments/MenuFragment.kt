@@ -16,6 +16,7 @@ import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.FragmentMenuBinding
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
+import com.bluethunder.tar2.ui.profile.ProfileActivity
 import com.bluethunder.tar2.ui.settings.SettingsActivity
 import com.bluethunder.tar2.utils.SharedHelper
 import com.bluethunder.tar2.utils.SharedHelperKeys
@@ -86,8 +87,14 @@ class MenuFragment : Fragment() {
         binding.settings.setOnClickListener {
             openSettings()
         }
+        binding.profileView.setOnClickListener {
+            openProfile()
+        }
     }
 
+    private fun openProfile() {
+        requireActivity().startActivity(Intent(requireActivity(), ProfileActivity::class.java))
+    }
     private fun openSettings() {
         requireActivity().startActivity(Intent(requireActivity(), SettingsActivity::class.java))
     }

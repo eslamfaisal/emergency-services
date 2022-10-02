@@ -23,7 +23,6 @@ class ScanCaseActivity : Activity() {
     var frameLayout: FrameLayout? = null
     var remoteView: RemoteView? = null
     var backBtn: ImageView? = null
-    var imgBtn: ImageView? = null
     var flushBtn: ImageView? = null
 
     var mScreenWidth = 0
@@ -105,22 +104,8 @@ class ScanCaseActivity : Activity() {
         // Set the back, photo scanning, and flashlight operations.
         // Set the back, photo scanning, and flashlight operations.
         setBackOperation()
-        setPictureScanOperation()
         setFlashOperation()
     }
-
-    private fun setPictureScanOperation() {
-        imgBtn = findViewById(R.id.img_btn)
-        imgBtn?.setOnClickListener {
-            val pickIntent = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            )
-            pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-            this@ScanCaseActivity.startActivityForResult(pickIntent, REQUEST_CODE_PHOTO)
-        }
-    }
-
     private fun setFlashOperation() {
         flushBtn?.setOnClickListener {
             if (remoteView?.lightStatus == true) {
