@@ -158,4 +158,5 @@
     <string name="get_started">أبدء</string>
     <string name="profile">Profile</string>
     <string name="delete_account">Delete account</string>
+    <string name="save">Save</string>
 </resources>

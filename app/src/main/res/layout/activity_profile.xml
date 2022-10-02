@@ -67,21 +67,58 @@
                 android:layout_margin="16dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="4dp"
-                    app:srcCompat="@drawable/ic_small_profile_image_place_holder" />
+                <RelativeLayout
+                    android:layout_width="108dp"
+                    android:layout_height="108dp"
+                    android:layout_gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ic_small_profile_image_place_holder" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/edit_profile_view"
+                        android:layout_margin="4dp"
+                        app:cardElevation="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:cardCornerRadius="18dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ic_edit_profile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                app:srcCompat="@drawable/ic_edit" />
+
+                            <ProgressBar
+                                android:visibility="gone"
+                                android:id="@+id/profile_progress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="2dp" />
+                        </RelativeLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16sp"
-                    android:layoutDirection="ltr"
                     android:hint="@string/full_name"
+                    android:layoutDirection="ltr"
                     app:boxStrokeColor="@color/color_transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -98,14 +135,15 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layoutDirection="ltr"
                     android:layout_marginTop="8dp"
                     android:hint="@string/phone_number"
-                    android:focusable="false"
+                    android:layoutDirection="ltr"
                     app:boxStrokeColor="@color/color_transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/phone_number_input"
+                        android:clickable="false"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"
@@ -127,7 +165,7 @@
                         android:background="@drawable/main_btn_bg"
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center"
-                        android:text="@string/saved"
+                        android:text="@string/save"
                         android:textAllCaps="false"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:textColor="@android:color/white"
@@ -159,18 +197,18 @@
                 </com.balysv.materialripple.MaterialRippleLayout>
 
                 <TextView
-                    android:layout_margin="24dp"
-                    android:layout_gravity="center"
                     android:id="@+id/forget_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="24dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/poppins_regular"
                     android:padding="8dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
                     android:text="@string/delete_account"
-                    android:textColor="@color/dark_red" />
+                    android:textColor="@color/dark_red"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

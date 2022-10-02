@@ -157,4 +157,5 @@ Users can control their cases by deleting them or making them rescued.</string>
     <string name="get_started">Get Started</string>
     <string name="profile">Profile</string>
     <string name="delete_account">Delete account</string>
+    <string name="save">Save</string>
 </resources>

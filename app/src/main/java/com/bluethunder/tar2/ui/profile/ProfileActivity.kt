@@ -1,17 +1,21 @@
 package com.bluethunder.tar2.ui.profile
 
+import android.content.Context
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants
 import com.bluethunder.tar2.databinding.ActivityProfileBinding
+import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
 import com.bluethunder.tar2.ui.profile.viewmodel.ProfileViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import me.ibrahimsn.lib.PhoneNumberKit
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -19,6 +23,7 @@ class ProfileActivity : AppCompatActivity() {
     val viewModel by viewModels<ProfileViewModel> { getViewModelFactory() }
 
     private lateinit var binding: ActivityProfileBinding
+    private lateinit var phoneNumberKit: PhoneNumberKit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +65,26 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-
+        setUpPhoneNumberTextField()
     }
 
+    private fun setUpPhoneNumberTextField() {
+        phoneNumberKit = PhoneNumberKit.Builder(this).setIconEnabled(true).build()
+
+        try {
+            val tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            phoneNumberKit.attachToInput(
+                binding.phoneNumberInputLayout,
+                if (tm.networkCountryIso.isNullOrEmpty()) "eg" else tm.networkCountryIso
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            phoneNumberKit.attachToInput(binding.phoneNumberInputLayout, "eg")
+        }
+
+        phoneNumberKit.setupCountryPicker(
+            activity = this, searchEnabled = true
+        )
+    }
 
 }
