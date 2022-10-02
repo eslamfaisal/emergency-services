@@ -2,6 +2,7 @@ package com.bluethunder.tar2.ui.profile
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.view.View
@@ -83,6 +84,13 @@ class ProfileActivity : AppCompatActivity() {
         }
         binding.btnSave.setOnClickListener {
             saveUserName()
+        }
+        binding.changePasswordBtn.setOnClickListener {
+            startActivity(
+                Intent(
+                    this, ChangePasswordActivity::class.java
+                )
+            )
         }
     }
 
