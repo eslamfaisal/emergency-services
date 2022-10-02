@@ -21,6 +21,7 @@ import com.bluethunder.tar2.ui.profile.viewmodel.ProfileViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.ibrahimsn.lib.PhoneNumberKit
 
 class ProfileActivity : AppCompatActivity() {
@@ -92,6 +93,7 @@ class ProfileActivity : AppCompatActivity() {
                 )
             )
         }
+
     }
 
     private fun saveUserName() {
