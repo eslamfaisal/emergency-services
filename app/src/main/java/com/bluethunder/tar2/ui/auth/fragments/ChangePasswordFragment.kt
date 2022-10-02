@@ -22,6 +22,8 @@ import com.bluethunder.tar2.ui.auth.fragments.VerifyPhoneFragment.Companion.PHON
 import com.bluethunder.tar2.ui.auth.viewmodel.AuthViewModel
 import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
+import com.bluethunder.tar2.ui.profile.ChangePasswordActivity
+import com.bluethunder.tar2.ui.profile.viewmodel.ChangePasswordViewModel
 import com.bluethunder.tar2.utils.getErrorMsg
 import com.huawei.agconnect.auth.VerifyCodeSettings
 import me.ibrahimsn.lib.PhoneNumberKit
@@ -35,7 +37,7 @@ class ChangePasswordFragment : BaseFragment() {
     }
 
     private lateinit var binding: FragmentChangePasswordBinding
-    private lateinit var viewModel: AuthViewModel
+    private lateinit var viewModel: ChangePasswordViewModel
     private lateinit var phoneNumberKit: PhoneNumberKit
     private lateinit var progressDialog: Dialog
 
@@ -67,7 +69,7 @@ class ChangePasswordFragment : BaseFragment() {
 
 
     private fun initViewModel() {
-        viewModel = (requireActivity() as AuthActivity).viewModel
+        viewModel = (requireActivity() as ChangePasswordActivity).viewModel
         binding.viewmodel = viewModel
         observeToViewModel()
     }
