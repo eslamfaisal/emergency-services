@@ -156,7 +156,7 @@
     <string name="boarding_title_text_2">قدم يد المساعدة الآن!</string>
     <string name="boarding_description_text_2">استكشف حالات المساعدة من حولك الآن لمساعدة الناس</string>
     <string name="get_started">أبدء</string>
-    <string name="profile">Profile</string>
-    <string name="delete_account">Delete account</string>
-    <string name="save">Save</string>
+    <string name="profile">الصفحة الشخصية</string>
+    <string name="delete_account">مسح الحساب</string>
+    <string name="save">حفظ</string>
 </resources>
