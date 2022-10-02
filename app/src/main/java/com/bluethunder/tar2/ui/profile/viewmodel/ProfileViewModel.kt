@@ -74,6 +74,15 @@ class ProfileViewModel : ViewModel() {
             }
     }
 
+    fun updateUserName(name: String){
+        FirebaseFirestore.getInstance().collection(FirestoreReferences.UsersCollection.value())
+            .document(userID).update(
+                mapOf("name" to name)
+            ).addOnCompleteListener {
+                Log.d(TAG, "updateUserName: isSuccessful = ${it.isSuccessful}")
+            }
+    }
+
     private fun setMainImageLoading(loading: Boolean) {
         _uploadingImage.value = loading
     }

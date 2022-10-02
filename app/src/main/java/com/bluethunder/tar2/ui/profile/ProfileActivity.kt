@@ -15,6 +15,7 @@ import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.ActivityProfileBinding
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.bluethunder.tar2.ui.extentions.getViewModelFactory
+import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.bluethunder.tar2.ui.profile.viewmodel.ProfileViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -80,6 +81,19 @@ class ProfileActivity : AppCompatActivity() {
         binding.backBtn.setOnClickListener {
             finish()
         }
+        binding.btnSave.setOnClickListener {
+            saveUserName()
+        }
+    }
+
+    private fun saveUserName() {
+        val name = binding.nameInput.text.toString().trim()
+        if (name.isEmpty()) {
+            binding.nameInput.error = getString(R.string.enter_name_err_msg)
+            binding.nameInput.showSnakeBarError(getString(R.string.enter_name_err_msg))
+            return
+        }
+        viewModel.updateUserName(name)
     }
 
     private fun setUpPhoneNumberTextField() {
@@ -130,10 +144,10 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun pickImage() {
         ImagePicker.with(this).crop().compress(512).maxResultSize(
-                1080, 1080
-            ).createIntent { intent ->
-                startForProfileImageResult.launch(intent)
-            }
+            1080, 1080
+        ).createIntent { intent ->
+            startForProfileImageResult.launch(intent)
+        }
     }
 
     override fun onDestroy() {
