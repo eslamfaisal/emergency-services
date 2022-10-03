@@ -11,8 +11,9 @@ import retrofit2.http.*
 interface Api {
 
     @Headers("Content-Type: application/json")
-    @POST("mapApi/v1/routeService/driving?key=DAEDADPF5OJAG21jxCnUWAX0InV9vW76SXWUaSMiIv81YAXW8bfCDMkAKKZ3lMU9mC2GCv78cYTZgeOIZ8OJkKXPg4ynC/CyrCUuvQ==")
+    @POST("mapApi/v1/routeService/driving")
     fun getCaseDistance(
+        @Query("key") key: String,
         @Body body: LocationDistanceRequestBody
     ): Call<LocationDistanceModel>
 

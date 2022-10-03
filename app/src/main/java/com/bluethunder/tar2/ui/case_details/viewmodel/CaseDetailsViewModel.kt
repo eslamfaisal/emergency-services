@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.URLEncoder
 
 
 class CaseDetailsViewModel : ViewModel() {
@@ -199,7 +200,12 @@ class CaseDetailsViewModel : ViewModel() {
                 lng = longitude,
             )
         )
-        RetrofitClient.retrofitMap.getCaseDistance(body)
+
+        val query: String = URLEncoder.encode(
+            "DAEDADPF5OJAG21jxCnUWAX0InV9vW76SXWUaSMiIv81YAXW8bfCDMkAKKZ3lMU9mC2GCv78cYTZgeOIZ8OJkKXPg4ynC/CyrCUuvQ==",
+            "utf-8"
+        )
+        RetrofitClient.retrofitMap.getCaseDistance(query, body)
             .enqueue(object : Callback<LocationDistanceModel> {
                 override fun onResponse(
                     call: Call<LocationDistanceModel>,
