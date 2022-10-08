@@ -105,8 +105,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="tar2.xyz"
-                    android:scheme="tar2" />
+                    android:host="tar2.dra.agchosting.link"
+                    android:scheme="https" />
+
             </intent-filter>
         </activity>
         <activity

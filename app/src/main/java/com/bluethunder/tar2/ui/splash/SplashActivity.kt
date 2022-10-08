@@ -148,8 +148,8 @@ class SplashActivity : AppCompatActivity() {
 
     @Throws(Exception::class)
     private fun openDeepLinkActivity(deepLink: Uri) {
-        Log.d(TAG, "openDeepLinkActivity: deepLink = $deepLink")
-        val caseId = deepLink.toString().split("/").last()
+        Log.d(TAG, "ohttps://tr2.dra.agconnect.link = $deepLink")
+        val caseId = deepLink.toString().split("?case=").last()
         Log.d(TAG, "openDeepLinkActivity: caseId = $caseId")
         viewModel.getCaseDetailsAndOpenIt(this, caseId)
     }
