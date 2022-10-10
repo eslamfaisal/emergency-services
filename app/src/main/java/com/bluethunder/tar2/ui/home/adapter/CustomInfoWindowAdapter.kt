@@ -58,14 +58,6 @@ class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapt
                 )
             }
 
-            getCaseLocationDistance(
-                mInfoView.findViewById(R.id.case_distance_view),
-                mInfoView.findViewById(R.id.distance_progress_bar),
-                mInfoView.findViewById(R.id.distance_tv),
-                caseModel.lat,
-                caseModel.lng,
-            )
-
             mInfoView.findViewById<View>(R.id.location_direction_view).setOnClickListener {
                 Log.d(TAG, "getInfoWindow: directions ${caseModel.lat} ${caseModel.lng}")
                 tryOpenLocationOnMap(context, caseModel)
@@ -76,6 +68,15 @@ class CustomInfoWindowAdapter(val context: Activity) : HuaweiMap.InfoWindowAdapt
                 intent.putExtra(CasesListFragment.EXTRA_CASE_MODEL, caseModel)
                 context.startActivity(intent)
             }
+
+            getCaseLocationDistance(
+                mInfoView.findViewById(R.id.case_distance_view),
+                mInfoView.findViewById(R.id.distance_progress_bar),
+                mInfoView.findViewById(R.id.distance_tv),
+                caseModel.lat,
+                caseModel.lng,
+            )
+
 
         } catch (e: Exception) {
             Log.d(TAG, "getInfoWindow: error ${e.message}")
