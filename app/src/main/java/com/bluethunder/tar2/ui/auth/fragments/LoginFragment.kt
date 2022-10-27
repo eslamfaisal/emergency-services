@@ -1,5 +1,6 @@
 package com.bluethunder.tar2.ui.auth.fragments
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -9,12 +10,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.SessionConstants.currentLoggedInUserModel
 import com.bluethunder.tar2.databinding.FragmentLoginBinding
+import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.auth.AuthActivity
 import com.bluethunder.tar2.ui.auth.model.UserModel
@@ -28,12 +32,17 @@ import com.bluethunder.tar2.utils.SharedHelperKeys
 import com.bluethunder.tar2.utils.getErrorMsg
 import com.google.gson.Gson
 import com.huawei.agconnect.auth.AGConnectAuth
+import com.huawei.agconnect.auth.HwIdAuthProvider
+import com.huawei.hms.support.account.AccountAuthManager
+import com.huawei.hms.support.account.request.AccountAuthParams
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper
 import me.ibrahimsn.lib.PhoneNumberKit
 
 class LoginFragment : Fragment() {
 
     companion object {
         private const val TAG = "LoginFragment"
+        private const val SIGN_CODE = 123
     }
 
     private lateinit var binding: FragmentLoginBinding
@@ -41,6 +50,43 @@ class LoginFragment : Fragment() {
     private lateinit var phoneNumberKit: PhoneNumberKit
 
     lateinit var progressDialog: Dialog
+
+    private val huaweiIdActivityLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val resultCode = result.resultCode
+            val data = result.data
+
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    val authAccountTask = AccountAuthManager.parseAuthResultFromIntent(data)
+                    if (authAccountTask.isSuccessful) {
+                        val authAccount = authAccountTask.result
+                        Log.i(TAG, "accessToken:" + authAccount.accessToken)
+                        val credential =
+                            HwIdAuthProvider.credentialWithToken(authAccount.accessToken)
+                        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener {
+                            Log.d(TAG, "signInWithHuaweiId: success ${it.user.uid}")
+                            viewModel.setSignInWithHuaweiIdResponse(Resource.success(it))
+                        }.addOnFailureListener {
+                            Log.d(TAG, "signInWithHuaweiId: message =  ${it.message}")
+                            Log.d(
+                                TAG,
+                                "signInWithHuaweiId: localizedMessage =  ${it.localizedMessage}"
+                            )
+                            viewModel.setSignInWithHuaweiIdResponse(Resource.error(it.message))
+                        }.addOnCanceledListener {
+                            Log.d(TAG, "signInWithHuaweiId: message = canceled")
+                            viewModel.setSignInWithHuaweiIdResponse(Resource.error("canceled"))
+                        }
+                    }
+                }
+                else -> {
+                    Log.d(TAG, "signInWithHuaweiId: message = canceled")
+                    viewModel.setSignInWithHuaweiIdResponse(Resource.error("canceled"))
+                }
+            }
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,7 +123,19 @@ class LoginFragment : Fragment() {
         }
 
         binding.huaweiIdSignInBtn.setOnClickListener {
-            viewModel.signInWithHuaweiId(requireActivity())
+            try {
+                AGConnectAuth.getInstance().signOut()
+                viewModel.setSignInWithHuaweiIdResponse(Resource.loading())
+                val authParams: AccountAuthParams =
+                    AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
+                        .setAccessToken()
+                        .createParams()
+                val service = AccountAuthManager.getService(requireActivity(), authParams)
+
+                huaweiIdActivityLauncher.launch(service!!.signInIntent)
+            } catch (e: Exception) {
+                viewModel.signInWithHuaweiIdUnifiedMethod(requireActivity())
+            }
         }
 
         binding.forgetPassword.setOnClickListener {
@@ -90,6 +148,7 @@ class LoginFragment : Fragment() {
         }
 
     }
+
 
     private fun setUpPhoneNumberTextField() {
         phoneNumberKit =

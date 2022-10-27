@@ -2,6 +2,9 @@ package com.bluethunder.tar2.ui.auth.viewmodel
 
 import android.app.Activity
 import android.util.Log
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,12 +12,17 @@ import androidx.lifecycle.viewModelScope
 import com.bluethunder.tar2.cloud_db.CloudStorageWrapper.storageManagement
 import com.bluethunder.tar2.cloud_db.FirestoreReferences
 import com.bluethunder.tar2.model.Resource
+import com.bluethunder.tar2.ui.auth.fragments.LoginFragment
 import com.bluethunder.tar2.ui.auth.model.UserModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.huawei.agconnect.auth.*
+import com.huawei.hms.support.account.AccountAuthManager
+import com.huawei.hms.support.account.request.AccountAuthParams
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
+import kotlin.jvm.Throws
 
 class AuthViewModel : ViewModel() {
 
@@ -193,13 +201,13 @@ class AuthViewModel : ViewModel() {
         )
         Log.d(TAG, "linkPhoneToHuaweiIDAccount: credential: ${password}")
         AGConnectAuth.getInstance().currentUser.link(credential).addOnSuccessListener {
-                // onSuccess
-                setNewAccountWithPhoneResult(Resource.success("updated"))
-            }.addOnFailureListener {
-                // onFail
-                Log.d(TAG, "linkPhoneToHuaweiIDAccount: onFail: ${it.message}")
-                setNewAccountWithPhoneResult(Resource.error(it.message))
-            }
+            // onSuccess
+            setNewAccountWithPhoneResult(Resource.success("updated"))
+        }.addOnFailureListener {
+            // onFail
+            Log.d(TAG, "linkPhoneToHuaweiIDAccount: onFail: ${it.message}")
+            setNewAccountWithPhoneResult(Resource.error(it.message))
+        }
     }
 
     fun setNewAccountWithPhoneResult(result: Resource<String>) {
@@ -210,7 +218,8 @@ class AuthViewModel : ViewModel() {
         _phoneCodeResult.value = result
     }
 
-    fun signInWithHuaweiId(activity: Activity) {
+    fun signInWithHuaweiIdUnifiedMethod(activity: Activity) {
+        Log.d(TAG, "signInWithHuaweiId: Start Login with Huawei ID")
         AGConnectAuth.getInstance().signOut()
         setSignInWithHuaweiIdResponse(Resource.loading())
         AGConnectAuth.getInstance().signIn(activity, AGConnectAuthCredential.HMS_Provider)
@@ -218,13 +227,16 @@ class AuthViewModel : ViewModel() {
                 Log.d(TAG, "signInWithHuaweiId: success ${it.user.uid}")
                 setSignInWithHuaweiIdResponse(Resource.success(it))
             }.addOnFailureListener {
-                Log.d(TAG, "signInWithHuaweiId:da ${it.message}")
-                Log.d(TAG, "signInWithHuaweiId:fa ${it.localizedMessage}")
+                Log.d(TAG, "signInWithHuaweiId: message =  ${it.message}")
+                Log.d(TAG, "signInWithHuaweiId: localizedMessage =  ${it.localizedMessage}")
                 setSignInWithHuaweiIdResponse(Resource.error(it.message))
+            }.addOnCanceledListener {
+                Log.d(TAG, "signInWithHuaweiId: message = canceled")
+                setSignInWithHuaweiIdResponse(Resource.error("canceled"))
             }
     }
 
-    private fun setSignInWithHuaweiIdResponse(success: Resource<SignInResult>) {
+    fun setSignInWithHuaweiIdResponse(success: Resource<SignInResult>) {
         _signInWithHuaweiId.value = success
     }
 

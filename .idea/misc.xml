@@ -82,8 +82,10 @@
         <entry key="app/src/main/res/layout/fragment_case_personal_data.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/fragment_cases_list.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/fragment_home_map.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.26851851851851855" />
         <entry key="app/src/main/res/layout/fragment_menu.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_my_cases.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_verify_phone.xml" value="0.2609805924412666" />
         <entry key="app/src/main/res/layout/item_chat_me.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/item_chat_you.xml" value="0.3458333333333333" />
         <entry key="app/src/main/res/layout/my_cases_item.xml" value="0.34479166666666666" />
