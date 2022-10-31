@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tar2 - طارئ</string>
+    <string name="app_name">Emergency Service</string>
     <string name="current_language">English</string>
     <string name="hello_blank_fragment">خريطة</string>
     <string name="map">خريطة</string>
