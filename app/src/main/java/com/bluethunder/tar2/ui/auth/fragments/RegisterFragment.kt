@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import com.bluethunder.tar2.R
 import com.bluethunder.tar2.databinding.FragmentRegisterBinding
+import com.bluethunder.tar2.model.Resource
 import com.bluethunder.tar2.model.Status
 import com.bluethunder.tar2.ui.BaseFragment
 import com.bluethunder.tar2.ui.auth.AuthActivity
@@ -30,7 +31,12 @@ import com.bluethunder.tar2.ui.extentions.showLoadingDialog
 import com.bluethunder.tar2.ui.extentions.showSnakeBarError
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.huawei.agconnect.auth.AGConnectAuth
+import com.huawei.agconnect.auth.HwIdAuthProvider
 import com.huawei.agconnect.auth.SignInResult
+import com.huawei.hms.support.account.AccountAuthManager
+import com.huawei.hms.support.account.request.AccountAuthParams
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper
 import me.ibrahimsn.lib.PhoneNumberKit
 
 
@@ -50,6 +56,43 @@ class RegisterFragment : BaseFragment() {
 
     private var isCompleteRegister = false
     private var registerFromHuaweiID = false
+
+    private val huaweiIdActivityLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val resultCode = result.resultCode
+            val data = result.data
+
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    val authAccountTask = AccountAuthManager.parseAuthResultFromIntent(data)
+                    if (authAccountTask.isSuccessful) {
+                        val authAccount = authAccountTask.result
+                        Log.i(TAG, "accessToken:" + authAccount.accessToken)
+                        val credential =
+                            HwIdAuthProvider.credentialWithToken(authAccount.accessToken)
+                        AGConnectAuth.getInstance().signIn(credential).addOnSuccessListener {
+                            Log.d(TAG, "signInWithHuaweiId: success ${it.user.uid}")
+                            viewModel.setSignInWithHuaweiIdResponse(Resource.success(it))
+                        }.addOnFailureListener {
+                            Log.d(TAG, "signInWithHuaweiId: message =  ${it.message}")
+                            Log.d(
+                                TAG,
+                                "signInWithHuaweiId: localizedMessage =  ${it.localizedMessage}"
+                            )
+                            viewModel.setSignInWithHuaweiIdResponse(Resource.error(it.message))
+                        }.addOnCanceledListener {
+                            Log.d(TAG, "signInWithHuaweiId: message = canceled")
+                            viewModel.setSignInWithHuaweiIdResponse(Resource.error("canceled"))
+                        }
+                    }
+                }
+                else -> {
+                    Log.d(TAG, "signInWithHuaweiId: message = canceled")
+                    viewModel.setSignInWithHuaweiIdResponse(Resource.error("canceled"))
+                }
+            }
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -165,7 +208,19 @@ class RegisterFragment : BaseFragment() {
     }
 
     private fun crateAccountWithHuaweiID() {
-        viewModel.signInWithHuaweiId(requireActivity())
+        try {
+            AGConnectAuth.getInstance().signOut()
+            viewModel.setSignInWithHuaweiIdResponse(Resource.loading())
+            val authParams: AccountAuthParams =
+                AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
+                    .setAccessToken()
+                    .createParams()
+            val service = AccountAuthManager.getService(requireActivity(), authParams)
+
+            huaweiIdActivityLauncher.launch(service!!.signInIntent)
+        } catch (e: Exception) {
+            viewModel.signInWithHuaweiIdUnifiedMethod(requireActivity())
+        }
 //        completeCreateAccount()
     }
 
@@ -200,7 +255,7 @@ class RegisterFragment : BaseFragment() {
                     ).show()
                 }
                 else -> {
-                    
+
                 }
             }
         }
@@ -370,7 +425,12 @@ class RegisterFragment : BaseFragment() {
     }
 
     private fun showTermsAndConditions() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/eslamfaisal/tar2-privacy-policy/blob/main/README.md")))
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://github.com/eslamfaisal/tar2-privacy-policy/blob/main/README.md")
+            )
+        )
     }
 
     override fun onDestroy() {
