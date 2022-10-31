@@ -38,7 +38,7 @@
                 android:layout_height="120dp"
                 android:layout_weight="1"
                 android:padding="8dp"
-                app:srcCompat="@drawable/ic_logo_btm_name" />
+                app:srcCompat="@drawable/ic_logo" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
