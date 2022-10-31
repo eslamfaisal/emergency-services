@@ -66,7 +66,7 @@ class MenuFragment : Fragment() {
         }
 
         binding.shareApp.setOnClickListener {
-            shareAppLink("( Tar2 - طارئ )  app is a social app, that allows users in the case of need assistance to publish their case with description, images, and location of the case to make all users in the range of the case know, that there is someone who needs their help.\n\nhttps://appgallery.huawei.com/app/C106649263")
+            shareAppLink("( Emergency Service )  app is a social app, that allows users in the case of need assistance to publish their case with description, images, and location of the case to make all users in the range of the case know, that there is someone who needs their help.\n\nhttps://appgallery.huawei.com/app/C106649263")
         }
 
         binding.privacyPolicy.setOnClickListener {

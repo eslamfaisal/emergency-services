@@ -118,9 +118,9 @@
     <string name="type_a_message">Type a message</string>
     <string name="slide_to_cancel">Slide to cancel</string>
     <string name="chats">Chats</string>
-    <string name="about_app_description">( Tar2 - طارئ )  app is a social app, that allows users in the case of need assistance to publish their case with description, images, and location of the case to make all users in the range of the case know, that there is someone who needs their help.
+    <string name="about_app_description">( Emergency Service )  app is a social app, that allows users in the case of need assistance to publish their case with description, images, and location of the case to make all users in the range of the case know, that there is someone who needs their help.
 
-By launching the case, ( Tar2 - طارئ ) will push a notification to all users in the case range, which user has specified in advance, with the details of the case.
+By launching the case, ( Emergency Service ) will push a notification to all users in the case range, which user has specified in advance, with the details of the case.
 
 Users can do commentary on the case and communicate by sending messages or calling the owner of the case, as well as can see real images of the location of the case by StreetView and can also react to the case "it's like reaction on Facebook " to make the case more important to the other users so that the application is more effective.
 
