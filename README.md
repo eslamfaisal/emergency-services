@@ -2,6 +2,9 @@
 
 ![Untitled video (1)](https://user-images.githubusercontent.com/33801510/202693151-e9c20239-2956-427b-ae7e-517202e66417.gif)
 
+## Test Application
+you can test the application for Huawei Device from [App Gallery](https://appgallery.huawei.com/app/C106649263) or From Android PlayService you can download [HMS Core APK](https://www.huaweicentral.com/download-the-latest-hms-core-apk-35/) then download the [AppGallery AP](https://huawei-appgallery.en.uptodown.com/android/) and downlaod the app from It
+
 ## Design XD File
 [Emergency Services XD File](https://1drv.ms/u/s!Aixx5Z-bf6Qygf8_LcsC5yBwHVn0sw?e=1oXjhj)
 
